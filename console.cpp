@@ -8,7 +8,7 @@
 //#include <dos.h>
 #include <time.h>  
 
-#pragma package(smart_init)
+//#pragma package(smart_init)
 //
 //
 // données privées pour le mode muli-thread
@@ -109,7 +109,7 @@ void TConsole::Save(std::string  fileName)
       delete rtfList ;
       ok=0;
     }
-    catch (std::exception  &e)
+    catch (...)
     {
       Console->errorPrintf( 0 , "File %s is already open or protected\n" , fileName.c_str() );
       ok++;

@@ -187,7 +187,7 @@ if (!isopenas2(Num_COM))
 int rdstras2 ( int Ano_port , int nbcar , char carend , char  *Apt_string )
 {
 
-  char car = 0xff ; /* caractäre lu sur COMi */
+  char car = (char) 0xff ; /* caractäre lu sur COMi */
   int  cpt_car,nb ;  /* nb de caractäres reáus sur COMi  */
 
   nb = 1;
