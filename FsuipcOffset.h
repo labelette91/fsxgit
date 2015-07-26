@@ -224,17 +224,21 @@ void Print()
 
 void DetectChanged (PMDG_NGX_Data *pS  )
 {
-	char *   psByte    = (char*)pS;
-	char *   pNgxByte  = (char*)&Ngx;
+//	char *   psByte    = (char*)pS;
+//	char *   pNgxByte  = (char*)&Ngx;
+
+	char *   psByte    = (char*)pS-FIRST_OFFSET;
+	char *   pNgxByte  = (char*)&Ngx-FIRST_OFFSET;
 
 //	for (int i=0;i<sizeof(struct PMDG_NGX_Data);i++)
-	for (int i=0;i<0x1b5;i++)
+//	for (int i=FIRST_OFFSET;i<FIRST_OFFSET+0x1b5;i++)
+		for (int i=FIRST_OFFSET;i<FIRST_OFFSET+sizeof(struct PMDG_NGX_Data);i++)
 	{
-//		if (Fsuipc.Defined(i) )
+		if (Defined(i) )
 			if (psByte[i]!=pNgxByte[i])
 			{
         double Value = GetValue(i,psByte);
-				printf("dif:%d = %d Name:%s, Value:%f\n",i,psByte[i],GetName(i),Value );
+				printf("dif:%4d = %4d Name:%-20s, Value:%f\n",i,psByte[i],GetName(i),Value );
 				SetValue(i , Value) ;
 				i = GetOffset(i)+ GetLen(i); 
 			}

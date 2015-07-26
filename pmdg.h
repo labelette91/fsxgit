@@ -39,6 +39,9 @@ static enum EVENT_ID {
 #include "FsuipcOffset.h"
 TFsuipc Fsuipc;
 
+//#define SIZE_PMDG sizeof(struct PMDG_NGX_Data)
+#define SIZE_PMDG 440
+
 TControlClass Event ;
 
 // This function is called when NGX data changes
@@ -121,14 +124,14 @@ void SendControl(int event , int pparameter )
   if (AircraftRunning)
 	{
 		// Send a command only if there is no active command request and previous command has been processed by the NGX
-		if (Control.Event != 0)
+/*		if (Control.Event != 0)
 		{
 			while(Control.Event != 0)
 			{
 				Sleep(1);
 				SimConnect_CallDispatch(hSimConnect, MyDispatchProc, NULL);
 			}
-		}
+		}*/
 		Control.Event = event;		
 		Control.Parameter = pparameter;
 		SimConnect_SetClientData (hSimConnect, PMDG_NGX_CONTROL_ID,	PMDG_NGX_CONTROL_DEFINITION, 
@@ -157,6 +160,14 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
     HRESULT hr;
     printf("PMDG Thread running\n");   
 
+		HANDLE hEventHandle = ::CreateEvent(NULL, FALSE, FALSE, NULL); 
+    if(hEventHandle == NULL) 
+    { 
+        printf("Error: Event creation failed!\n"); 
+        return false; 
+    } 
+
+
 //		Fsuipc.ReadFromFile("E:\\fsx\\tcp\\FsuipcOffset1.csv");
 //		Fsuipc.Print();
 
@@ -168,7 +179,8 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 		Fsuipc.RegisterToVariableChanged (275+FIRST_OFFSET,1,2); //MCP_FDSw[2]
 		Fsuipc.RegisterToVariableChanged (280+FIRST_OFFSET,1,3); //MCP_annunFD[2]
 
-    if (SUCCEEDED(SimConnect_Open(&hSimConnect, "PMDG NGX Test", NULL, 0, 0, 0)))
+		//use event handle
+    if (SUCCEEDED(SimConnect_Open(&hSimConnect, "PMDG NGX Test", NULL, 0, hEventHandle, 0)))
     {
         printf("Connected to Flight Simulator!\n");   
         
@@ -178,7 +190,7 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 		hr = SimConnect_MapClientDataNameToID (hSimConnect, PMDG_NGX_DATA_NAME, PMDG_NGX_DATA_ID);
 
         // Define the data area structure - this is a required step
-		hr = SimConnect_AddToClientDataDefinition (hSimConnect, PMDG_NGX_DATA_DEFINITION, 0, sizeof(PMDG_NGX_Data), 0, 0);
+		hr = SimConnect_AddToClientDataDefinition (hSimConnect, PMDG_NGX_DATA_DEFINITION, 0, SIZE_PMDG , 0, 0);
 
         // Sign up for notification of data change.  
 		// SIMCONNECT_CLIENT_DATA_REQUEST_FLAG_CHANGED flag asks for the data to be sent only when some of the data is changed.
@@ -214,11 +226,12 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 		// 5) Main loop
 		int t=0;
 		int fd=0;
-    while( quit == 0 )
+//    while( quit == 0 )
+		while( quit == 0  && ::WaitForSingleObject(hEventHandle, INFINITE) == WAIT_OBJECT_0) 
     {
-	// receive and process the NGX data
+				// receive and process the NGX data
         SimConnect_CallDispatch(hSimConnect, MyDispatchProc, NULL);
-        Sleep(10);
+//        Sleep(10);
 				t++;
 				if ((t % 500)==0){
 //							slewHeadingSelector();
@@ -229,9 +242,11 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 					else
 						fd=0;						
 				}
+				if ((t % 100)==0) printf("%d ",t);
     } 
     hr = SimConnect_Close(hSimConnect);
-  }
+		CloseHandle(hEventHandle); 
+	}
 	else
 		printf("Unable to connect!\n");
   return 0;
