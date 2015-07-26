@@ -47,16 +47,19 @@
     <ClInclude Include="as2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\FsuipcOffset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\pmdg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\PMDG_NGX_SDK.h">
+    <ClInclude Include="FsuipcOffset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\SimConnect.h">
+    <ClInclude Include="pmdg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PMDG_NGX_SDK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimConnect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,2 @@
+Var 0032, name HDGdisplay, Link IOCARD_DISPLAY, Digit 0, Numbers 3 Offset $652C
+Var 0082, name HDGrot, Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset $652C Max 359 Min 0 Inc 1  Event EVT_MCP_HDG_SET

@@ -87,13 +87,14 @@
     <ClCompile Include="tcp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\FsuipcOffset.h" />
     <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\pmdg.h" />
-    <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\PMDG_NGX_SDK.h" />
-    <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\SimConnect.h" />
     <ClInclude Include="as2.h" />
     <ClInclude Include="ClientTcp.h" />
     <ClInclude Include="console.h" />
+    <ClInclude Include="FsuipcOffset.h" />
+    <ClInclude Include="pmdg.h" />
+    <ClInclude Include="PMDG_NGX_SDK.h" />
+    <ClInclude Include="SimConnect.h" />
     <ClInclude Include="SiocVar.h" />
     <ClInclude Include="thread.h" />
   </ItemGroup>

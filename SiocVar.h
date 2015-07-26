@@ -130,7 +130,7 @@ void ReadSioc(const char * fileName)
 
 	if(!myfile) //Always test the file open.
 	{
-		printf("Error opening input file");
+		printf("Error opening input file %s ",fileName);
 		return ;
 	}
 	while (std::getline(myfile, line))

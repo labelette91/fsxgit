@@ -55,13 +55,13 @@ TCommAs2 Com ;
 
 ClientTcp * Tcp ;
 
-#include "\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\FsuipcOffset.h"
+#include "FsuipcOffset.h"
 
 #include "SiocVar.h"
 
 void RefreshOutput (int Variable , double value );
 
-#include "\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\pmdg.h"
+#include "pmdg.h"
 
 
 
@@ -345,10 +345,10 @@ int main(int argc, char **argv)
 	memset(Digits,-1,sizeof(Digits));
 	Console->printf("ComPort:%d  SiocFileName:%s ServerIp:%s  ServerPort:%d Trace:%X\n",numas2,SiocFilename.c_str(),ServerIp.c_str(),ServerPort, Console->EnableDebugOutput );
 
-	Fsuipc.ReadFromFile("\\fsx\\tcp\\FsuipcOffset1.csv");
+	Fsuipc.ReadFromFile("FsuipcOffset1.csv");
   if (Console->isDebugEnable(TRACE_OFFSET))
   		Fsuipc.Print();
-	Event.ReadFromFile("\\fsx\\tcp\\event.csv");
+	Event.ReadFromFile("event.csv");
   if (Console->isDebugEnable(TRACE_EVENT))
   		Event.Print();
 
