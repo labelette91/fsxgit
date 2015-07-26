@@ -1,0 +1,83 @@
+// *****************************************************************************
+// * Config_SIOC ver 3.5   -     By Manolo Vélez    -    www.opencockpits.com
+// *****************************************************************************
+// * FileName : sioc mcp fsx.txt
+// * Date : 08/09/2009
+
+
+
+Var 0000, Value 0     // Inicializa / Inicialization
+{
+  &CONTADOR = 0    
+  &CHECK = TIMER 999 ,0 ,25
+  &CMD = 1    
+  &D_COURSE1 = 360    
+  &D_COURSE2 = 360    
+  &D_HDG = 360    
+  &D_ALT = 10000    
+  &D_VS = -999999    
+  &T_IAS = 100    
+  &AP_IAS = 1    
+  &AP_IAS = DELAY 0 ,10
+}
+
+
+Var 0051, name SPEED
+{
+  IF &SPEED <> 2
+  {
+    &O_DECIMAL = 0    
+    &F_IAS = &T_IAS    
+  }
+  ELSE
+  {
+    &O_DECIMAL = 1    
+    &F_IAS = &T_MACH    
+  }
+}
+
+Var 0052, name T_IAS
+
+Var 0053, name T_MACH
+
+Var 0054, name F_IAS
+{
+  IF &SPEED <> 2
+  {
+    &O_DECIMAL = 0    
+    &D_IAS = &F_IAS    
+    &APD_IAS = DELAY &F_IAS ,10
+  }
+  ELSE
+  {
+    &O_DECIMAL = 1    
+    &D_IAS = &F_IAS    
+    L0 = &F_IAS * 655.36
+    &APD_MACH = DELAY L0 ,10
+  }
+}
+
+Var 0056, name CHECK, Link SUBRUTINE
+{
+  &CONTADOR = &CONTADOR + 1
+  IF &CONTADOR > 10000
+  {
+    &CONTADOR = 1000    
+  }
+  ELSE
+  {
+    IF &CONTADOR > 4
+    {
+      IF &APD_VS <> &D_VS
+      {
+        &D_VS = &APD_VS    
+      }
+    }
+  }
+}
+
+
+Var 0300, name E_IAS, Link IOCARD_ENCODER, Input 2, Aceleration 4, Type 2
+{
+}
+

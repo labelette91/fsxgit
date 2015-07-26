@@ -1,0 +1,81 @@
+File fsx.txt:
+Var 0000, Value 0     // Inicializa / Inicialization
+Var 0001, name AP_MASTER_SW, Link FSUIPC_INOUT, Offset $07BC, Length 4
+Var 0002, Link FSUIPC_INOUT, Offset $07C0, Length 4     // AP_LVL
+Var 0003, Link FSUIPC_INOUT, Offset $07C4, Length 4     // AP_NAV1
+Var 0004, Link FSUIPC_INOUT, Offset $07C8, Length 4     // AP_HDG_SEL
+Var 0005, name APD_HDG, Link FSUIPC_INOUT, Offset $07CC, Length 2     // APD_HDG
+Var 0006, name AP_ALT, Link FSUIPC_INOUT, Offset $07D0, Length 4     // AP_ALT
+Var 0007, name AP_IAS, Link FSUIPC_INOUT, Offset $07DC, Length 4     // AP_IAS
+Var 0008, name APD_IAS, Link FSUIPC_INOUT, Offset $07E2, Length 2     // D_IAS
+Var 0009, name APD_ALT, Link FSUIPC_INOUT, Offset $07D4, Length 4     // APD_ALT
+Var 0011, name AP_MACH, Link FSUIPC_INOUT, Offset $07E4, Length 4     // AP_MACH
+Var 0012, name APD_MACH, Link FSUIPC_INOUT, Offset $07E8, Length 4     // APD_MACH
+Var 0013, Link FSUIPC_INOUT, Offset $3210, Length 2     // LOCALV_IAS/M
+Var 0014, name APD_VS, Link FSUIPC_INOUT, Offset $07F2, Length 2, Type 1     // D_V/S
+Var 0015, Link FSUIPC_INOUT, Offset $0810, Length 4     // AP_AT
+Var 0016, Link FSUIPC_INOUT, Offset $2EE0, Length 4     // AP_FD
+Var 0017, Link FSUIPC_INOUT, Offset $07C4, Length 4     // AP_NAV
+Var 0018, Link FSUIPC_INOUT, Offset $0800, Length 4     // AP_APP
+Var 0019, Link FSUIPC_INOUT, Offset $0804, Length 4     // AP_BC
+Var 0020, Link FSUIPC_INOUT, Offset $0808, Length 4     // AP_YD
+Var 0021, name APD_COURSE1, Link FSUIPC_INOUT, Offset $0C4E, Length 2     // APD_COURSE1
+Var 0022, name APD_COURSE2, Link FSUIPC_INOUT, Offset $0C5E, Length 2     // APD_COURSE2
+Var 0023, name FS_IAS, Link FSUIPC_IN, Offset $02BC, Length 4     // IAS FS
+Var 0024, name FS_MACH, Link FSUIPC_IN, Offset $11C6, Length 2     // IAS FS
+Var 0025, Link FSUIPC_INOUT, Offset $07FC, Length 4     // AP_APP2 
+Var 0026, name AP_N1, Link FSUIPC_INOUT, Offset $080C, Length 4
+Var 0050, name CMD
+Var 0051, name SPEED
+Var 0052, name T_IAS
+Var 0053, name T_MACH
+Var 0054, name F_IAS
+Var 0056, name CHECK, Link SUBRUTINE
+Var 0057, name CONTADOR
+Var 0100, name D_COURSE1, Link IOCARD_DISPLAY, Digit 0, Numbers 3
+Var 0102, name D_IAS, Link IOCARD_DISPLAY, Digit 3, Numbers 3
+Var 0104, name D_HDG, Link IOCARD_DISPLAY, Digit 6, Numbers 3
+Var 0106, name D_ALT, Link IOCARD_DISPLAY, Digit 9, Numbers 5
+Var 0108, name D_VS, Link IOCARD_DISPLAY, Digit 14, Numbers 5
+Var 0110, name D_COURSE2, Link IOCARD_DISPLAY, Digit 19, Numbers 3
+Var 0200, name O_DECIMAL, Link IOCARD_OUT, Output 20
+Var 0202, name O_N1, Link IOCARD_OUT, Output 21
+Var 0204, name O_AT, Link IOCARD_OUT, Output 22
+Var 0206, name O_SPEED, Link IOCARD_OUT, Output 23
+Var 0208, name O_LVLCHG, Link IOCARD_OUT, Output 24
+Var 0210, name O_VNAV, Link IOCARD_OUT, Output 25
+Var 0212, name O_HDGSEL, Link IOCARD_OUT, Output 26
+Var 0214, name O_APP, Link IOCARD_OUT, Output 27
+Var 0216, name O_VORLOC, Link IOCARD_OUT, Output 28
+Var 0218, name O_LNAV, Link IOCARD_OUT, Output 29
+Var 0220, name O_ALTHLD, Link IOCARD_OUT, Output 30
+Var 0222, name O_VS, Link IOCARD_OUT, Output 31
+Var 0224, name O_CWSA, Link IOCARD_OUT, Output 32
+Var 0226, name O_CMDA, Link IOCARD_OUT, Output 33
+Var 0228, name O_CWSB, Link IOCARD_OUT, Output 34
+Var 0230, name O_CMDB, Link IOCARD_OUT, Output 35
+Var 0300, name E_IAS, Link IOCARD_ENCODER, Input 0, Aceleration 4, Type 2
+Var 0302, name E_ALT, Link IOCARD_ENCODER, Input 2, Aceleration 4, Type 2
+Var 0304, name E_COURSE1, Link IOCARD_ENCODER, Input 4, Aceleration 4, Type 2
+Var 0306, name E_HDG, Link IOCARD_ENCODER, Input 6, Aceleration 4, Type 2
+Var 0308, name E_COURSE2, Link IOCARD_ENCODER, Input 9, Aceleration 4, Type 2
+Var 0310, name E_VS, Link IOCARD_ENCODER, Input 11, Aceleration 4, Type 2
+Var 0400, name I_CO, Link IOCARD_SW, Input 13, Type P
+Var 0402, name I_FD2, Link IOCARD_SW, Input 14
+Var 0404, name I_DISENGAGE, Link IOCARD_SW, Input 15
+Var 0406, name I_FD1, Link IOCARD_SW, Input 16
+Var 0408, name I_CWSB, Link IOCARD_SW, Input 18
+Var 0410, name I_CMDB, Link IOCARD_SW, Input 19
+Var 0412, name I_CWSA, Link IOCARD_SW, Input 20
+Var 0414, name I_CMDA, Link IOCARD_SW, Input 21
+Var 0416, name I_VS, Link IOCARD_SW, Input 22
+Var 0418, name I_ALTHLD, Link IOCARD_SW, Input 23
+Var 0420, name I_APPB, Link IOCARD_SW, Input 24
+Var 0422, name I_VORLOC, Link IOCARD_SW, Input 25
+Var 0424, name I_LNAV, Link IOCARD_SW, Input 27
+Var 0426, name I_HDGSEL, Link IOCARD_SW, Input 28
+Var 0428, name I_LVLCHG, Link IOCARD_SW, Input 29
+Var 0430, name I_VNAV, Link IOCARD_SW, Input 30
+Var 0432, name I_SPEED, Link IOCARD_SW, Input 31
+Var 0434, name I_N1, Link IOCARD_SW, Input 32, Type P
+Var 0436, name I_AT, Link IOCARD_SW, Input 33

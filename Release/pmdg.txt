@@ -1,0 +1,522 @@
+// *****************************************************************************
+// * Config_SIOC ver 3.5   -     By Manolo Vélez    -    www.opencockpits.com
+// *****************************************************************************
+// * FileName : sioc mcp pmdg.txt
+// * Date : 23/12/2008
+
+
+
+Var 0001, name keys, Link KEYS     // variable transfert emulateur clavier ( S
+
+Var 0002, name MEMHDG, Value 0
+
+Var 0003, name IAS, Link FSUIPC_IN, Offset $02BC, Length 4
+
+Var 0004, name MACH, Link FSUIPC_IN, Offset $11C6, Length 2
+
+Var 0005, name MEMALT, Value 10000
+
+Var 0010, name FDLEFTled, Link IOCARD_OUT, Output 39
+
+Var 0011, name ATled, Link IOCARD_OUT, Output 22
+
+Var 0012, name N1led, Link IOCARD_OUT, Output 21
+
+Var 0013, name SPEEDled, Link IOCARD_OUT, Output 23
+
+Var 0014, name LVLCHGled, Link IOCARD_OUT, Output 24
+
+Var 0015, name HDGled, Link IOCARD_OUT, Output 26
+
+Var 0016, name VNAVled, Link IOCARD_OUT, Output 25
+
+Var 0017, name LNAVled, Link IOCARD_OUT, Output 29
+
+Var 0018, name VORLOCled, Link IOCARD_OUT, Output 28
+
+Var 0019, name APPled, Link IOCARD_OUT, Output 27
+
+Var 0020, name ALTHOLDled, Link IOCARD_OUT, Output 30
+
+Var 0021, name VSled, Link IOCARD_OUT, Output 31
+
+Var 0022, name CMDAled, Link IOCARD_OUT, Output 33
+
+Var 0023, name CMDBled, Link IOCARD_OUT, Output 35
+
+Var 0024, name CWSAled, Link IOCARD_OUT, Output 32
+
+Var 0025, name CWSBled, Link IOCARD_OUT, Output 34
+
+Var 0026, name VSminus, Link IOCARD_OUT, Output 45
+
+Var 0027, name IASpoint, Link IOCARD_OUT, Output 20
+
+Var 0030, name CRSLEFTdisplay, Link IOCARD_DISPLAY, Digit 0, Numbers 3
+
+Var 0031, name IASdisplay, Link IOCARD_DISPLAY, Digit 3, Numbers 3
+
+Var 0032, name HDGdisplay, Link IOCARD_DISPLAY, Digit 6, Numbers 3
+
+Var 0033, name ALTdisplay, Link IOCARD_DISPLAY, Digit 9, Numbers 5
+
+Var 0034, name VSdisplay, Link IOCARD_DISPLAY, Digit 14, Numbers 5
+
+Var 0035, name CRSRdisplay, Link IOCARD_DISPLAY, Digit 19, Numbers 3
+
+Var 0040, name MCPstatus, Link FSUIPC_IN, Offset $62BC, Length 4
+{
+  &FDLEFTled = TESTBIT &MCPstatus ,12
+  &ATled = TESTBIT &MCPstatus ,14
+  &N1led = TESTBIT &MCPstatus ,15
+  &SPEEDled = TESTBIT &MCPstatus ,16
+  &VNAVled = TESTBIT &MCPstatus ,18
+  &LVLCHGled = TESTBIT &MCPstatus ,17
+  &HDGled = TESTBIT &MCPstatus ,22
+  &LNAVled = TESTBIT &MCPstatus ,19
+  &VORLOCled = TESTBIT &MCPstatus ,20
+  &APPled = TESTBIT &MCPstatus ,21
+  &ALTHOLDled = TESTBIT &MCPstatus ,23
+  &VSled = TESTBIT &MCPstatus ,24
+  &CMDAled = TESTBIT &MCPstatus ,8
+  &CMDBled = TESTBIT &MCPstatus ,9
+  &CWSAled = TESTBIT &MCPstatus ,25
+  &CWSBled = TESTBIT &MCPstatus ,26
+  CALL &HDGaff
+  CALL &IASaff
+  CALL &ALTaff
+  CALL &VSaff
+}
+
+Var 0041, name SPDINTV, Link FSUIPC_IN, Offset $62C0, Length 1
+{
+  CALL &IASaff
+}
+
+Var 0042, name COstatus, Link FSUIPC_IN, Offset $621E, Length 2
+{
+  CALL &IASaff
+}
+
+Var 0050, name CRSpmdg, Link FSUIPC_IN, Offset $0C4E, Length 2
+{
+  IF &CRSpmdg = 360
+  {
+    &CRSLEFTdisplay = 0    
+  }
+  ELSE
+  {
+    &CRSLEFTdisplay = &CRSpmdg    
+  }
+}
+
+Var 0051, name IASpmdg, Link FSUIPC_IN, Offset $6220, Length 2
+{
+  CALL &IASaff
+}
+
+Var 0052, name hdgpmdg, Link FSUIPC_IN, Offset $622C, Length 2
+{
+  CALL &HDGaff
+}
+
+Var 0053, name ALTpmdg, Link FSUIPC_IN, Offset $622E, Length 2
+{
+  CALL &ALTaff
+}
+
+Var 0054, name VSpmdg, Link FSUIPC_IN, Offset $6230, Length 2
+{
+  CALL &VSaff
+}
+
+Var 0055, name CRS2pmdg, Link FSUIPC_IN, Offset $0C4E, Length 2
+{
+  IF &CRS2pmdg = 360
+  {
+    &CRSRdisplay = 0    
+  }
+  ELSE
+  {
+    &CRSRdisplay = &CRS2pmdg    
+  }
+}
+
+Var 0060, name FDswitch, Link IOCARD_SW, Input 16
+{
+  IF &FDswitch = 1
+  {
+    IF &FDLEFTled = 0
+    {
+      &keys = 56    
+      &keys = 0    
+    }
+  }
+  ELSE
+  {
+    IF &FDswitch = 0
+    {
+      IF &FDLEFTled = 1
+      {
+        &keys = 56    
+        &keys = 0    
+      }
+    }
+  }
+}
+
+Var 0061, name ATswitch, Link IOCARD_SW, Input 33
+{
+  IF &ATswitch = 1
+  {
+    IF &ATled = 0
+    {
+      &keys = 44    
+      &keys = 0    
+    }
+  }
+  ELSE
+  {
+    IF &ATswitch = 0
+    {
+      IF &ATled = 1
+      {
+        &keys = 44    
+        &keys = 0    
+      }
+    }
+  }
+}
+
+Var 0062, name N1bp, Link IOCARD_SW, Input 32
+{
+  IF &N1bp = 1
+  {
+    &keys = 61    
+    &keys = 0    
+  }
+}
+
+Var 0063, name SPEEDbp, Link IOCARD_SW, Input 31
+{
+  IF &SPEEDbp = 1
+  {
+    &keys = 51    
+    &keys = 0    
+  }
+}
+
+Var 0064, name VNAVbp, Link IOCARD_SW, Input 30
+{
+  IF &VNAVbp = 1
+  {
+    &keys = 57    
+    &keys = 0    
+  }
+}
+
+Var 0065, name LVLCHGbp, Link IOCARD_SW, Input 29
+{
+  IF &LVLCHGbp = 1
+  {
+    &keys = 59    
+    &keys = 0    
+  }
+}
+
+Var 0066, name HDGbp, Link IOCARD_SW, Input 28
+{
+  IF &HDGbp = 1
+  {
+    &keys = 62    
+    &keys = 0    
+  }
+}
+
+Var 0067, name LNAVbp, Link IOCARD_SW, Input 27
+{
+  IF &LNAVbp = 1
+  {
+    &keys = 69    
+    &keys = 0    
+  }
+}
+
+Var 0068, name VORLOCbp, Link IOCARD_SW, Input 25
+{
+  IF &VORLOCbp = 1
+  {
+    &keys = 70    
+    &keys = 0    
+  }
+}
+
+Var 0069, name APPbp, Link IOCARD_SW, Input 24
+{
+  IF &APPbp = 1
+  {
+    &keys = 63    
+    &keys = 0    
+  }
+}
+
+Var 0070, name ALTHOLDbp, Link IOCARD_SW, Input 23
+{
+  IF &ALTHOLDbp = 1
+  {
+    &keys = 64    
+    &keys = 0    
+  }
+}
+
+Var 0071, name VSbp, Link IOCARD_SW, Input 22
+{
+  IF &VSbp = 1
+  {
+    &keys = 58    
+    &keys = 0    
+  }
+}
+
+Var 0072, name CMDAbp, Link IOCARD_SW, Input 21
+{
+  IF &CMDAbp = 1
+  {
+    &keys = 66    
+    &keys = 0    
+  }
+}
+
+Var 0073, name CMDBbp, Link IOCARD_SW, Input 19
+{
+  IF &CMDBbp = 1
+  {
+    &keys = 67    
+    &keys = 0    
+  }
+}
+
+Var 0074, name CWSAbp, Link IOCARD_SW, Input 20
+{
+  IF &CWSAbp = 1
+  {
+    &keys = 65    
+    &keys = 0    
+  }
+}
+
+Var 0075, name CWSBbp, Link IOCARD_SW, Input 18
+{
+  IF &CWSBbp = 1
+  {
+    &keys = 68    
+    &keys = 0    
+  }
+}
+
+Var 0076, name APDISCObp, Link IOCARD_SW, Input 15
+{
+  IF &APDISCObp = 1
+  {
+    &keys = 26    
+    &keys = 0    
+  }
+  ELSE
+  {
+    &keys = 26    
+    &keys = 0    
+  }
+}
+
+Var 0077, name CObp, Link IOCARD_SW, Input 13
+{
+  IF &CObp = 1
+  {
+    &keys = 60    
+    &keys = 0    
+  }
+}
+
+Var 0078, name FDRswitch, Link IOCARD_SW, Input 14
+{
+  IF &FDRswitch = 1
+  {
+    &keys = 73    
+    &keys = 0    
+  }
+  ELSE
+  {
+    &keys = 73    
+    &keys = 0    
+  }
+}
+
+Var 0080, name CRSLEFTrot, Link IOCARD_ENCODER, Input 4, Aceleration 1, Type 2
+{
+  IF &CRSLEFTrot = 1
+  {
+    &keys = 45    
+    &keys = 0    
+  }
+  ELSE
+  {
+    &keys = 46    
+    &keys = 0    
+  }
+}
+
+Var 0081, name IASrot, Link IOCARD_ENCODER, Input 0, Aceleration 1, Type 2
+{
+  IF &IASrot = 1
+  {
+    &keys = 49    
+    &keys = 0    
+  }
+  ELSE
+  {
+    &keys = 50    
+    &keys = 0    
+  }
+}
+
+Var 0082, name HDGrot, Link IOCARD_ENCODER, Input 6, Aceleration 1, Type 2
+{
+  IF &HDGrot = 1
+  {
+    &keys = 47    
+    &keys = 0    
+  }
+  ELSE
+  {
+    &keys = 48    
+    &keys = 0    
+  }
+  IF &HDGled = 0
+  {
+    L0 = &HDGrot * -1
+    &MEMHDG = ROTATE 0 ,359 ,L0
+  }
+  CALL &HDGaff
+}
+
+Var 0083, name ALTrot, Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2
+{
+  IF &ALTrot = 1
+  {
+    &keys = 53    
+    &keys = 0    
+  }
+  ELSE
+  {
+    &keys = 52    
+    &keys = 0    
+  }
+  IF &VNAVled = 1
+  {
+    L0 = &ALTrot * -100
+    &MEMALT = LIMIT 0 ,50000 ,L0
+    CALL &ALTaff
+  }
+}
+
+Var 0084, name VSrot, Link IOCARD_ENCODER, Input 11, Aceleration 1, Type 2
+{
+  IF &VSrot = 1
+  {
+    &keys = 54    
+    &keys = 0    
+  }
+  ELSE
+  {
+    &keys = 55    
+    &keys = 0    
+  }
+}
+
+Var 0085, name CRSRIGHTrot, Link IOCARD_ENCODER, Input 9, Aceleration 1, Type 2
+{
+  IF &CRSRIGHTrot = 1
+  {
+    &keys = 45    
+    &keys = 0    
+  }
+  ELSE
+  {
+    &keys = 46    
+    &keys = 0    
+  }
+}
+
+Var 9999, name VSaff, Link SUBRUTINE
+{
+  IF &VSled = 1
+  {
+    IF &VSpmdg < 60000
+    {
+      &VSdisplay = &VSpmdg    
+      &VSminus = 0    
+    }
+    ELSE
+    {
+      L0 = &VSpmdg - 65536
+      &VSdisplay = L0    
+      &VSminus = 1    
+    }
+  }
+  ELSE
+  {
+    &VSdisplay = -999999    
+    &VSminus = 0    
+  }
+}
+
+Var 9998, name IASaff, Link SUBRUTINE
+{
+  C0 = &SPDINTV = 21
+  C0 = C0 AND &VNAVled
+  IF C0    
+  {
+    &IASdisplay = -999999    
+  }
+  ELSE
+  {
+    IF &COstatus < 4
+    {
+      &IASdisplay = &IASpmdg    
+      &IASpoint = 0    
+    }
+    ELSE
+    {
+      L0 = &IASpmdg / &IAS
+      L0 = L0 * 12800
+      L0 = L0 * &MACH
+      &IASdisplay = L0 / 20480
+      &IASpoint = 1    
+    }
+  }
+}
+
+Var 9997, name HDGaff, Link SUBRUTINE
+{
+  IF &LNAVled = 0
+  {
+    IF &hdgpmdg = 360
+    {
+      &MEMHDG = 0    
+    }
+    ELSE
+    {
+      &MEMHDG = &hdgpmdg    
+    }
+  }
+  &HDGdisplay = &MEMHDG    
+}
+
+Var 9996, name ALTaff, Link SUBRUTINE
+{
+  IF &VNAVled = 0
+  {
+    &MEMALT = &ALTpmdg    
+  }
+  &ALTdisplay = &MEMALT    
+}
