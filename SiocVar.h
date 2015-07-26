@@ -300,6 +300,8 @@ void ReadSioc(const char * fileName)
 }
 void PrintVars()
 {
+	printf ("Dump  Variable List\n");  
+
   for (int var=0;var<MAXVAR;var++)
   {
     if (Var[var].IOType != UNDEF)

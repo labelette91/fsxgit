@@ -202,6 +202,7 @@ void ReadFromFile(const char * fileName)
 void Print()
 {
 	int last = 0 ;
+	printf ("Dump  FsuipcOffset\n");  
 	for (int var=0;var<MAXOFFSET;var++)
 	{
 		if ( (FsuipcOffset[var].Offset !=0)&& (FsuipcOffset[var].Offset !=last) )
@@ -337,6 +338,8 @@ void ReadFromFile(const char * fileName)
 		printf("Error opening input file %s \n",fileName);
 		return ;
 	}
+	printf ("Dump  Control Event List\n");  
+
 	while (std::getline(myfile, line))
 	{
       T_StringList * args = Split ( (char*)line.c_str() , (char*)";," , (char*)"" , true );

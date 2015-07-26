@@ -87,7 +87,6 @@
     <ClCompile Include="tcp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\pmdg.h" />
     <ClInclude Include="as2.h" />
     <ClInclude Include="ClientTcp.h" />
     <ClInclude Include="console.h" />

@@ -47,9 +47,6 @@
     <ClInclude Include="as2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PMDG_SDK_ConnectionTest\PMDG_SDK_ConnectionTest\pmdg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FsuipcOffset.h">
       <Filter>Header Files</Filter>
     </ClInclude>

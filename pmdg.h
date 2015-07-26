@@ -109,7 +109,7 @@ void CALLBACK MyDispatchProc(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 		}
 
 	default:
-		printf("\nReceived:%d",pData->dwID);
+		printf("Received:%d\n",pData->dwID);
 		break;
 	}
 }

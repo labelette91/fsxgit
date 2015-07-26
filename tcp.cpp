@@ -218,7 +218,7 @@ void RefreshOutput (int Variable , double value )
   if (GetVarIoType(Variable) == IOCARD_OUT)
   {
     int OutputNumber = GetVarOutput(Variable);
-	  Console->debugPrintf (  TRACE_SIOC_RECV , "Dig:%d \n", OutputNumber );
+	  Console->debugPrintf (  TRACE_SIOC_RECV , "REFR : Out:%d \n", OutputNumber );
 
     SendOutputCmd ( IOCARD_OUT_CMD , OutputNumber ,  Value ) ;
 
@@ -228,7 +228,7 @@ void RefreshOutput (int Variable , double value )
   {
     int Digit = GetVarDigit(Variable);
     int Number= GetVarNumbers(Variable);
-		Console->debugPrintf (  TRACE_SIOC_RECV , "Dig:%d Nb:%d\n", Digit ,Number );
+		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d\n", Digit ,Number );
 
     for (int i=0;i<Number;i++)
     {
