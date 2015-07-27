@@ -33,17 +33,18 @@ using namespace std;
 
 #endif
 
-#define TRACE_RS232_SEND     (1l<<1)
-#define TRACE_RS232_RECV     (1l<<2)
+#define TRACE_RS232_SEND     (1l<<0)
+#define TRACE_RS232_RECV     (1l<<1)
 
-#define TRACE_SIOC_SEND      (1l<<3)
-#define TRACE_SIOC_RECV      (1l<<4)
+#define TRACE_SIOC_SEND      (1l<<2)
+#define TRACE_SIOC_RECV      (1l<<3)
 
-#define TRACE_FSX_SEND      (1l<<3)
+#define TRACE_FSX_SEND      (1l<<2)
+#define TRACE_FSX_RECV      (1l<<3)
 
-#define TRACE_SIOC      (1l<<5)
-#define TRACE_EVENT     (1l<<6)
-#define TRACE_OFFSET    (1l<<7)
+#define TRACE_SIOC      (1l<<4)
+#define TRACE_EVENT     (1l<<5)
+#define TRACE_OFFSET    (1l<<6)
 
 #define TRACE_RS232_RECV_PRESENCE     (1l<<8)
 
@@ -106,7 +107,11 @@ bool		SendToFsx ( int Var , byte SwValue )
 
       if (value>max) value = min  ;
       if (value<min) value = max  ;
+	    Fsuipc.SetValue(offset , value) ;
+
+			value = Event.Get(event)->a * value + Event.Get(event)->b;
       SendControl( event , (int)value );
+
 	    Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d %-20s Val:%d Var:%d\n",event,Event.GetEventName(event).c_str(), (int)value , Var );
     }
     else
@@ -210,9 +215,22 @@ DWORD WINAPI ThreadAs2(LPVOID lpArg)
   return 0;
 }
 
+void SendDigitCmd (byte digitNb , byte digitValue )
+{
+	if (Digits[digitNb]!=digitValue)
+	{
+		SendOutputCmd ( IOCARD_DISPLAY_CMD , digitNb ,  digitValue ) ;
+		Digits[digitNb]=digitValue ;
+	}
+}
+
+
 void RefreshOutput (int Variable , double value )
 {
 	int Value = (int)value;
+  int digitValue;
+	int digitNb;
+
   if (GetVarIoType(Variable) == IOCARD_OUT)
   {
     int OutputNumber = GetVarOutput(Variable);
@@ -226,19 +244,53 @@ void RefreshOutput (int Variable , double value )
   {
     int Digit = GetVarDigit(Variable);
     int Number= GetVarNumbers(Variable);
+    double max = GetVariable(Variable)->Max ;
+    double min = GetVariable(Variable)->Min ;
+		if (max==0)	max = 100000000000000000;
+		if (min==0)	min = -100000000000000000;
+		
 		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d\n", Digit ,Number );
+		bool displaySigne = false;
+		if (Number<0)
+		{
+			displaySigne=true;
+			Number=-Number;
+		}
 
-    for (int i=0;i<Number;i++)
-    {
-      int digitValue = Value % 10 ;
-      Value /=10;
-			int digitNb =  Digit+i ;
-			if (Digits[digitNb]!=digitValue)
+		if (value<min || value>max)
+		{
+			//blank for invalid value
+			for (int i=0;i<Number;i++)
 			{
-				SendOutputCmd ( IOCARD_DISPLAY_CMD , digitNb ,  digitValue ) ;
-				Digits[digitNb]=digitValue ;
+				SendDigitCmd (  Digit+i ,  0xf ) ;
 			}
-    }
+		}
+		else
+		{
+			if (displaySigne)
+			{
+				if (Value<0)
+				{
+					Value=-Value;
+					//display signe -
+					digitValue=0xA;
+				}
+				else
+					//display black
+					digitValue=0xF;
+				Number--;
+				digitNb = Digit+Number;
+				SendDigitCmd (  digitNb ,  digitValue ) ;
+			}
+			for (int i=0;i<Number;i++)
+			{
+				digitValue = Value % 10 ;
+				Value /=10;
+				digitNb =  Digit+i ;
+				SendDigitCmd (  digitNb ,  digitValue ) ;
+			}
+		}
+		
   }
 
 }

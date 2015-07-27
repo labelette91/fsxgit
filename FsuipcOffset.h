@@ -262,7 +262,7 @@ void WatchDetectChanged (PMDG_NGX_Data *pS  )
 			    if (psByte[offset+n]!=pNgxByte[offset+n])
 			    {
             double Value = GetValue(offset,psByte);
-				    //printf("dif:%4d = %3d Name:%-20s, Value:%f\n",offset,psByte[offset],GetName(offset),Value );
+				     Console->debugPrintf(TRACE_FSX_RECV,"FSX :RECV Offs:%5d Name:%-20s, Value:%f\n",offset,GetName(offset),Value );
 				    SetValue(offset , Value) ;
 						int variable = FsuipcOffset[offset].Variable ;
 						if (variable)
@@ -313,6 +313,9 @@ typedef struct
 {
   std::string Name;
 	int Offset ;
+	double a ;    //parameter value = ax + b
+	double b ;
+
 
 } TControl ;
 
@@ -347,8 +350,10 @@ void ReadFromFile(const char * fileName)
 
 	while (std::getline(myfile, line))
 	{
-      T_StringList * args = Split ( (char*)line.c_str() , (char*)";," , (char*)"" , true );
+      T_StringList * args = Split ( (char*)line.c_str() , (char*)";" , (char*)"" , false );
 			if (args->Count() < 2)
+				continue;
+			if ((*args)[0].size()==0 )
 				continue;
       if ((*args)[0][0]=='/' )
 				continue;
@@ -362,6 +367,11 @@ void ReadFromFile(const char * fileName)
 
       Control[i].Offset =ofs;
       Control[i].Name =  Name  ;
+      if (args->Count() >=4)
+				Control[i].a    =    strToDouble((*args)[3].c_str(),10) ;
+      if (args->Count() >=5)
+      Control[i].b    =    strToDouble((*args)[4].c_str(),10) ;;
+
       Map_Control[Name]=ofs;
       }
       else
@@ -400,6 +410,11 @@ std::string  GetEventName(int eventNum )
     return Control[eventNum-THIRD_PARTY_EVENT_ID_MIN].Name ;
   else 
     return "";
+}
+
+TControl*  Get(int eventNum )
+{
+    return &Control[eventNum-THIRD_PARTY_EVENT_ID_MIN] ;
 }
 
 };

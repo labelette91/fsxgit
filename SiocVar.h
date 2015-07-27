@@ -134,7 +134,9 @@ void ReadSioc(const char * fileName)
 		return ;
 	}
 	while (std::getline(myfile, line))
-	{
+	{ 
+		if ( line.c_str()[0]=='*')
+			continue;
 		if (    (strstr(line.c_str(),"IOCARD")!=0)
 			   || (strstr(line.c_str(),"FSUIPC")!=0))
 		{
