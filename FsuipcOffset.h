@@ -11,7 +11,8 @@
 
 #include "PMDG_NGX_SDK.h"
 
-#define FIRST_OFFSET 0x6420
+//#define FIRST_OFFSET 0x6420
+#define FIRST_OFFSET 0
 
 // definition of a map between event name and number 
 typedef map< std::string ,int > T_Map_Int_String ;
@@ -160,7 +161,7 @@ void ReadFromFile(const char * fileName)
       T_StringList * args = Split ( (char*)line.c_str() , (char*)";," , (char*)"" , true );
 			if (args->Count() < 4)
 				continue;
-			int ofs = strToUInt((*args)[0].c_str(),16) /*- FIRST_OFFSET */;
+			int ofs = strToUInt((*args)[0].c_str(),10) /*- FIRST_OFFSET */;
 			int len = strToUInt((*args)[1].c_str(),10) ;
 			int ftype = -1 ; 
       std::string T = (*args)[2]  ;

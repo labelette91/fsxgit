@@ -101,10 +101,8 @@ bool		SendToFsx ( int Var , byte SwValue )
     double value = Fsuipc.GetValue(offset);
     if ((event!=0) &&(offset!=0))
     {
-			 if (SwValue==1) 
-				 value = value + SwValue * inc ;
-			 else
-				 value = value - SwValue * inc ;
+       char SwV = (char)SwValue;
+			value = value + SwV * inc ;
 
       if (value>max) value = min  ;
       if (value<min) value = max  ;
@@ -345,7 +343,7 @@ int main(int argc, char **argv)
 	memset(Digits,-1,sizeof(Digits));
 	Console->printf("ComPort:%d  SiocFileName:%s ServerIp:%s  ServerPort:%d Trace:%X\n",numas2,SiocFilename.c_str(),ServerIp.c_str(),ServerPort, Console->EnableDebugOutput );
 
-	Fsuipc.ReadFromFile("FsuipcOffset1.csv");
+	Fsuipc.ReadFromFile("FsuipcOffset2.csv");
   if (Console->isDebugEnable(TRACE_OFFSET))
   		Fsuipc.Print();
 	Event.ReadFromFile("event.csv");
