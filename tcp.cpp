@@ -234,7 +234,7 @@ void RefreshOutput (int Variable , double value )
   if (GetVarIoType(Variable) == IOCARD_OUT)
   {
     int OutputNumber = GetVarOutput(Variable);
-	  Console->debugPrintf (  TRACE_SIOC_RECV , "REFR : Out:%d \n", OutputNumber );
+	  Console->debugPrintf (  TRACE_SIOC_RECV , "REFR : Out:%d Value:%d\n", OutputNumber , (int)value);
 
     SendOutputCmd ( IOCARD_OUT_CMD , OutputNumber ,  Value ) ;
 

@@ -38,7 +38,7 @@ char * IoTypeStr[] ={
  "OUT     ", 
  "DISPLAY ", 
  "ENCODER ",
- "FSUIPC  "
+ "FSUIPC  ",
  "SELECTOR"
 
 };
@@ -336,7 +336,7 @@ Event.GetEventName(Var[var].Event).c_str()
   for (int var=0;var<MAXINPUT;var++)
   {
     if (InputVar[var] !=0)
-    Console->debugPrintf (  TRACE_SIOC ,  "Input:%3d Var:%4d IO:%s \n",var,InputVar[var], GetIOTypeStr(Var[InputVar[var]].IOType) );
+    Console->debugPrintf (  TRACE_SIOC ,  "Input:%3d Var:%4d IO:%s Name:%-14s\n",var,InputVar[var], GetIOTypeStr(Var[InputVar[var]].IOType), Var[InputVar[var]].name.c_str()  );
   }
 
 
