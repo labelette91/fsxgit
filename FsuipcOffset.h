@@ -66,6 +66,10 @@ typedef struct
 	int Len ;			//len Type
   double Value ;
   int Variable ;
+  double Max;
+  double Min;
+  double Inc;
+
 } TFsuipcOffset  ;
 
 #define MAXOFFSET 65535 
@@ -99,6 +103,19 @@ int GetOffset(int var)
 int GetLen(int var)
 {
 	return (FsuipcOffset[var].Len  ) ;
+}
+
+double GetMax(int offset)
+{
+  return FsuipcOffset[offset].Max ;
+}
+double GetMin(int offset)
+{
+  return FsuipcOffset[offset].Min ;
+}
+double GetInc(int offset)
+{
+  return FsuipcOffset[offset].Inc ;
 }
 
 double GetValue(int offset, char * Buffer)
@@ -156,9 +173,11 @@ void ReadFromFile(const char * fileName)
 		printf("Error opening input file %s \n",fileName);
 		return ;
 	}
+  //read header
+  std::getline(myfile, line);
 	while (std::getline(myfile, line))
 	{
-      T_StringList * args = Split ( (char*)line.c_str() , (char*)";," , (char*)"" , true );
+      T_StringList * args = Split ( (char*)line.c_str() , (char*)";" , (char*)"" , false );
 			if (args->Count() < 4)
 				continue;
 			int ofs = strToUInt((*args)[0].c_str(),10) /*- FIRST_OFFSET */;
@@ -166,6 +185,19 @@ void ReadFromFile(const char * fileName)
 			int ftype = -1 ; 
       std::string T = (*args)[2]  ;
       
+      double max=10000000;
+      double min=0 ;
+      double inc=1 ;
+
+      if (args->Count() >= 6)
+        max= strToDouble((*args)[5].c_str(),10 );
+      if (args->Count() >= 7)
+        min= strToDouble((*args)[6].c_str(),10 );
+      if (args->Count() >= 8)
+        inc= strToDouble((*args)[7].c_str(),10 );
+      if (max==0) max = 10000000 ;
+      if (inc==0) inc=1;
+
       ftype = GetFieldType(T);
       
     	if (ftype==0)
@@ -193,8 +225,13 @@ void ReadFromFile(const char * fileName)
   				FsuipcOffset[ofs+i].Name =  Name  ;
   				FsuipcOffset[ofs+i].Type =  ftype;
 
+          FsuipcOffset[ofs+i].Max=max;
+          FsuipcOffset[ofs+i].Min=min;
+          FsuipcOffset[ofs+i].Inc=inc;
+
   			}
         Map_Offset[Name] = ofs;
+
         ofs+=fsize;
       }
 			delete args ;

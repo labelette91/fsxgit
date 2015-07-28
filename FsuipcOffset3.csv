@@ -1,0 +1,352 @@
+Offset PMDG Data;Len;Type;Name;Offset FSUIPC;Max;Min;Increment;Commentaire
+0;1;BYTE;IRS_DisplaySelector;6420;;;;Positions 0..4
+1;1;BYTE;IRS_SysDisplay_R;6421;;;;Boolean: false: L true: R
+2;1;BYTE;IRS_annunGPS;6422;;;;Boolean
+3;2;BYTE;IRS_annunALIGN[2];6423;;;;Booleans
+5;2;BYTE;IRS_annunON_DC[2];6425;;;;Booleans
+7;2;BYTE;IRS_annunFAULT[2];6427;;;;Booleans
+9;2;BYTE;IRS_annunDC_FAIL[2];6429;;;;Booleans
+11;2;BYTE;IRS_ModeSelector[2];642B;;;;0: OFF 1: ALIGN 2: NAV 3: ATT
+13;1;BYTE;WARN_annunPSEU;642D;;;;Boolean
+14;1;BYTE;COMM_ServiceInterphoneSw;642E;;;;Boolean
+15;1;BYTE;LTS_DomeWhiteSw;642F;;;;0: DIM 1: OFF 2: BRIGHT
+16;2;BYTE;ENG_EECSwitch[2];6430;;;;Boolean
+18;2;BYTE;ENG_annunREVERSER[2];6432;;;;Boolean
+20;2;BYTE;ENG_annunENGINE_CONTROL[2];6434;;;;Boolean
+22;2;BYTE;ENG_annunALTN[2];6436;;;;Boolean
+24;1;BYTE;OXY_Needle;6438;;;;Position 0...240
+25;1;BYTE;OXY_SwNormal;6439;;;;Boolean
+26;1;BYTE;OXY_annunPASS_OXY_ON;643A;;;;Boolean true: NORMAL false: ON
+27;1;BYTE;GEAR_annunOvhdLEFT;643B;;;;Boolean
+28;1;BYTE;GEAR_annunOvhdNOSE;643C;;;;Boolean
+29;1;BYTE;GEAR_annunOvhdRIGHT;643D;;;;Boolean
+30;1;BYTE;FLTREC_SwNormal;643E;;;;Boolean true: NORMAL false: TEST
+31;1;BYTE;FLTREC_annunOFF;643F;;;;Boolean
+32;2;BYTE;FCTL_FltControl_Sw[2];6440;;;;0: STBY/RUD 1: OFF 2: ON
+34;2;BYTE;FCTL_Spoiler_Sw[2];6442;;;;Boolean true: ON false: OFF
+36;1;BYTE;FCTL_YawDamper_Sw;6444;;;;Boolean
+37;1;BYTE;FCTL_AltnFlaps_Sw_ARM;6445;;;;Boolean true: ARM false: OFF
+38;1;BYTE;FCTL_AltnFlaps_Control_Sw;6446;;;;0: UP 1: OFF 2: DOWN
+39;2;BYTE;FCTL_annunFC_LOW_PRESSURE[2];6447;;;;Boolean
+41;1;BYTE;FCTL_annunYAW_DAMPER;6449;;;;Boolean
+42;1;BYTE;FCTL_annunLOW_QUANTITY;644A;;;;Boolean
+43;1;BYTE;FCTL_annunLOW_PRESSURE;644B;;;;Boolean
+44;1;BYTE;FCTL_annunLOW_STBY_RUD_ON;644C;;;; Boolean
+45;1;BYTE;FCTL_annunFEEL_DIFF_PRESS;644D;;;;Boolean
+46;1;BYTE;FCTL_annunSPEED_TRIM_FAIL;644E;;;;Boolean
+47;1;BYTE;FCTL_annunMACH_TRIM_FAIL;644F;;;;Boolean
+48;1;BYTE;FCTL_annunAUTO_SLAT_FAIL;6450;;;;Boolean
+49;1;BYTE;NAVDIS_VHFNavSelector;6451;;;;0: BOTH ON 1 1: NORMAL 2: BOTH ON 2
+50;1;BYTE;NAVDIS_IRSSelector;6452;;;;0: BOTH ON L 1: NORMAL 2: BOTH ON R
+51;1;BYTE;NAVDIS_FMCSelector;6453;;;;0: BOTH ON L 1: NORMAL 2: BOTH ON R
+52;1;BYTE;NAVDIS_SourceSelector;6454;;;;0: ALL ON 1 1: AUTO 2: ALL ON 2
+53;1;BYTE;NAVDIS_ControlPaneSelector;6455;;;;0: BOTH ON 1 1: NORMAL 2: BOTH ON 2
+56;4;FLT32;FUEL_FuelTempNeedle;6458;;;;
+60;1;BYTE;FUEL_CrossFeedSw;645C;;;;
+61;2;BYTE;FUEL_PumpFwdSw[2];645D;;;;Boolean
+63;2;BYTE;FUEL_PumpAftSw[2];645F;;;;Boolean left aft / right aft
+65;2;BYTE;FUEL_PumpCtrSw[2];6461;;;;Boolean ctr left / ctr right
+67;2;BYTE;FUEL_annunENG_VALVE_CLOSED[2];6463;;;;Boolean
+69;2;BYTE;FUEL_annunSPAR_VALVE_CLOSED[2];6465;;;;Boolean
+71;2;BYTE;FUEL_annunFILTER_BYPASS[2];6467;;;;Boolean
+73;1;BYTE;FUEL_annunXFEED_VALVE_OPEN;6469;;;;Boolean
+74;2;BYTE;FUEL_annunLOWPRESS_Fwd[2];646A;;;;Boolean
+76;2;BYTE;FUEL_annunLOWPRESS_Aft[2];646C;;;;Boolean
+78;2;BYTE;FUEL_annunLOWPRESS_Ctr[2];646E;;;;Boolean
+80;1;BYTE;ELEC_annunBAT_DISCHARGE;6470;;;;Boolean
+81;1;BYTE;ELEC_annunTR_UNIT;6471;;;;Boolean
+82;1;BYTE;ELEC_annunELEC;6472;;;;Boolean
+83;1;BYTE;ELEC_DCMeterSelector;6473;;;;0: STBY PWR 1: BAT BUS ... 7: TEST
+84;1;BYTE;ELEC_ACMeterSelector;6474;;;;0: STBY PWR 1: GND PWR ... 6: TEST
+85;1;BYTE;ELEC_BatSelector;6475;;;;0: OFF 1: BAT 2: ON
+86;1;BYTE;ELEC_CabUtilSw;6476;;;;Boolean
+87;1;BYTE;ELEC_IFEPassSeatSw;6477;;;;Boolean
+88;2;BYTE;ELEC_annunDRIVE[2];6478;;;;Boolean
+90;1;BYTE;ELEC_annunSTANDBY_POWER_OFF;647A;;;;Boolean
+91;2;BYTE;ELEC_IDGDisconnectSw[2];647B;;;;Boolean
+93;1;BYTE;ELEC_StandbyPowerSelector;647D;;;;0: BAT 1: OFF 2: AUTO
+94;1;BYTE;ELEC_annunGRD_POWER_AVAILABLE;647E;;;;Boolean
+95;1;BYTE;ELEC_GrdPwrSw;647F;;;;Boolean
+96;1;BYTE;ELEC_BusTransSw_AUTO;6480;;;;Boolean
+97;2;BYTE;ELEC_GenSw[2];6481;;;;Boolean
+99;2;BYTE;ELEC_APUGenSw[2];6483;;;;Boolean
+101;2;BYTE;ELEC_annunTRANSFER_BUS_OFF[2];6485;;;;Boolean
+103;2;BYTE;ELEC_annunSOURCE_OFF[2];6487;;;;Boolean
+105;2;BYTE;ELEC_annunGEN_BUS_OFF[2];6489;;;;Boolean
+107;1;BYTE;ELEC_annunAPU_GEN_OFF_BUS;648B;;;;Boolean
+108;4;FLT32;APU_EGTNeedle;648C;;;;
+112;1;BYTE;APU_annunMAINT;6490;;;;Boolean
+113;1;BYTE;APU_annunLOW_OIL_PRESSURE;6491;;;;Boolean
+114;1;BYTE;APU_annunFAULT;6492;;;;Boolean
+115;1;BYTE;APU_annunOVERSPEED;6493;;;;Boolean
+116;1;BYTE;OH_WiperLSelector;6494;;;;0: PARK 1: INT 2: LOW 3:HIGH
+117;1;BYTE;OH_WiperRSelector;6495;;;;0: PARK 1: INT 2: LOW 3:HIGH
+118;1;BYTE;LTS_CircuitBreakerKnob;6496;;;;Position 0...150
+119;1;BYTE;LTS_OvereadPanelKnob;6497;;;;Position 0...150
+120;1;BYTE;AIR_EquipCoolingSupplyNORM;6498;;;;Boolean
+121;1;BYTE;AIR_EquipCoolingExhaustNORM;6499;;;;Boolean
+122;1;BYTE;AIR_annunEquipCoolingSupplyOFF;649A;;;;Boolean
+123;1;BYTE;AIR_annunEquipCoolingExhaustOFF;649B;;;;Boolean
+124;1;BYTE;LTS_annunEmerNOT_ARMED;649C;;;;Boolean
+125;1;BYTE;LTS_EmerExitSelector;649D;;;;0: OFF 1: ARMED 2: ON
+126;1;BYTE;COMM_NoSmokingSelector;649E;;;;0: OFF 1: AUTO 2: ON
+127;1;BYTE;COMM_FastenBeltsSelector;649F;;;;0: OFF 1: AUTO 2: ON
+128;1;BYTE;COMM_annunCALL;64A0;;;;Boolean
+129;1;BYTE;COMM_annunPA_IN_USE;64A1;;;;Boolean
+130;4;BYTE;ICE_annunOVERHEAT[4];64A2;;;;Boolean
+134;4;BYTE;ICE_annunON[4];64A6;;;;Boolean
+138;4;BYTE;ICE_WindowHeatSw[4];64AA;;;;Boolean
+142;1;BYTE;ICE_annunCAPT_PITOT;64AE;;;;Boolean
+143;1;BYTE;ICE_annunL_ELEV_PITOT;64AF;;;;Boolean
+144;1;BYTE;ICE_annunL_ALPHA_VANE;64B0;;;;Boolean
+145;1;BYTE;ICE_annunL_TEMP_PROBE;64B1;;;;Boolean
+146;1;BYTE;ICE_annunFO_PITOT;64B2;;;;Boolean
+147;1;BYTE;ICE_annunR_ELEV_PITOT;64B3;;;;Boolean
+148;1;BYTE;ICE_annunR_ALPHA_VANE;64B4;;;;Boolean
+149;1;BYTE;ICE_annunAUX_PITOT;64B5;;;;Boolean
+150;2;BYTE;ICE_TestProbeHeatSw[2];64B6;;;;Boolean
+152;2;BYTE;ICE_annunVALVE_OPEN[2];64B8;;;;Boolean
+154;2;BYTE;ICE_annunCOWL_ANTI_ICE[2];64BA;;;;Boolean
+156;2;BYTE;ICE_annunCOWL_VALVE_OPEN[2];64BC;;;;Boolean
+158;1;BYTE;ICE_WingAntiIceSw;64BE;;;;Boolean
+159;2;BYTE;ICE_EngAntiIceSw[2];64BF;;;;Boolean
+161;2;BYTE;HYD_annunLOW_PRESS_eng[2];64C1;;;;Boolean
+163;2;BYTE;HYD_annunLOW_PRESS_elec[2];64C3;;;;Boolean
+165;2;BYTE;HYD_annunOVERHEAT_elec[2];64C5;;;;Boolean
+167;2;BYTE;HYD_PumpSw_eng[2];64C7;;;;Boolean
+169;2;BYTE;HYD_PumpSw_elec[2];64C9;;;;Boolean
+171;1;BYTE;AIR_TempSourceSelector;64CB;;;;Positions 0..6
+172;1;BYTE;AIR_TrimAirSwitch;64CC;;;;Boolean
+173;3;BYTE;AIR_annunZoneTemp[3];64CD;;;;Boolean
+176;1;BYTE;AIR_annunDualBleed;64D0;;;;Boolean
+177;1;BYTE;AIR_annunRamDoorL;64D1;;;;Boolean
+178;1;BYTE;AIR_annunRamDoorR;64D2;;;;Boolean
+179;2;BYTE;AIR_RecircFanSwitch[2];64D3;;;;Boolean
+181;2;BYTE;AIR_PackSwitch[2];64D5;;;;0=OFF 1=AUTO 2=HIGH
+183;2;BYTE;AIR_BleedAirSwitch[2];64D7;;;;Boolean
+185;1;BYTE;AIR_APUBleedAirSwitch;64D9;;;;Boolean
+186;1;BYTE;AIR_IsolationValveSwitch;64DA;;;;Boolean
+187;2;BYTE;AIR_annunPackTripOff[2];64DB;;;;Boolean
+189;2;BYTE;AIR_annunWingBodyOverheat[2];64DD;;;;Boolean
+191;2;BYTE;AIR_annunBleedTripOff[2];64DF;;;;Boolean
+196;4;DWORD;AIR_FltAltWindow;64E4;;;;
+200;4;DWORD;AIR_LandAltWindow;64E8;;;;
+204;4;DWORD;AIR_OutflowValveSwitch;64EC;;;;0=CLOSE 1=NEUTRAL 2=OPEN
+208;4;DWORD;AIR_PressurizationModeSelector;64F0;;;;0=AUTO 1=ALTN 2=MAN BOTTOM OVERHEAD
+212;2;BYTE;LTS_LandingLtRetractableSw[2];64F4;;;;0: RETRACT 1: EXTEND 2: ON
+214;2;BYTE;LTS_LandingLtFixedSw[2];64F6;;;;Boolean
+216;2;BYTE;LTS_RunwayTurnoffSw[2];64F8;;;;Boolean
+218;1;BYTE;LTS_TaxiSw;64FA;;;;Boolean
+219;1;BYTE;APU_Selector;64FB;;;;0: OFF 1: ON 2: START
+220;2;BYTE;ENG_StartSelector[2];64FC;;;;0: GRD 1: OFF 2: CONT 3: FLT
+222;1;BYTE;ENG_IgnitionSelector;64FE;;;;0: IGN L 1: BOTH 2: IGN R
+223;1;BYTE;LTS_LogoSw;64FF;;;;Boolean
+224;1;BYTE;LTS_PositionSw;6500;;;;0: STEADY 1: OFF 2: STROBE & STEADY
+225;1;BYTE;LTS_AntiCollisionSw;6501;;;;Boolean
+226;1;BYTE;LTS_WingSw;6502;;;;Boolean
+227;1;BYTE;LTS_WheelWellSw;6503;;;;Boolean
+228;2;BYTE;WARN_annunFIRE_WARN[2];6504;;;;Boolean
+230;2;BYTE;WARN_annunMASTER_CAUTION[2];6506;;;;Boolean
+232;1;BYTE;WARN_annunFLT_CONT;6508;;;;Boolean
+233;1;BYTE;WARN_annunIRS;6509;;;;Boolean
+234;1;BYTE;WARN_annunFUEL;650A;;;;Boolean
+235;1;BYTE;WARN_annunELEC;650B;;;;Boolean
+236;1;BYTE;WARN_annunAPU;650C;;;;Boolean
+237;1;BYTE;WARN_annunOVHT_DET;650D;;;;Boolean
+238;1;BYTE;WARN_annunANTI_ICE;650E;;;;Boolean
+239;1;BYTE;WARN_annunHYD;650F;;;;Boolean
+240;1;BYTE;WARN_annunDOORS;6510;;;;Boolean
+241;1;BYTE;WARN_annunENG;6511;;;;Boolean
+242;1;BYTE;WARN_annunOVERHEAD;6512;;;;Boolean
+243;1;BYTE;WARN_annunAIR_COND;6513;;;;Boolean
+244;2;BYTE;EFIS_MinsSelBARO[2];6514;;;;Boolean
+246;2;BYTE;EFIS_BaroSelHPA[2];6516;;;;Boolean
+248;2;BYTE;EFIS_VORADFSel1[2];6518;;;;0: VOR 1: OFF 2: ADF
+250;2;BYTE;EFIS_VORADFSel2[2];651A;;;;0: VOR 1: OFF 2: ADF
+252;2;BYTE;EFIS_ModeSel[2];651C;;;;0: APP 1: VOR 2: MAP 3: PLAN
+254;2;BYTE;EFIS_RangeSel[2];651E;;;;0: 5 ... 7: 640
+256;4;WORD;MCP_Course[2];6520;;;;
+260;4;FLT32;MCP_IASMach;6524;;;;Mach if < 10.0
+264;1;BYTE;MCP_IASBlank;6528;;;;Boolean
+265;1;BYTE;MCP_IASOverspeedFlash;6529;;;;Boolean
+266;1;BYTE;MCP_IASUnderspeedFlash;652A;;;;Boolean
+268;2;WORD;MCP_Heading;652C;0;359;1;
+270;2;WORD;MCP_Altitude;652E;;;;
+272;2;SHORT;MCP_VertSpeed;6530;6000;-7900;50;
+274;1;BYTE;MCP_VertSpeedBlank;6532;;;;Boolean
+275;2;BYTE;MCP_FDSw[2];6533;;;;Boolean
+277;1;BYTE;MCP_ATArmSw;6535;;;;Boolean
+278;1;BYTE;MCP_BankLimitSel;6536;;;;0: 10 ... 4: 30
+279;1;BYTE;MCP_DisengageBar;6537;;;;Boolean
+280;2;BYTE;MCP_annunFD[2];6538;;;;Boolean
+282;1;BYTE;MCP_annunATArm;653A;;;;Boolean
+283;1;BYTE;MCP_annunN1;653B;;;;Boolean
+284;1;BYTE;MCP_annunSPEED;653C;;;;Boolean
+285;1;BYTE;MCP_annunVNAV;653D;;;;Boolean
+286;1;BYTE;MCP_annunLVL_CHG;653E;;;;Boolean
+287;1;BYTE;MCP_annunHDG_SEL;653F;;;;Boolean
+288;1;BYTE;MCP_annunLNAV;6540;;;;Boolean
+289;1;BYTE;MCP_annunVOR_LOC;6541;;;;Boolean
+290;1;BYTE;MCP_annunAPP;6542;;;;Boolean
+291;1;BYTE;MCP_annunALT_HOLD;6543;;;;Boolean
+292;1;BYTE;MCP_annunVS;6544;;;;Boolean
+293;1;BYTE;MCP_annunCMD_A;6545;;;;Boolean
+294;1;BYTE;MCP_annunCWS_A;6546;;;;Boolean
+295;1;BYTE;MCP_annunCMD_B;6547;;;;Boolean
+296;1;BYTE;MCP_annunCWS_B;6548;;;;Boolean
+297;1;BYTE;MAIN_NoseWheelSteeringSwNORM;6549;;;;Boolean, false: ALT
+298;2;BYTE;MAIN_annunBELOW_GS[2];654A;;;;Boolean
+300;2;BYTE;MAIN_MainPanelDUSel[2];654C;;;; 0: OUTBD PFD ... 4 MFD for Capt Reverse sequence for FO
+302;2;BYTE;MAIN_LowerDUSel[2];654E;;;; 0: ENG PRI ..  2 ND for Capt Reverse sequence for FO
+304;2;BYTE;MAIN_annunAP[2];6550;;;;Boolean
+306;2;BYTE;MAIN_annunAT[2];6552;;;;Boolean
+308;2;BYTE;MAIN_annunFMC[2];6554;;;;Boolean
+310;2;BYTE;MAIN_DisengageTestSelector[2];6556;;;;0: 1 1: OFF 2: 2
+312;1;BYTE;MAIN_annunSPEEDBRAKE_ARMED;6558;;;;Boolean
+313;1;BYTE;MAIN_annunSPEEDBRAKE_DO_NOT_ARM;6559;;;;Boolean
+314;1;BYTE;MAIN_annunSPEEDBRAKE_EXTENDED;655A;;;;Boolean
+315;1;BYTE;MAIN_annunSTAB_OUT_OF_TRIM;655B;;;;Boolean
+316;1;BYTE;MAIN_LightsSelector;655C;;;;0: TEST 1: BRT 2: DIM
+317;1;BYTE;MAIN_RMISelector1_VOR;655D;;;;Boolean
+318;1;BYTE;MAIN_RMISelector2_VOR;655E;;;;Boolean
+319;1;BYTE;MAIN_N1SetSelector;655F;;;;0: 2 1: 1 2: AUTO 3: BOTH
+320;1;BYTE;MAIN_SpdRefSelector;6560;;;;0: SET 1: AUTO 2: V1 3: VR 4: WT 5: VREF 6: Bug
+321;1;BYTE;MAIN_FuelFlowSelector;6561;;;;0: RESET 1: RATE 2: USED
+322;1;BYTE;MAIN_AutobrakeSelector;6562;;;;0: RTO 1: OFF ... 5: MAX
+323;1;BYTE;MAIN_annunANTI_SKID_INOP;6563;;;;Boolean
+324;1;BYTE;MAIN_annunAUTO_BRAKE_DISARM;6564;;;;Boolean
+325;1;BYTE;MAIN_annunLE_FLAPS_TRANSIT;6565;;;;Boolean
+326;1;BYTE;MAIN_annunLE_FLAPS_EXT;6566;;;;Boolean
+328;8;FLT32;MAIN_TEFlapsNeedle[2];6568;;;;
+336;3;BYTE;MAIN_annunGEAR_transit[3];6570;;;;Boolean
+339;3;BYTE;MAIN_annunGEAR_locked[3];6573;;;;Boolean
+342;1;BYTE;MAIN_GearLever;6576;;;;0: UP 1: OFF 2: DOWN
+344;4;FLT32;MAIN_BrakePressNeedle;6578;;;;
+348;1;BYTE;HGS_annun_AIII;657C;;;;Boolean
+349;1;BYTE;HGS_annun_NO_AIII;657D;;;;Boolean
+350;1;BYTE;HGS_annun_FLARE;657E;;;;Boolean
+351;1;BYTE;HGS_annun_RO;657F;;;;Boolean
+352;1;BYTE;HGS_annun_RO_CTN;6580;;;;Boolean
+353;1;BYTE;HGS_annun_RO_ARM;6581;;;;Boolean
+354;1;BYTE;HGS_annun_TO;6582;;;;Boolean
+355;1;BYTE;HGS_annun_TO_CTN;6583;;;;Boolean
+356;1;BYTE;HGS_annun_APCH;6584;;;;Boolean
+357;1;BYTE;HGS_annun_TO_WARN;6585;;;;Boolean
+358;1;BYTE;HGS_annun_Bar;6586;;;;Boolean
+359;1;BYTE;HGS_annun_FAIL;6587;;;;Boolean
+360;2;BYTE;LTS_MainPanelKnob[2];6588;;;;Position 0...150
+362;1;BYTE;LTS_BackgroundKnob;658A;;;;Position 0...150
+363;1;BYTE;LTS_AFDSFloodKnob;658B;;;;Position 0...150
+364;2;BYTE;LTS_OutbdDUBrtKnob[2];658C;;;; Position 0...127
+366;2;BYTE;LTS_InbdDUBrtKnob[2];658E;;;;Position 0...127
+368;2;BYTE;LTS_InbdDUMapBrtKnob[2];6590;;;;Position 0...127
+370;1;BYTE;LTS_UpperDUBrtKnob;6592;;;;Position 0...127
+371;1;BYTE;LTS_LowerDUBrtKnob;6593;;;;Position 0...127
+372;1;BYTE;LTS_LowerDUMapBrtKnob;6594;;;;Position 0...127
+373;1;BYTE;GPWS_annunINOP;6595;;;;Boolean
+374;1;BYTE;GPWS_FlapInhibitSw_NORM;6596;;;;Boolean
+375;1;BYTE;GPWS_GearInhibitSw_NORM;6597;;;;Boolean
+376;1;BYTE;GPWS_TerrInhibitSw_NORM;6598;;;;Boolean
+377;2;BYTE;CDU_annunEXEC[2];6599;;;;Boolean
+379;2;BYTE;CDU_annunCALL[2];659B;;;;Boolean
+381;2;BYTE;CDU_annunFAIL[2];659D;;;;Boolean
+383;2;BYTE;CDU_annunMSG[2];659F;;;;Boolean
+385;2;BYTE;CDU_annunOFST[2];65A1;;;;Boolean
+387;2;BYTE;CDU_BrtKnob[2];65A3;;;;Position 0...127
+389;1;BYTE;TRIM_StabTrimMainElecSw_NORMAL;65A5;;;;Boolean
+390;1;BYTE;TRIM_StabTrimAutoPilotSw_NORMAL;65A6;;;;Boolean
+391;1;BYTE;PED_annunParkingBrake;65A7;;;;Boolean
+392;2;BYTE;FIRE_OvhtDetSw[2];65A8;;;;0: A 1: NORMAL 2: B
+394;2;BYTE;FIRE_annunENG_OVERHEAT[2];65AA;;;;Boolean
+396;1;BYTE;FIRE_DetTestSw;65AC;;;;0: FAULT/INOP 1: neutral 2: OVHT/FIRE
+397;3;BYTE;FIRE_HandlePos[3];65AD;;;;0: In 1: Blocked 2: Out 3: Turned Left 4: Turned right
+400;3;BYTE;FIRE_HandleIlluminated[3];65B0;;;;Boolean
+403;1;BYTE;FIRE_annunWHEEL_WELL;65B3;;;;Boolean
+404;1;BYTE;FIRE_annunFAULT;65B4;;;;Boolean
+405;1;BYTE;FIRE_annunAPU_DET_INOP;65B5;;;;Boolean
+406;1;BYTE;FIRE_annunAPU_BOTTLE_DISCHARGE;65B6;;;;Boolean
+407;2;BYTE;FIRE_annunBOTTLE_DISCHARGE[2];65B7;;;;Boolean
+409;1;BYTE;FIRE_ExtinguisherTestSw;65B9;;;;0: 1 1: neutral 2: 2
+410;3;BYTE;FIRE_annunExtinguisherTest[3];65BA;;;;Left, Right, APU
+413;2;BYTE;CARGO_annunExtTest[2];65BD;;;;Fwd, Aft
+415;2;BYTE;CARGO_DetSelect[2];65BF;;;;0: A 1: NORM 2: B
+417;2;BYTE;CARGO_ArmedSw[2];65C1;;;;Boolean
+419;1;BYTE;CARGO_annunFWD;65C3;;;;Boolean
+420;1;BYTE;CARGO_annunAFT;65C4;;;;Boolean
+421;1;BYTE;CARGO_annunDETECTOR_FAULT;65C5;;;;Boolean
+422;1;BYTE;CARGO_annunDISCH;65C6;;;;Boolean
+423;1;BYTE;HGS_annunRWY;65C7;;;;Boolean
+424;1;BYTE;HGS_annunGS;65C8;;;;Boolean
+425;1;BYTE;HGS_annunFAULT;65C9;;;;Boolean
+426;1;BYTE;HGS_annunCLR;65CA;;;;Boolean
+427;1;BYTE;XPDR_XpndrSelector_2;65CB;;;; false: 1 true: 2
+428;1;BYTE;XPDR_AltSourceSel_2;65CC;;;;false: 1 true: 2
+429;1;BYTE;XPDR_ModeSel;65CD;;;;0: STBY 1: ALT RPTG OFF ... 4: TA/RA
+430;1;BYTE;XPDR_annunFAIL;65CE;;;;Boolean
+431;1;BYTE;LTS_PedFloodKnob;65CF;;;;Position 0...150
+432;1;BYTE;LTS_PedPanelKnob;65D0;;;;Position 0...150
+433;1;BYTE;TRIM_StabTrimSw_NORMAL;65D1;;;;Boolean
+434;1;BYTE;PED_annunLOCK_FAIL;65D2;;;;Boolean
+435;1;BYTE;PED_annunAUTO_UNLK;65D3;;;;Boolean
+436;1;BYTE;PED_FltDkDoorSel;65D4;;;;0: UNLKD 1 AUTO pushed in 2: AUTO 3: DENY
+437;2;BYTE;ENG_StartValve[2];65D5;;;;true: valve open
+440;8;FLT32;AIR_DuctPress[2];65D8;;;;PSI
+448;1;BYTE;COMM_Attend_PressCount;65E0;;;;Iincremented with each button press
+449;1;BYTE;COMM_GrdCall_PressCount;65E1;;;;Iincremented with each button press
+450;3;BYTE;COMM_SelectedMic[3];65E2;;;;Array: 0=capt, 1=F/O, 2=observer. Values: : 0=VHF1 1=VHF2 2=VHF3 3=HF1 4=HF2 5=FLT 6=SVC 7=PA
+456;4;FLT32;FUEL_QtyCenter;65E8;;;;LBS
+460;4;FLT32;FUEL_QtyLeft;65EC;;;;LBS
+464;4;FLT32;FUEL_QtyRight;65F0;;;;LBS
+468;1;BYTE;IRS_aligned;65F4;;;;Boolean: At least one IRU is aligned
+469;1;BYTE;AircraftMode;65F5;;;;1: -600 2: -700 3: -700WL 4: -800 5: -800WL 6: -900 7: -900ER
+470;1;BYTE;WeightInKg;65F6;;;;Boolean: false: LBS true: KG
+471;1;BYTE;GPWS_V1CallEnabled;65F7;;;;GPWS V1 callout option enabled
+472;1;BYTE;GroundConnAvailable;65F8;;;;can connect/disconnect ground air/electrics
+473;1;BYTE;FMC_TakeoffFlaps;65F9;;;;degrees, 0 if not set
+474;1;BYTE;FMC_V1;65FA;;;;knots, 0 if not set
+475;1;BYTE;FMC_VR;65FB;;;;knots, 0 if not set
+476;1;BYTE;FMC_V2;65FC;;;;knots, 0 if not set
+477;1;BYTE;FMC_LandingFlaps;65FD;;;;degrees, 0 if not set
+478;1;BYTE;FMC_LandingVREF;65FE;;;;knots, 0 if not set
+480;2;WORD;FMC_CruiseAlt;6600;;;;ft, 0 if not set
+482;2;WORD;FMC_LandingAltitude;6602;;;;ft  -32767 if not available
+484;2;WORD;FMC_TransitionAlt;6604;;;;ft
+486;2;WORD;FMC_TransitionLevel;6606;;;;ft
+488;1;BYTE;FMC_PerfInputComplete;6608;;;;Boolean
+492;4;FLT32;FMC_DistanceToTOD;660C;;;;nm  0.0 if passed, negative if n/a
+496;4;FLT32;FMC_DistanceToDest;6610;;;;nm, negative if n/a
+500;9;STR;FMC_flightNumber[9];6614;;;;
+511;1;BYTE;Last_byte_1;661F;;;;of_first_reserved  area_for PMDG 737NGX
+2016;1;STR;Additional_variables:;6C00;;;;added by update SP1D
+2016;12;DWORD;COMM_ReceiverSwitches[3];6C00;;;;Bit flags for selector receivers (see ACP_SEL_RECV_VHF1 etc)
+2028;2;BYTE;MAIN_annunAP_Amber[2];6C0C;;;;Boolean
+2030;2;BYTE;MAIN_annunAT_Amber[2];6C0E;;;;Boolean
+2032;4;DWORD;ICE_WindowHeatTestSw;6C10;;;;0: OVHT 1: Neutral 2: PWR TEST
+2036;1;BYTE;DOOR_annunFWD_ENTRY;6C14;;;;Boolean
+2037;1;BYTE;DOOR_annunFWD_SERVICE;6C15;;;;Boolean
+2038;1;BYTE;DOOR_annunAIRSTAIR;6C16;;;;Boolean
+2039;1;BYTE;DOOR_annunLEFT_FWD_OVERWING;6C17;;;;Boolean
+2040;1;BYTE;DOOR_annunRIGHT_FWD_OVERWING;6C18;;;;Boolean
+2041;1;BYTE;DOOR_annunFWD_CARGO;6C19;;;;Boolean
+2042;1;BYTE;DOOR_annunEQUIP;6C1A;;;;Boolean
+2043;1;BYTE;DOOR_annunLEFT_AFT_OVERWING;6C1B;;;;Boolean
+2044;1;BYTE;DOOR_annunRIGHT_AFT_OVERWING;6C1C;;;;Boolean
+2045;1;BYTE;DOOR_annunAFT_CARGO;6C1D;;;;Boolean
+2046;1;BYTE;DOOR_annunAFT_ENTRY;6C1E;;;;Boolean
+2047;1;BYTE;DOOR_annunAFT_SERVICE;6C1F;;;;Boolean
+2048;1;BYTE;AIR_annunAUTO_FAIL;6C20;;;;Boolean
+2049;1;BYTE;AIR_annunOFFSCHED_DESCENT;6C21;;;;Boolean
+2050;1;BYTE;AIR_annunALTN;6C22;;;;Boolean
+2051;1;BYTE;AIR_annunMANUAL;6C23;;;;Boolean
+2052;4;FLT32;AIR_CabinAltNeedle;6C24;;;;ft
+2056;4;FLT32;AIR_CabinDPNeedle;6C28;;;;PSI
+2060;4;FLT32;AIR_CabinVSNeedle;6C2C;;;;Ft/min
+2064;4;FLT32;AIR_CabinValveNeedle;6C30;;;;0 closed ... 1 open
+2068;4;FLT32;AIR_TemperatureNeedle;6C34;;;;Degrees C
+2072;8;FLT32;AIR_DuctPressNeedle[2];6C38;;;;
+2080;13;STR;ELEC_MeterDisplayTop[13];6C40;;;;Top line: 3 groups of 4 digits (or symbols) + terminating zero
+2093;13;STR;ELEC_MeterDisplayBottom[13];6C4D;;;;
+2106;7;STR;IRS_DisplayLeft[7];6C5A;;;;
+2113;8;STR;IRS_DisplayRight[8];6C61;;;;
+2121;1;BYTE;IRS_DisplayShowsDots;6C69;;;;True if the degrees and decimal dot symbols are shown on the IRS display
+586;1;BYTE;Last_byte_2;666A;;;;rea_of second reserved area for

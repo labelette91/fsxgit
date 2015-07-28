@@ -93,9 +93,9 @@ bool		SendToFsx ( int Var , byte SwValue )
   {
     int event  = GetVariable(Var)->Event ;
     int offset = GetVariable(Var)->Offset ;
-    double min = GetVariable(Var)->Min ;
-    double max = GetVariable(Var)->Max ;
-    double inc = GetVariable(Var)->Inc ;
+    double min = Fsuipc.GetMin(offset);
+    double max = Fsuipc.GetMax(offset);
+    double inc = Fsuipc.GetInc(offset);
 
     if (inc==0) inc=1;
 
@@ -244,10 +244,11 @@ void RefreshOutput (int Variable , double value )
   {
     int Digit = GetVarDigit(Variable);
     int Number= GetVarNumbers(Variable);
-    double max = GetVariable(Variable)->Max ;
-    double min = GetVariable(Variable)->Min ;
-		if (max==0)	max = 100000000000000000;
-		if (min==0)	min = -100000000000000000;
+    int offset = GetVariable(Variable)->Offset ;
+    
+    double min = Fsuipc.GetMin(offset);
+    double max = Fsuipc.GetMax(offset);
+    double inc = Fsuipc.GetInc(offset);
 		
 		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d\n", Digit ,Number );
 		bool displaySigne = false;
@@ -392,7 +393,7 @@ int main(int argc, char **argv)
 	memset(Digits,-1,sizeof(Digits));
 	Console->printf("ComPort:%d  SiocFileName:%s ServerIp:%s  ServerPort:%d Trace:%X\n",numas2,SiocFilename.c_str(),ServerIp.c_str(),ServerPort, Console->EnableDebugOutput );
 
-	Fsuipc.ReadFromFile("FsuipcOffset2.csv");
+	Fsuipc.ReadFromFile("FsuipcOffset3.csv");
   if (Console->isDebugEnable(TRACE_OFFSET))
   		Fsuipc.Print();
 	Event.ReadFromFile("event.csv");

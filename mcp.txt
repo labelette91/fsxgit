@@ -1,7 +1,7 @@
 *Var 0032, name HDGdisplay, Link IOCARD_DISPLAY, Digit 0, Numbers 3 Offset MCP_Heading 
-*Var 0082, name HDGrot, Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Max 359 Min 0 Inc 1  Event EVT_MCP_HDG_SET
+*Var 0082, name HDGrot, Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Event EVT_MCP_HDG_SET
 
-name VSdisplay, Link IOCARD_DISPLAY, Digit 3, Numbers 5          Offset MCP_VertSpeed Max 6000 Min -7900
+name VSdisplay, Link IOCARD_DISPLAY, Digit 3, Numbers 5          Offset MCP_VertSpeed 
 name MCP_VertSpeedBlank, Link IOCARD_DISPLAY, Digit 0, Numbers 0 Offset MCP_VertSpeedBlank
 
-name VSrot, Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_VertSpeed Max 6000 Min -7900 Inc 50  Event EVT_MCP_VS_SET
+name VSrot, Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_VertSpeed Event EVT_MCP_VS_SET
