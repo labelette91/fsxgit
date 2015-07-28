@@ -367,10 +367,15 @@ void ReadFromFile(const char * fileName)
 
       Control[i].Offset =ofs;
       Control[i].Name =  Name  ;
+      Control[i].a=1;
+
       if (args->Count() >=4)
+      {
 				Control[i].a    =    strToDouble((*args)[3].c_str(),10) ;
+        if (Control[i].a==0) Control[i].a=1;
+      }
       if (args->Count() >=5)
-      Control[i].b    =    strToDouble((*args)[4].c_str(),10) ;;
+        Control[i].b    =    strToDouble((*args)[4].c_str(),10) ;;
 
       Map_Control[Name]=ofs;
       }

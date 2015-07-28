@@ -251,11 +251,8 @@ void RefreshOutput (int Variable , double value )
 		
 		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d\n", Digit ,Number );
 		bool displaySigne = false;
-		if (Number<0)
-		{
+		if (min<0)
 			displaySigne=true;
-			Number=-Number;
-		}
 
 		if (value<min || value>max)
 		{

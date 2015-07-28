@@ -167,12 +167,6 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
         return false; 
     } 
 
-
-//		Fsuipc.ReadFromFile("E:\\fsx\\tcp\\FsuipcOffset1.csv");
-//		Fsuipc.Print();
-
-// 		Event.ReadFromFile("E:\\fsx\\tcp\\event.csv");
-
 		Fsuipc.SetRefreshOutputFct (RefreshOutput) ;
 
 //		Fsuipc.RegisterToVariableChanged (268+FIRST_OFFSET,2,1); //MCP_Heading
