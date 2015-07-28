@@ -28,6 +28,8 @@ typedef enum  {
  IOCARD_ENCODER = 4,
  FSUIPC					= 5,
  SELECTOR				= 6,
+ IOCARD_PUSH_BTN= 7,
+
  END_TYPE
 
 }EnumIoType;
@@ -39,7 +41,8 @@ char * IoTypeStr[] ={
  "DISPLAY ", 
  "ENCODER ",
  "FSUIPC  ",
- "SELECTOR"
+ "SELECTOR",
+ "PUSH BTN"
 
 };
 
@@ -77,6 +80,12 @@ TVariable *  GetVariable(int var)
 EnumIoType GetVarIoType(int var)
 {
   return Var[var].IOType ;
+}
+char GetVarType(int var)
+{
+	if (Var[var].Type.size()==0)
+		Var[var].Type="P" ;
+  return Var[var].Type.c_str()[0] ;
 }
 
 int GetVarOutput(int var)
@@ -181,6 +190,11 @@ void ReadSioc(const char * fileName)
         else if (val1=="IOCARD_SW")
         {
           Var[var].IOType = IOCARD_SW;
+          i+=1;
+        }
+        else if (val1=="IOCARD_PUSH_BTN")
+        {
+          Var[var].IOType = IOCARD_PUSH_BTN;
           i+=1;
         }
         else if (val1=="Input")

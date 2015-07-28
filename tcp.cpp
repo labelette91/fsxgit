@@ -80,18 +80,29 @@ byte Digits[MAX_DIGIT];
 bool		SendToFsx ( int Var , byte SwValue )
 {
   EnumIoType typ = GetVarIoType(Var);
-  if (typ==IOCARD_SW)
+  int evt = GetVariable(Var)->Event ;
+	Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d (%s)  Value:%d Var:%d\n",evt,Event.GetEventName(evt).c_str(),SwValue, Var );
+
+	if ( (typ==IOCARD_SW) )  
   {
     //get event
-    int event = GetVariable(Var)->Event ;
-	  Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d Value:%d SiocVar:%d\n",event,SwValue, Var );
-    
-    SendControl( event , SwValue );
-
+    if(GetVarType(Var)=='N')
+				SwValue = !SwValue;
+    SendControl( evt , SwValue );
   }
+	else if (typ==IOCARD_PUSH_BTN) 
+  {
+    //get event
+    if(GetVarType(Var)=='N')
+				SwValue = !SwValue;
+		if (SwValue)
+			SendControl( evt , MOUSE_FLAG_LEFTSINGLE );
+		else
+			SendControl( evt , MOUSE_FLAG_LEFTRELEASE );
+  }
+
   else if (typ==IOCARD_ENCODER)
   {
-    int event  = GetVariable(Var)->Event ;
     int offset = GetVariable(Var)->Offset ;
     double min = Fsuipc.GetMin(offset);
     double max = Fsuipc.GetMax(offset);
@@ -100,7 +111,7 @@ bool		SendToFsx ( int Var , byte SwValue )
     if (inc==0) inc=1;
 
     double value = Fsuipc.GetValue(offset);
-    if ((event!=0) &&(offset!=0))
+    if ((evt!=0) &&(offset!=0))
     {
        char SwV = (char)SwValue;
 			value = value + SwV * inc ;
@@ -109,10 +120,8 @@ bool		SendToFsx ( int Var , byte SwValue )
       if (value<min) value = max  ;
 	    Fsuipc.SetValue(offset , value) ;
 
-			value = Event.Get(event)->a * value + Event.Get(event)->b;
-      SendControl( event , (int)value );
-
-	    Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d %-20s Val:%d Var:%d\n",event,Event.GetEventName(event).c_str(), (int)value , Var );
+			value = Event.Get(evt)->a * value + Event.Get(evt)->b;
+      SendControl( evt , (int)value );
     }
     else
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset not defined for variable %d %s \n", Var, GetVarName(Var) );
@@ -120,10 +129,9 @@ bool		SendToFsx ( int Var , byte SwValue )
   }
   else if (typ==SELECTOR)
   {
-    int event  = GetVariable(Var)->Event ;
     int input  = GetVariable(Var)->Input ;
     int number = GetVariable(Var)->Numbers ;
-    if((number==0)||(event==0)||(input==0))
+    if((number==0)||(evt==0)||(input==0))
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : S\n", Var , GetVarName(Var)  );
 
     //selector value 
@@ -131,8 +139,7 @@ bool		SendToFsx ( int Var , byte SwValue )
     {
         if ( Switch.get ( input + value) == 0 )
         {
-          SendControl( event , (int)value );
-	        Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d Value:%d SiocVar:%d\n",event,(int)value , Var );
+          SendControl( evt , (int)value );
           break;
         }
     }
@@ -363,6 +370,7 @@ void PmdgRegister()
 	T_VARLIST varsOut ;
 	GetSiocVar(IOCARD_OUT ,  varsOut ) ;
 	GetSiocVar(IOCARD_DISPLAY ,  varsOut ) ;
+	GetSiocVar(IOCARD_ENCODER ,  varsOut ) ;
 	for (unsigned int i=0;i<varsOut.size();i++)
 	{
 		int var = varsOut[i]   ;

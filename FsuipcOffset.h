@@ -205,20 +205,20 @@ void ReadFromFile(const char * fileName)
 
       int fsize =   FieldSize[ftype];
           
-			std::string Name =  (*args)[3] ;
+			
       for (int j=0;j<len/fsize ; j++)
       {      
+				char Is = ' ';
+				std::string Name =  (*args)[3] ;		
+				if(len/fsize>1) 
+        {
+          Is = '1'+j;
+          Name[Name.length()-3]='_';
+          Name[Name.length()-2]=Is ;
+          Name.resize (Name.length()-1);
+        }
   			for (int i=0;i<fsize;i++)
   			{
-					char Is = ' ';
-					if(len/fsize>1) 
-          {
-            Is = '1'+j;
-            Name[Name.length()-3]='_';
-            Name[Name.length()-2]=Is ;
-            Name[Name.length()-1]=0  ;
-
-          }
   				FsuipcOffset[ofs+i].Offset =ofs;
   				FsuipcOffset[ofs+i].Length = len;
   				FsuipcOffset[ofs+i].Len    = fsize;
@@ -321,6 +321,10 @@ void RegisterToVariableChanged ( int offset , int Len , int variable )
 {
   if (offset)
 	{
+		for (unsigned int j=0;j<WatchedOffset.size();j++)
+		{
+				if ( WatchedOffset[j]==offset) return;
+		}
 		WatchedOffset.push_back(offset);
 		FsuipcOffset[offset].Variable = variable ;
     Console->debugPrintf(TRACE_FSX_SEND,"FSX : register to offset %4x : %s \n",offset,GetOffsetName(offset).c_str() );
