@@ -439,8 +439,8 @@ int main(int argc, char **argv)
   T_THREAD thAs2 (ThreadAs2,(LPVOID)numas2 );
 //	InitRs232=true;
 	while (InitRs232==false)
-		Sleep(1000);
-	Sleep(1000); 
+		Sleep(100);
+//	Sleep(1000); 
 
 #ifdef USE_SIOC
   T_THREAD thSioc (ThreadSioc,(LPVOID)0 );

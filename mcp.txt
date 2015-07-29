@@ -16,5 +16,5 @@ Var 0082, name HDGrot,     Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 O
 
 *Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset EFIS_VORADFSel1_1 Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R
 
-Link IOCARD_SW_3P, Input 4,  Type N Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R 
-*Link IOCARD_SELECTOR, Input 4,  Numbers 4 Type P Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R 
+*Link IOCARD_SW_3P,   Input 4,            Type N Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R 
+Link IOCARD_SELECTOR, Input 4,  Numbers 2 Type N Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R 
