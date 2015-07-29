@@ -247,12 +247,16 @@ void Print()
 		{
 //			Console->debugPrintf (  TRACE_SIOC , 
 			printf (   
-				"Var:%5d  len:%d offset:%04X (%5d) name:%-14s \n",  
+				"Var:%5d  len:%d offset:%04X (%5d) name:%-14s Max:%9.2f Min:%9.2f Inc:%f\n",  
 				var,
 				FsuipcOffset[var].Len,
 				FsuipcOffset[var].Offset,
 				FsuipcOffset[var].Offset,
-				FsuipcOffset[var].Name.c_str() 
+				FsuipcOffset[var].Name.c_str() ,
+				FsuipcOffset[var].Max ,
+				FsuipcOffset[var].Min ,
+				FsuipcOffset[var].Inc 
+
 				);
 			last = FsuipcOffset[var].Offset  ;
 		}
@@ -299,7 +303,7 @@ void WatchDetectChanged (PMDG_NGX_Data *pS  )
 			    if (psByte[offset+n]!=pNgxByte[offset+n])
 			    {
             double Value = GetValue(offset,psByte);
-				     Console->debugPrintf(TRACE_FSX_RECV,"FSX :RECV Offs:%5d Name:%-20s, Value:%f\n",offset,GetName(offset),Value );
+				     Console->debugPrintf(TRACE_FSX_RECV,"FSX  :RECV Offs:%5d Name:%-20s, Value:%f\n",offset,GetName(offset),Value );
 				    SetValue(offset , Value) ;
 						int variable = FsuipcOffset[offset].Variable ;
 						if (variable)

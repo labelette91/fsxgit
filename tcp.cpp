@@ -197,36 +197,6 @@ DWORD WINAPI ThreadAs2(LPVOID lpArg)
 		Com.setspeed ( 115200, 'N' , 8  ,1  ) ;
 		Com.setTimeouts ( 0 ,1000 ) ;
 
-      Switch.set(4, 0 ) ;
-      Switch.set(5, 0 ) ;
-      Switch.set(6, 0 ) ;
-      Switch.set(7, 0 ) ;
-      SendToFsx (1, 1 );
-
-      Switch.set(4, 1 ) ;
-      Switch.set(5, 0 ) ;
-      Switch.set(6, 0 ) ;
-      Switch.set(7, 0 ) ;
-      SendToFsx (1, 1 );
-
-	    Switch.set(4, 0 ) ;
-      Switch.set(5, 1 ) ;
-      Switch.set(6, 0 ) ;
-      Switch.set(7, 0 ) ;
-      SendToFsx (1, 1 );
-
-      Switch.set(4, 0 ) ;
-      Switch.set(5, 0 ) ;
-      Switch.set(6, 1 ) ;
-      Switch.set(7, 0 ) ;
-      SendToFsx (1, 1 );
-
-      Switch.set(4, 0 ) ;
-      Switch.set(5, 0 ) ;
-      Switch.set(6, 0 ) ;
-      Switch.set(7, 1 ) ;
-      SendToFsx (1, 1 );
-
 		while(1==1)
 		{
 			//waitr char

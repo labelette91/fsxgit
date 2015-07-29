@@ -170,7 +170,7 @@ Offset PMDG Data;Len;Type;Name;Offset FSUIPC;Max;Min;Increment;Commentaire
 264;1;BYTE;MCP_IASBlank;6528;;;;Boolean
 265;1;BYTE;MCP_IASOverspeedFlash;6529;;;;Boolean
 266;1;BYTE;MCP_IASUnderspeedFlash;652A;;;;Boolean
-268;2;WORD;MCP_Heading;652C;0;359;1;
+268;2;WORD;MCP_Heading;652C;359;0;1;
 270;2;WORD;MCP_Altitude;652E;;;;
 272;2;SHORT;MCP_VertSpeed;6530;6000;-7900;50;
 274;1;BYTE;MCP_VertSpeedBlank;6532;;;;Boolean

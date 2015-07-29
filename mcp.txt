@@ -1,12 +1,13 @@
-*Var 0032, name HDGdisplay, Link IOCARD_DISPLAY, Digit 0, Numbers 3 Offset MCP_Heading 
-*Var 0082, name HDGrot, Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Event EVT_MCP_HDG_SET
+Var 0032, name HDGdisplay, Link IOCARD_DISPLAY, Digit 5, Numbers 3 Offset MCP_Heading 
+Var 0082, name HDGrot,     Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Event EVT_MCP_HDG_SET
 
 *name VSdisplay, Link IOCARD_DISPLAY, Digit 3, Numbers 5          Offset MCP_VertSpeed 
 *name MCP_VertSpeedBlank, Link FSUIPC_INOUT    Offset MCP_VertSpeedBlank
 
 *name VSrot, Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_VertSpeed Event EVT_MCP_VS_SET
+*name VertSpeed_led , Link IOCARD_DISPLAY, Digit 0, Numbers 5          Offset MCP_VertSpeed 
 
-*name VertSpeed_led , Link IOCARD_DISPLAY, Digit 3, Numbers 5          Offset MCP_VertSpeed 
+
 
 *name MCP_LVL_CHG_LED     Link IOCARD_OUT, Output 13       Event EVT_MCP_LVL_CHG_SWITCH Offset MCP_annunLVL_CHG
 *name MCP_LVL_CHG_SWITCH  Link IOCARD_PUSH_BTN , Input 4, Type N Event EVT_MCP_LVL_CHG_SWITCH 
@@ -15,5 +16,5 @@
 
 *Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset EFIS_VORADFSel1_1 Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R
 
-*Link IOCARD_SW_3P, Input 4,  Type P Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R Coding 01A5
-Link IOCARD_SELECTOR, Input 4,  Numbers 4 Type P Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R 
+Link IOCARD_SW_3P, Input 4,  Type N Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R 
+*Link IOCARD_SELECTOR, Input 4,  Numbers 4 Type P Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R 

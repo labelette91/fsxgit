@@ -6,6 +6,12 @@
 class T_Switch {
   int SwitchValue[MAXINPUT];
 public:
+	T_Switch()
+	{
+		//all switch = 1 : pullup
+		for (int i=0;i<MAXINPUT;i++)
+			set(i,1);
+	}
   void set(int sw , int value)
   {
     
@@ -366,14 +372,14 @@ void PrintVars()
   {
     if (Var[var].IOType != UNDEF)
     Console->debugPrintf (  TRACE_SIOC , 
-"Var:%4d IO:%s In:%3d Out:%3d Dig:%3d Nb:%1d Acel:%1d Type:%1s name:%-14s len:%d offs:%04X(%5d) %s evt:%04X(%5d) %s\n",  
+"Var:%4d IO:%s In:%3d Out:%3d Dig:%3d Nb:%1d Type:%1s name:%-12s len:%d offs:%04X(%5d) %s evt:%04X(%5d) %s\n",  
 var,
 GetIOTypeStr(Var[var].IOType)     ,
 Var[var].Input      ,
 Var[var].Output     ,
 Var[var].Digit      ,
 Var[var].Numbers    ,
-Var[var].Aceleration,
+/*Var[var].Aceleration,*/
 Var[var].Type.c_str()       ,
 Var[var].name.c_str() ,
 Var[var].Length,
