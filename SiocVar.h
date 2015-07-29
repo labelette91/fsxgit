@@ -27,22 +27,24 @@ typedef enum  {
  IOCARD_DISPLAY = 3,
  IOCARD_ENCODER = 4,
  FSUIPC					= 5,
- SELECTOR				= 6,
+ IOCARD_SELECTOR= 6,
  IOCARD_PUSH_BTN= 7,
+ IOCARD_SW_3P   = 8,
 
  END_TYPE
 
 }EnumIoType;
 
 char * IoTypeStr[] ={
- "UNDEF   ",
- "SW      ",      
- "OUT     ", 
- "DISPLAY ", 
- "ENCODER ",
- "FSUIPC  ",
- "SELECTOR",
- "PUSH BTN"
+ "IOCARD_UNDEF    ",
+ "IOCARD_SW       ",      
+ "IOCARD_OUT      ", 
+ "IOCARD_DISPLAY  ", 
+ "IOCARD_ENCODER  ",
+ "       FSUIPC   ",
+ "IOCARD_SELECTOR ",
+ "IOCARD_PUSH_BTN ",
+ "IOCARD_SW_3P    ",      
 
 };
 
@@ -62,6 +64,8 @@ typedef struct
   double Max;
   double Min;
   double Inc;
+  std::string Codage ;
+
 } TVariable ;
 
 #define MAXVAR 1000 
@@ -70,6 +74,9 @@ TVariable Var[MAXVAR];
 
 //contain the varariable number of the corresponding input
 int InputVar[MAXINPUT];
+
+#define POSITIV 'P'
+#define NEGATIV 'N'
 
 
 TVariable *  GetVariable(int var)
@@ -84,7 +91,7 @@ EnumIoType GetVarIoType(int var)
 char GetVarType(int var)
 {
 	if (Var[var].Type.size()==0)
-		Var[var].Type="P" ;
+		Var[var].Type= POSITIV ;
   return Var[var].Type.c_str()[0] ;
 }
 
@@ -108,7 +115,18 @@ int GetVarNumbers(int var)
 char * GetIOTypeStr(int pio)
 {
   if (pio>=END_TYPE) pio=0;
-  return IoTypeStr[pio];
+  return &IoTypeStr[pio][7];
+}
+
+EnumIoType findIOType (std::string sType)
+{
+  for (int i=0;i<END_TYPE;i++)
+  {
+    if (strstr (sType.c_str(),IoTypeStr[i] ) !=0 )
+      return (EnumIoType)i;
+  }
+  return UNDEF;
+
 }
 const char * GetVarName(int var)
 {
@@ -197,11 +215,36 @@ void ReadSioc(const char * fileName)
           Var[var].IOType = IOCARD_PUSH_BTN;
           i+=1;
         }
+        else if (val1=="IOCARD_SW_3P")
+        {
+          Var[var].IOType = IOCARD_SW_3P;
+          Var[var].Codage = "1023";
+          Var[var].Numbers= 2 ;
+          i+=1;
+        }
+        else if (val1=="Coding")
+        {
+          if (val2.size()<4)
+             Console->errorPrintf (0 , "error : coding length shall be 4 charaters [0..9] Var:%d Coding:%s\n",var,val2.c_str());
+          else
+          {
+            for (unsigned int i=0;i<val2.size();i++)
+            {
+              if ( (val2[i]<'0')||(val2[i]>'9'))
+              {
+                Console->errorPrintf (0 , "error : coding charaters shall be in [0..9] Var:%d Coding:%s\n",var,val2.c_str());
+              }
+            }
+          }
+  
+          Var[var].Codage = val2;
+          i+=2;
+        }
         else if (val1=="Input")
         {
           Var[var].Input = atoi(val2.c_str()) ;
           SetInputVar( var,  Var[var].Input ) ;
-          if (Var[var].IOType == IOCARD_ENCODER)
+          if ( (Var[var].IOType == IOCARD_ENCODER) || (Var[var].IOType == IOCARD_SW_3P) )
             SetInputVar( var,  Var[var].Input+1 ) ;
 
           i+=2;
@@ -238,7 +281,7 @@ void ReadSioc(const char * fileName)
         {
           Var[var].Numbers = atoi(val2.c_str()) ;
           //rotary selector : 
-          if (Var[var].IOType == SELECTOR)
+          if (Var[var].IOType == IOCARD_SELECTOR)
             for (int i=0;i<Var[var].Numbers;i++)
               SetInputVar( var,  Var[var].Input+i ) ;
 
@@ -250,9 +293,10 @@ void ReadSioc(const char * fileName)
           Var[var].IOType = IOCARD_ENCODER;
           i+=1;
         }
-        else if (val1=="SELECTOR")
+        else if (val1=="IOCARD_SELECTOR")
         {
-          Var[var].IOType = SELECTOR;
+          Var[var].IOType = IOCARD_SELECTOR;
+          Var[var].Numbers = 1 ;
           i+=1;
         }
         else if (val1=="Aceleration")

@@ -81,24 +81,49 @@ bool		SendToFsx ( int Var , byte SwValue )
 {
   EnumIoType typ = GetVarIoType(Var);
   int evt = GetVariable(Var)->Event ;
-	Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d (%s)  Value:%d Var:%d\n",evt,Event.GetEventName(evt).c_str(),SwValue, Var );
+	Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d (%s)  Value:%d Var:%d ",evt,Event.GetEventName(evt).c_str(),SwValue, Var );
 
 	if ( (typ==IOCARD_SW) )  
   {
     //get event
-    if(GetVarType(Var)=='N')
+    if(GetVarType(Var)==NEGATIV)
 				SwValue = !SwValue;
     SendControl( evt , SwValue );
   }
 	else if (typ==IOCARD_PUSH_BTN) 
   {
     //get event
-    if(GetVarType(Var)=='N')
+    if(GetVarType(Var)==NEGATIV)
 				SwValue = !SwValue;
 		if (SwValue)
 			SendControl( evt , MOUSE_FLAG_LEFTSINGLE );
 		else
 			SendControl( evt , MOUSE_FLAG_LEFTRELEASE );
+  }
+  
+	else if (typ==IOCARD_SW_3P) 
+  {
+    int input  = GetVariable(Var)->Input ;
+    int number = GetVariable(Var)->Numbers ;
+    if((number==0)||(evt==0)||(input==0))
+	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : %s\n", Var , GetVarName(Var)  );
+    int code=0;
+    for (int i=0;i<number;i++)
+    {
+      code *= 2 ;
+      int sw = Switch.get ( input + i ) ;
+      sw &=1 ;
+      if(GetVarType(Var)==NEGATIV)
+				sw = !sw;
+      code += sw ;
+    }
+    //tranlaste value ;
+    if (GetVariable(Var)->Codage.size()>=4)
+      code = GetVariable(Var)->Codage.c_str()[code]-'0';
+
+    Console->debugPrintf ( TRACE_FSX_SEND,"Coding:%d ",code );
+
+    SendControl( evt , code );
   }
 
   else if (typ==IOCARD_ENCODER)
@@ -127,24 +152,26 @@ bool		SendToFsx ( int Var , byte SwValue )
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset not defined for variable %d %s \n", Var, GetVarName(Var) );
 
   }
-  else if (typ==SELECTOR)
+  else if (typ==IOCARD_SELECTOR)
   {
     int input  = GetVariable(Var)->Input ;
     int number = GetVariable(Var)->Numbers ;
     if((number==0)||(evt==0)||(input==0))
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : S\n", Var , GetVarName(Var)  );
-
+    int SwitchActifValue = (GetVarType(Var)!=NEGATIV) ;
     //selector value 
     for (int value=0; value<number;value++)
     {
-        if ( Switch.get ( input + value) == 0 )
+        if ( Switch.get ( input + value) == SwitchActifValue )
         {
+          Console->debugPrintf ( TRACE_FSX_SEND," EventValue:%d ",value );
           SendControl( evt , (int)value );
           break;
         }
     }
 
   }
+  Console->Flush();
 
   return true;
 }
@@ -170,7 +197,35 @@ DWORD WINAPI ThreadAs2(LPVOID lpArg)
 		Com.setspeed ( 115200, 'N' , 8  ,1  ) ;
 		Com.setTimeouts ( 0 ,1000 ) ;
 
-	
+      Switch.set(4, 0 ) ;
+      Switch.set(5, 0 ) ;
+      Switch.set(6, 0 ) ;
+      Switch.set(7, 0 ) ;
+      SendToFsx (1, 1 );
+
+      Switch.set(4, 1 ) ;
+      Switch.set(5, 0 ) ;
+      Switch.set(6, 0 ) ;
+      Switch.set(7, 0 ) ;
+      SendToFsx (1, 1 );
+
+	    Switch.set(4, 0 ) ;
+      Switch.set(5, 1 ) ;
+      Switch.set(6, 0 ) ;
+      Switch.set(7, 0 ) ;
+      SendToFsx (1, 1 );
+
+      Switch.set(4, 0 ) ;
+      Switch.set(5, 0 ) ;
+      Switch.set(6, 1 ) ;
+      Switch.set(7, 0 ) ;
+      SendToFsx (1, 1 );
+
+      Switch.set(4, 0 ) ;
+      Switch.set(5, 0 ) ;
+      Switch.set(6, 0 ) ;
+      Switch.set(7, 1 ) ;
+      SendToFsx (1, 1 );
 
 		while(1==1)
 		{
