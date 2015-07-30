@@ -86,6 +86,7 @@ void CALLBACK MyDispatchProc(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 			case EVENT_SIM_START:	// Track aircraft changes
 				{
 					HRESULT hr = SimConnect_RequestSystemState(hSimConnect, AIR_PATH_REQUEST, "AircraftLoaded");
+					Console->printf("FSX : Aircraft Loaded!\n");   
 					break;
 				}
 			}
@@ -101,6 +102,12 @@ void CALLBACK MyDispatchProc(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 					AircraftRunning = true;
 				else
 					AircraftRunning = false;
+
+				Console->printf("FSX : Aircraft Running !\n");   
+
+				//update the switch position
+				SendSwitchValuesToFsx();
+
 			}
 			break;
 		}
@@ -117,10 +124,10 @@ void CALLBACK MyDispatchProc(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 	}
 }
 
-void SendControl(int event , int pparameter )
+void SendControl(int evt , int pparameter )
 {
 	// Test the first control method: use the control data area.
-	if (event!=0)
+	if (evt!=0)
   if (AircraftRunning)
 	{
 		// Send a command only if there is no active command request and previous command has been processed by the NGX
@@ -132,7 +139,9 @@ void SendControl(int event , int pparameter )
 				SimConnect_CallDispatch(hSimConnect, MyDispatchProc, NULL);
 			}
 		}*/
-		Control.Event = event;		
+		Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d (%s)  Value:%d\n",evt,Event.GetEventName(evt).c_str(),pparameter  );
+
+		Control.Event = evt;		
 		Control.Parameter = pparameter;
 		SimConnect_SetClientData (hSimConnect, PMDG_NGX_CONTROL_ID,	PMDG_NGX_CONTROL_DEFINITION, 
 			0, 0, sizeof(PMDG_NGX_Control), &Control);
@@ -206,8 +215,10 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 
 		// 4) Assign keyboard shortcuts
 
-    //update the switch position
-    SendSwitchValuesToFsx();
+		//send presence message
+		SendOutputCmd (  PRESENCE_CMD , 0 , 0 ) ;
+
+		Sleep(1000) ;
 
 		// 5) Main loop
     int t=0;

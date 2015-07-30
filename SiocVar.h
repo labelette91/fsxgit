@@ -472,6 +472,7 @@ void SetSwitchValue(byte * Buffer , byte SwNumber , byte SwValue  )
 //value :  value    bit 3..1
 //OutputNumber 0..127
 
+#define PRESENCE_CMD        (0x00|0x80)
 //Led output
 #define IOCARD_OUT_CMD      (0x10|0x80)
 //display output
@@ -511,6 +512,8 @@ void SendOutputCmd ( byte cmd,byte OutputNumber , byte Value )
 			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_OUT     Cmd:%02x Output:%3d(0x%2X) Value:%d Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
 		else if (cmd==IOCARD_DISPLAY_CMD)
 			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_DISPLAY Cmd:%02x Output:%3d(0x%2X) Value:%d Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
+		else if (cmd==PRESENCE_CMD)
+			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send PRESENCE_CMD   Cmd:%02x Output:%3d(0x%2X) Value:%d Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
 		else
 			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_ENCODER Cmd:%02x Output:%3d(0x%2X) Value:%d Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
 

@@ -80,7 +80,7 @@ bool		SendToFsx ( int Var , byte SwValue )
 {
   EnumIoType typ = GetVarIoType(Var);
   int evt = GetVariable(Var)->Event ;
-	Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d (%s)  Value:%d Var:%d ",evt,Event.GetEventName(evt).c_str(),SwValue, Var );
+//	Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d (%s)  Value:%d Var:%d ",evt,Event.GetEventName(evt).c_str(),SwValue, Var );
 
 	if ( (typ==IOCARD_SW) )  
   {
@@ -118,7 +118,7 @@ bool		SendToFsx ( int Var , byte SwValue )
     //tranlaste value ;
     if (GetVariable(Var)->Codage.size()>=4)
       code = GetVariable(Var)->Codage.c_str()[code]-'0';
-    Console->debugPrintf ( TRACE_FSX_SEND,"Coding:%d ",code );
+//    Console->debugPrintf ( TRACE_FSX_SEND,"Coding:%d ",code );
     SendControl( evt , code );
   }
   else if (typ==IOCARD_ENCODER)
@@ -157,13 +157,13 @@ bool		SendToFsx ( int Var , byte SwValue )
     {
         if ( Switch.get ( input + value) == SwitchActifValue )
         {
-          Console->debugPrintf ( TRACE_FSX_SEND," EventValue:%d ",value );
+//          Console->debugPrintf ( TRACE_FSX_SEND," EventValue:%d ",value );
           SendControl( evt , (int)value );
           break;
         }
     }
   }
-  Console->Flush();
+//  Console->Flush();
   return true;
 }
 DWORD WINAPI ThreadAs2(LPVOID lpArg)
@@ -272,7 +272,7 @@ void RefreshOutput (int Variable , double value )
     double max = Fsuipc.GetMax(offset);
     double inc = Fsuipc.GetInc(offset);
 		
-		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d\n", Digit ,Number );
+		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d Value:%d \n", Digit ,Number, (int)value );
 		bool displaySigne = false;
 		if (min<0)
 			displaySigne=true;
@@ -390,6 +390,24 @@ void PmdgRegister()
 		Fsuipc.RegisterToVariableChanged (GetVariable(var)->Offset,GetVariable(var)->Length,var);
 	}
 }
+
+//
+void RefreshDisplay()
+{
+	T_VARLIST varsOut ;
+	GetSiocVar(IOCARD_OUT ,  varsOut ) ;
+	GetSiocVar(IOCARD_DISPLAY ,  varsOut ) ;
+	for (unsigned int i=0;i<varsOut.size();i++)
+	{
+		int var = varsOut[i]   ;
+		int offset = GetVariable(var)->Offset;
+    double Value = Fsuipc.GetValue(offset);
+		if (offset)
+			if (RefreshOutput)
+				(*RefreshOutput)(var,Value);
+	}
+}
+
 //update switch value to fsx 
 void SendSwitchValuesToFsx()
 {
