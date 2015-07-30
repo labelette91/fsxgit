@@ -163,7 +163,7 @@ void ReadSioc(const char * fileName)
 
 	if(!myfile) //Always test the file open.
 	{
-		printf("Error opening input file %s ",fileName);
+		Console->errorPrintf (  0 ,"Error opening input file %s ",fileName);
 		return ;
 	}
 	while (std::getline(myfile, line))
@@ -173,21 +173,10 @@ void ReadSioc(const char * fileName)
 		if (    (strstr(line.c_str(),"IOCARD")!=0)
 			   || (strstr(line.c_str(),"FSUIPC")!=0))
 		{
-/*			std::stringstream ss(line);
-			std::string item;
-			while (std::getline(ss, item, ',')) {
-				if (strstr(item.c_str(),"Link")!=0)
-				{
-					break;
-				}
-			}
-*/
-
       T_StringList * args = Split ( (char*)line.c_str() , (char*)" ," , (char*)"" , true );
 			args->Add("");
 
       int i=0;
-//      int var=0;
       while (i<args->Count()-1)
       {
         std::string val1 = (*args)[i];
@@ -356,7 +345,6 @@ void ReadSioc(const char * fileName)
 				else 
 					i++;
 
-
       }
 			delete args ;
       var++ ;
@@ -366,7 +354,7 @@ void ReadSioc(const char * fileName)
 }
 void PrintVars()
 {
-	printf ("Dump  Variable List\n");  
+	Console->debugPrintf (  TRACE_SIOC ,"Dump  Variable List\n");  
 
   for (int var=0;var<MAXVAR;var++)
   {
@@ -394,15 +382,13 @@ Event.GetEventName(Var[var].Event).c_str()
   }
   Console->debugPrintf (  TRACE_SIOC , "Input configuration\n");
 
-  InputVar[MAXINPUT];
-
-
-  for (int var=0;var<MAXINPUT;var++)
+  for (int input=0;input<MAXINPUT;input++)
   {
-    if (InputVar[var] !=0)
-    Console->debugPrintf (  TRACE_SIOC ,  "Input:%3d Var:%4d IO:%s Name:%-14s\n",var,InputVar[var], GetIOTypeStr(Var[InputVar[var]].IOType), Var[InputVar[var]].name.c_str()  );
-  }
+		int SiocVar  = GetInputVar(input);
 
+    if (SiocVar !=0)
+    Console->debugPrintf (  TRACE_SIOC ,  "Input:%3d Var:%4d IO:%s Name:%-14s\n",input,SiocVar, GetIOTypeStr(GetVarIoType(SiocVar)), GetVarName(SiocVar)  );
+  }
 
 }
 

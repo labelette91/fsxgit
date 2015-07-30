@@ -170,7 +170,7 @@ void ReadFromFile(const char * fileName)
 
 	if(!myfile) //Always test the file open.
 	{
-		printf("Error opening input file %s \n",fileName);
+		Console->printf(0,"Error opening input file %s \n",fileName);
 		return ;
 	}
   //read header
@@ -240,13 +240,13 @@ void ReadFromFile(const char * fileName)
 void Print()
 {
 	int last = 0 ;
-	printf ("Dump  FsuipcOffset\n");  
+	Console->debugPrintf (  TRACE_OFFSET ,  "Dump  FsuipcOffset\n");  
 	for (int var=0;var<MAXOFFSET;var++)
 	{
 		if ( (FsuipcOffset[var].Offset !=0)&& (FsuipcOffset[var].Offset !=last) )
 		{
-//			Console->debugPrintf (  TRACE_SIOC , 
-			printf (   
+			Console->debugPrintf (  TRACE_OFFSET , 
+//			printf (   
 				"Var:%5d  len:%d offset:%04X (%5d) name:%-14s Max:%9.2f Min:%9.2f Inc:%f\n",  
 				var,
 				FsuipcOffset[var].Len,
@@ -388,10 +388,9 @@ void ReadFromFile(const char * fileName)
 
 	if(!myfile) //Always test the file open.
 	{
-		printf("Error opening input file %s \n",fileName);
+		Console->errorPrintf(0,"Error opening input file %s \n",fileName);
 		return ;
 	}
-	printf ("Dump  Control Event List\n");  
 
 	while (std::getline(myfile, line))
 	{
@@ -425,7 +424,7 @@ void ReadFromFile(const char * fileName)
       Map_Control[Name]=ofs;
       }
       else
-	  		printf ("invalid offset : %s\n",line.c_str());  
+	  		Console->errorPrintf(0,"invalid offset : %s\n",line.c_str());  
 
       delete args ;
 	}
@@ -433,12 +432,12 @@ void ReadFromFile(const char * fileName)
 void Print()
 {
 	int last = 0 ;
+	Console->debugPrintf (  TRACE_EVENT , "Dump  Control Event List\n");  
 	for (int var=0;var<MAXOFFSET;var++)
 	{
 		if ( (Control[var].Offset !=0)&& (Control[var].Offset !=last) )
 		{
-//			Console->debugPrintf (  TRACE_SIOC , 
-			printf (   
+			Console->debugPrintf (  TRACE_EVENT , 
 				"Var:%5d  offset:%04X (%5d) name:%-14s \n",  
 				var,
 				Control[var].Offset,

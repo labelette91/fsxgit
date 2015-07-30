@@ -112,7 +112,7 @@ void CALLBACK MyDispatchProc(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 		}
 
 	default:
-		printf("Received:%d\n",pData->dwID);
+		//printf("Received:%d\n",pData->dwID);
 		break;
 	}
 }
@@ -151,19 +151,15 @@ int GetIdOffset(int id )
 	return id - THIRD_PARTY_EVENT_ID_MIN ;
 }
 
-void RefreshOutputFct (int variable,double Value)
-{
-	 printf("var:%4d  Value:%f\n",variable,Value );
-}
 DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 {
     HRESULT hr;
-    printf("PMDG Thread running\n");   
+    Console->printf("PMDG Thread running\n");   
 
 		HANDLE hEventHandle = ::CreateEvent(NULL, FALSE, FALSE, NULL); 
     if(hEventHandle == NULL) 
     { 
-        printf("Error: Event creation failed!\n"); 
+        Console->errorPrintf(0,"Error: Event creation failed!\n"); 
         return false; 
     } 
 
@@ -176,7 +172,7 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 		//use event handle
     if (SUCCEEDED(SimConnect_Open(&hSimConnect, "PMDG NGX Test", NULL, 0, hEventHandle, 0)))
     {
-        printf("Connected to Flight Simulator!\n");   
+        Console->printf("Connected to Flight Simulator!\n");   
         
 		// 1) Set up data connection
 
@@ -217,8 +213,11 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 
 		// 4) Assign keyboard shortcuts
 
+    //update the switch position
+    SendSwitchValuesToFsx();
+
 		// 5) Main loop
-		int t=0;
+    int t=0;
 		int fd=0;
 //    while( quit == 0 )
 		while( quit == 0  && ::WaitForSingleObject(hEventHandle, INFINITE) == WAIT_OBJECT_0) 
@@ -236,12 +235,11 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 					else
 						fd=0;						
 				}
-				if ((t % 100)==0) printf("%d ",t);
     } 
     hr = SimConnect_Close(hSimConnect);
 		CloseHandle(hEventHandle); 
 	}
 	else
-		printf("Unable to connect!\n");
+		Console->errorPrintf(0,"Unable to connect!\n");
   return 0;
 }

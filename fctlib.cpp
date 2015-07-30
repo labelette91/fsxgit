@@ -20,7 +20,7 @@
 #include <stdarg.h>
 #include <stdexcept>
 
-//#include "console.h"
+#include "console.h"
 
 //  Include de décalibration
 //#include "dftypgen.h"
@@ -811,8 +811,8 @@ int Atoi(const char *s)
     }
     catch (std::exception  &e)
     {
-      printf( "Exception %s\n",e.what() ); 
-      //       Console->errorPrintf( 2,"Invalid Parameter Value : %s\n",s );
+      //printf( "Exception %s\n",e.what() ); 
+             Console->errorPrintf( 2,"Invalid Parameter Value : %s\n",s );
     }
     return 0 ;
 }
@@ -941,8 +941,8 @@ int strToInt  (const  char *str , int base )
     }
     catch ( std::exception &e )
     {
-      printf( "Exception %s\n",e.what() ); 
-//         Console->errorPrintf( 1,"Exception: %s" ,e.what() );
+     // printf( "Exception %s\n",e.what() ); 
+         Console->errorPrintf( 1,"Exception: %s" ,e.what() );
     }
     return 0;       
 }
@@ -972,8 +972,8 @@ unsigned int strToUInt  (const char *str , int base )
     }
     catch ( std::exception &e )
     {
-      printf( "Exception %s\n",e.what() ); 
-//         Console->errorPrintf( 1,"Exception: %s" ,e.what() );
+     // printf( "Exception %s\n",e.what() ); 
+         Console->errorPrintf( 1,"Exception: %s" ,e.what() );
     }
     return 0;       
 }
@@ -1002,8 +1002,8 @@ double  strToDouble   (const char *str , int base )
     }
     catch ( std::exception &e )
     {
-      printf( "Exception %s\n",e.what() ); 
-//         Console->errorPrintf( 1,"Exception: %s" ,e.what() );
+     // printf( "Exception %s\n",e.what() ); 
+         Console->errorPrintf( 1,"Exception: %s" ,e.what() );
     }
     return 0;
 }

@@ -60,11 +60,10 @@ ClientTcp * Tcp ;
 
 #include "SiocVar.h"
 
-void RefreshOutput (int Variable , double value );
+extern void RefreshOutput (int Variable , double value );
+extern void SendSwitchValuesToFsx();
 
 #include "pmdg.h"
-
-
 
 std::string ServerIp = "127.0.0.1";
 int ServerPort = 8092;
@@ -100,7 +99,6 @@ bool		SendToFsx ( int Var , byte SwValue )
 		else
 			SendControl( evt , MOUSE_FLAG_LEFTRELEASE );
   }
-  
 	else if (typ==IOCARD_SW_3P) 
   {
     int input  = GetVariable(Var)->Input ;
@@ -120,12 +118,9 @@ bool		SendToFsx ( int Var , byte SwValue )
     //tranlaste value ;
     if (GetVariable(Var)->Codage.size()>=4)
       code = GetVariable(Var)->Codage.c_str()[code]-'0';
-
     Console->debugPrintf ( TRACE_FSX_SEND,"Coding:%d ",code );
-
     SendControl( evt , code );
   }
-
   else if (typ==IOCARD_ENCODER)
   {
     int offset = GetVariable(Var)->Offset ;
@@ -140,7 +135,6 @@ bool		SendToFsx ( int Var , byte SwValue )
     {
        char SwV = (char)SwValue;
 			value = value + SwV * inc ;
-
       if (value>max) value = min  ;
       if (value<min) value = max  ;
 	    Fsuipc.SetValue(offset , value) ;
@@ -150,7 +144,6 @@ bool		SendToFsx ( int Var , byte SwValue )
     }
     else
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset not defined for variable %d %s \n", Var, GetVarName(Var) );
-
   }
   else if (typ==IOCARD_SELECTOR)
   {
@@ -169,13 +162,10 @@ bool		SendToFsx ( int Var , byte SwValue )
           break;
         }
     }
-
   }
   Console->Flush();
-
   return true;
 }
-
 DWORD WINAPI ThreadAs2(LPVOID lpArg)
 {
   int dwRead;
@@ -324,8 +314,6 @@ void RefreshOutput (int Variable , double value )
   }
 
 }
-
-
 DWORD WINAPI ThreadSioc(LPVOID lpArg)
 {
 	char recvbuf[1024]  ;
@@ -389,7 +377,7 @@ DWORD WINAPI ThreadSioc(LPVOID lpArg)
 
 }
 
-//refister to Pmdg variable offset
+//register to Pmdg variable offset
 void PmdgRegister()
 {
 	T_VARLIST varsOut ;
@@ -402,8 +390,23 @@ void PmdgRegister()
 		Fsuipc.RegisterToVariableChanged (GetVariable(var)->Offset,GetVariable(var)->Length,var);
 	}
 }
-
-
+//update switch value to fsx 
+void SendSwitchValuesToFsx()
+{
+	T_VARLIST varsOut ;
+	GetSiocVar(IOCARD_SW       ,  varsOut ) ;
+	GetSiocVar(IOCARD_SELECTOR ,  varsOut ) ;
+	GetSiocVar(IOCARD_PUSH_BTN ,  varsOut ) ;
+	GetSiocVar(IOCARD_SW_3P    ,  varsOut ) ;
+	for (unsigned int i=0;i<varsOut.size();i++)
+	{
+    //get var number
+		int var     = varsOut[i]   ;
+    int input   = GetVariable(var)->Input ;
+    int swValue = Switch.get ( input ) ;
+    SendToFsx(var,swValue);
+	}
+}
 //tcp ComPort SiocFileName debug ServerIp ServerPort
 int main(int argc, char **argv)
 {
@@ -437,10 +440,9 @@ int main(int argc, char **argv)
   PrintVars();
 
   T_THREAD thAs2 (ThreadAs2,(LPVOID)numas2 );
-//	InitRs232=true;
-	while (InitRs232==false)
+	//wait for rs232 init
+  while (InitRs232==false)
 		Sleep(100);
-//	Sleep(1000); 
 
 #ifdef USE_SIOC
   T_THREAD thSioc (ThreadSioc,(LPVOID)0 );
@@ -450,8 +452,6 @@ int main(int argc, char **argv)
 	PmdgRegister();
 	T_THREAD thPmdg  (ThreadPMDG,(LPVOID)0 );
 	thPmdg.WaitTerminate();
-
-
 #endif
 //	test1();
 }
