@@ -3,12 +3,12 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="tcp.exe"/>
-    <OBJFILES value="tcp.obj fctlib.obj console.obj as2.obj tcomas2.obj"/>
+    <PROJECT value=".\exe\tcp.exe"/>
+    <OBJFILES value="exe\tcp.obj exe\fctlib.obj exe\console.obj exe\as2.obj exe\tcomas2.obj"/>
     <RESFILES value="tcp.res"/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES)"/>
-    <LIBFILES value=""/>
+    <LIBFILES value="simconnectBorland.lib"/>
     <LIBRARIES value=""/>
     <SPARELIBS value=""/>
     <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi bcbsmp.bpi dbrtl.bpi adortl.bpi vcldb.bpi 
@@ -33,12 +33,12 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <CFLAG1 value="-tWC -tWM -Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v 
-      -vi- -c"/>
-    <PFLAGS value="-$YD -$W -$O- -$A8 -v -JPHNE -M"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -tWC 
+      -tWM -c"/>
+    <PFLAGS value="-N2.\exe -N0.\exe -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zd"/>
-    <LFLAGS value="-Tpe -ap -D&quot;&quot; -x -Gn -v"/>
+    <LFLAGS value="-I.\exe -D&quot;&quot; -ap -Tpe -x -Gn -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -55,6 +55,7 @@
       <FILE FILENAME="console.cpp" FORMNAME="" UNITNAME="console.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="as2.cpp" FORMNAME="" UNITNAME="as2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="tcomas2.cpp" FORMNAME="" UNITNAME="tcomas2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="simconnectBorland.lib" FORMNAME="" UNITNAME="simconnectBorland.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -86,6 +87,33 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
+
+[Excluded Packages]
+c:\program files\borland\cbuilder6\Bin\dclclxdb60.bpl=Composants BD CLX Borland
+
+[HistoryLists\hlIncludePath]
+Count=1
+Item0=C:\Documents and Settings\Pascal\Mes documents\tcp;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=1
+Item0=C:\Documents and Settings\Pascal\Mes documents\tcp;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=1
+Item0=.\exe
+
+[HistoryLists\hlFinalOutputDir]
+Count=1
+Item0=.\exe
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl

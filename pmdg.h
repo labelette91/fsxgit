@@ -8,7 +8,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include <stdio.h>
-#include <strsafe.h>
+//#include <strsafe.h>
 #include <string>
 #include <stdlib.h>
 #include "simconnect.h"
@@ -18,13 +18,13 @@ HANDLE  hSimConnect = NULL;
 bool    AircraftRunning = false;		
 PMDG_NGX_Control Control; 
 
-static enum DATA_REQUEST_ID {
+enum DATA_REQUEST_ID {
 	DATA_REQUEST,
 	CONTROL_REQUEST,
 	AIR_PATH_REQUEST
 };
 
-static enum EVENT_ID {
+enum EVENT_ID {
 	EVENT_SIM_START,	// used to track the loaded aircraft
 };
 
@@ -139,13 +139,6 @@ void SendControl(int event , int pparameter )
 	}
 }
 
-std::string GetIdName(int id )
-{
-	char Id[128] ;
-	_itoa_s(id,&Id[1],64,10);
-	Id[0] = '#';	
-	return std::string(Id); 
-}
 int GetIdOffset(int id )
 {
 	return id - THIRD_PARTY_EVENT_ID_MIN ;

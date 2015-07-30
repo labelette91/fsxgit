@@ -17,7 +17,7 @@
 // definition of a map between event name and number 
 typedef map< std::string ,int > T_Map_Int_String ;
 
-static enum FIELD_TYPE {
+enum FIELD_TYPE {
 	F_UNDEF  ,
 	F_BYTE   ,
   F_WORD  ,
