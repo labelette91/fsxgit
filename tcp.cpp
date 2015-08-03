@@ -163,6 +163,43 @@ bool		SendToFsx ( int Var , byte SwValue )
         }
     }
   }
+
+    else if (typ==IOCARD_SWAPER)
+  {
+    int Var1  = GetVariable(Var)->Var1 ;
+    int Var2  = GetVariable(Var)->Var2 ;
+
+    int Input = GetVariable(Var1)->Input ;
+    int number= GetVariable(Var1)->Numbers ;
+
+    int SwitchActifValue = (GetVarType(Var)!=NEGATIV) ;
+
+    //ingnore pasive balue 
+    if (SwitchActifValue != SwValue)
+      return true;
+
+    if((Var1<=0)||(Var2<=0))
+	    Console->errorPrintf ( 0 ,"FSX  :Variable 1 or 2 not defined for variable %d : S\n", Var , GetVarName(Var)  );
+
+    //selector value 
+    for (int inp=Input; inp<Input+number;inp++)
+    {
+        //get current variable input 
+        int v = GetInputVar(inp) ;
+        //swap var
+        if ( v==Var1)
+          SetInputVar(Var2 , inp );
+        else
+          SetInputVar(Var1 , inp );
+        int  SiocVar = GetInputVar(inp) ;
+        Console->debugPrintf (  TRACE_FSX_SEND ,  "Input:%3d Var:%4d IO:%s Name:%-14s\n",inp,SiocVar, GetIOTypeStr(GetVarIoType(SiocVar)), GetVarName(SiocVar)  );
+
+    }
+  }
+
+  
+
+
 //  Console->Flush();
   return true;
 }
@@ -186,6 +223,12 @@ DWORD WINAPI ThreadAs2(LPVOID lpArg)
 		Console->printf("opening com %d\n",Num);
 		Com.setspeed ( 115200, 'N' , 8  ,1  ) ;
 		Com.setTimeouts ( 0 ,1000 ) ;
+
+    //test
+    SendToFsx ( 84 , 1 );
+    SendToFsx ( 84 , 0 );
+    SendToFsx ( 84 , 1 );
+    SendToFsx ( 84 , 0 );
 
 		while(1==1)
 		{

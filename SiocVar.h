@@ -36,6 +36,7 @@ typedef enum  {
  IOCARD_SELECTOR= 6,
  IOCARD_PUSH_BTN= 7,
  IOCARD_SW_3P   = 8,
+ IOCARD_SWAPER  = 9,
 
  END_TYPE
 
@@ -50,7 +51,8 @@ char * IoTypeStr[] ={
  "       FSUIPC   ",
  "IOCARD_SELECTOR ",
  "IOCARD_PUSH_BTN ",
- "IOCARD_SW_3P    ",      
+ "IOCARD_SW_3P    ", 
+ "IOCARD_SWAPER   "
 
 };
 
@@ -71,6 +73,9 @@ typedef struct
   double Min;
   double Inc;
   std::string Codage ;
+  int Var1 ;
+  int Var2 ;
+
 
 } TVariable ;
 
@@ -137,6 +142,16 @@ EnumIoType findIOType (std::string sType)
 const char * GetVarName(int var)
 {
   return Var[var].name.c_str() ;
+}
+
+int  GetVarFromName(const char *  varName)
+{
+  for (int i=0;i<MAXVAR;i++)
+  {
+    if ( strcmpi ( GetVarName(i),varName)==0)
+      return i ;
+  }
+  return -1  ;
 }
 
 void SetInputVar(int Var,int pInput)
@@ -286,6 +301,7 @@ void ReadSioc(const char * fileName)
         else if (val1=="IOCARD_ENCODER")
         {
           Var[var].IOType = IOCARD_ENCODER;
+          Var[var].Numbers = 2 ;
           i+=1;
         }
         else if (val1=="IOCARD_SELECTOR")
@@ -294,6 +310,39 @@ void ReadSioc(const char * fileName)
           Var[var].Numbers = 1 ;
           i+=1;
         }
+        
+        else if (val1=="IOCARD_SWAPER")
+        {
+          Var[var].IOType = IOCARD_SWAPER;
+          Var[var].Numbers = 1 ;
+          i+=1;
+        }
+        else if (val1=="Var1")
+        {
+          if ( isalpha ( val2[0] ) )
+          {
+            Var[var].Var1 = GetVarFromName(val2.c_str());
+            if (Var[var].Var1<0)
+            		Console->errorPrintf (  0 ,"Error: variable not found :%s line:%s\n",val2.c_str() , line.c_str() );
+          }
+          else
+            Var[var].Var1 = (int)strToInt(val2.c_str(),10 ) ;
+          i+=2;
+        }
+        else if (val1=="Var2")
+        {
+          if ( isalpha ( val2[0] ) )
+          {
+            Var[var].Var2 = GetVarFromName(val2.c_str());
+            if (Var[var].Var2<0)
+            		Console->errorPrintf (  0 ,"Error: variable not found :%s line:%s\n",val2.c_str() , line.c_str() );
+          }
+          else
+            Var[var].Var2 = (int)strToInt(val2.c_str(),10 ) ;
+          i+=2;
+        }
+
+
         else if (val1=="Aceleration")
         {
           Var[var].Aceleration = atoi(val2.c_str()) ;
