@@ -192,7 +192,7 @@ bool		SendToFsx ( int Var , byte SwValue )
         else
           SetInputVar(Var1 , inp );
         int  SiocVar = GetInputVar(inp) ;
-        Console->debugPrintf (  TRACE_FSX_SEND ,  "Input:%3d Var:%4d IO:%s Name:%-14s\n",inp,SiocVar, GetIOTypeStr(GetVarIoType(SiocVar)), GetVarName(SiocVar)  );
+        Console->debugPrintf (  TRACE_FSX_SEND ,  "FSX  :  Swaping Input:%3d Var:%4d IO:%s Name:%-14s\n",inp,SiocVar, GetIOTypeStr(GetVarIoType(SiocVar)), GetVarName(SiocVar)  );
 
     }
   }
@@ -223,12 +223,6 @@ DWORD WINAPI ThreadAs2(LPVOID lpArg)
 		Console->printf("opening com %d\n",Num);
 		Com.setspeed ( 115200, 'N' , 8  ,1  ) ;
 		Com.setTimeouts ( 0 ,1000 ) ;
-
-    //test
-    SendToFsx ( 84 , 1 );
-    SendToFsx ( 84 , 0 );
-    SendToFsx ( 84 , 1 );
-    SendToFsx ( 84 , 0 );
 
 		while(1==1)
 		{
