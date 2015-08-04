@@ -196,11 +196,19 @@ void SendControl(int evt , int pparameter )
 			}
 		}*/
 		Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d (%s)  Value:%d\n",evt,Event.GetEventName(evt).c_str(),pparameter  );
+		//pmdg event
+		if ( IsTHIRD_PARTY_EVENT_ID (evt))
+		{
+			Control.Event = evt;		
+			Control.Parameter = pparameter;
+			SimConnect_SetClientData (hSimConnect, PMDG_NGX_CONTROL_ID,	PMDG_NGX_CONTROL_DEFINITION, 
+				0, 0, sizeof(PMDG_NGX_Control), &Control);
+		}
+		else
+		{
+       SimConnect_TransmitClientEvent(hSimConnect, 0, evt, pparameter, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
 
-		Control.Event = evt;		
-		Control.Parameter = pparameter;
-		SimConnect_SetClientData (hSimConnect, PMDG_NGX_CONTROL_ID,	PMDG_NGX_CONTROL_DEFINITION, 
-			0, 0, sizeof(PMDG_NGX_Control), &Control);
+		}
 	}
 }
 
@@ -239,12 +247,31 @@ void FsxgRegister()
       i
       );
     }
-
 	}
 
   // Make the call for data every second, but only when it changes and
   // only that data that has changed
   HRESULT hr = SimConnect_RequestDataOnSimObject(hSimConnect, REQUEST_1 , DEFINITION_1,0, SIMCONNECT_PERIOD_SIM_FRAME,SIMCONNECT_DATA_REQUEST_FLAG_CHANGED | SIMCONNECT_DATA_REQUEST_FLAG_TAGGED	);
+
+	//map all FSX event 
+  for (int var=0;var<MAXVAR;var++)
+  {
+    if (GetVariable(var)->Event_Dec.size())
+		{
+			const char * EventName = GetVariable(var)->Event_Dec.c_str() ;
+			int EvtNum  = Event.Add(EventName,1.0,0.0);
+      HRESULT hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EvtNum, EventName);
+			GetVariable(var)->EventDec = EvtNum;
+		}
+    if (GetVariable(var)->Event_Inc.size())
+		{
+			const char * EventName = GetVariable(var)->Event_Inc.c_str() ;
+			int EvtNum  = Event.Add(EventName,1.0,0.0);
+      HRESULT hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EvtNum, EventName);
+			GetVariable(var)->EventInc = EvtNum;
+		}
+  }
+
 }
 
 

@@ -25,4 +25,4 @@ Var 0082, name HDGrot1,     Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 
 *Link IOCARD_OUT, Output 6,  Offset MCP_annunFD_1
 
 *name NavActive,  Link IOCARD_DISPLAY, Digit 5, Numbers 3 Fsx "NAV ACTIVE FREQUENCY:1"  Unit=Mhz  Min 0
-*name NavStandby, Link IOCARD_DISPLAY, Digit 0, Numbers 3 Fsx "NAV STANDBY FREQUENCY:1" Unit "Mhz" Min 0
+name NavStandby, Link IOCARD_DISPLAY, Digit 0, Numbers 3 Fsx "NAV STANDBY FREQUENCY:1" Unit "Mhz" Min 0

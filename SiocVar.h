@@ -79,6 +79,8 @@ typedef struct
   std::string  Unit;
   std::string  Event_Inc ;
   std::string  Event_Dec ;
+	int EventInc  ;
+	int EventDec  ;
 
 } TVariable ;
 

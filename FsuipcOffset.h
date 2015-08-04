@@ -374,6 +374,12 @@ std::string  GetOffsetName(int offsetNum )
 
 //#define THIRD_PARTY_EVENT_ID_MIN 0x11000
 
+bool IsTHIRD_PARTY_EVENT_ID (int id)
+{
+	return (id>=THIRD_PARTY_EVENT_ID_MIN);
+}
+
+
 class  TControlClass  {
 public:	
 
@@ -393,13 +399,10 @@ typedef struct
 
 map< int ,TControl > Control ;
 
-
 T_Map_Int_String Map_Control ;
 
-bool IsTHIRD_PARTY_EVENT_ID (int id)
-{
-	return (id>=THIRD_PARTY_EVENT_ID_MIN);
-}
+int NbEvent ;
+
 const char * GetName(int var)
 {
   return Control[var].Name.c_str() ;
@@ -408,6 +411,28 @@ bool Defined(int var)
 {
   return (Control[var].EventId !=0) ;
 }
+void Add ( int EventId , const char * EventName , double a , double b )
+{
+      Control[EventId].EventId =EventId;
+      Control[EventId].Name =  EventName  ;
+      Control[EventId].a=a;
+      Control[EventId].b=b;
+
+      Map_Control[EventName]=EventId;
+
+}
+
+
+int Add (  const char * EventName , double a , double b )
+{
+  NbEvent++;
+  Add ( NbEvent ,  EventName ,  a , b ) ;
+	return (NbEvent);
+
+}
+
+
+
 void ReadFromFile(const char * fileName)
 {
 	std::string line;
@@ -438,19 +463,16 @@ void ReadFromFile(const char * fileName)
       {
       std::string Name =  (*args)[0] ;
 
-      Control[i].EventId =ofs;
-      Control[i].Name =  Name  ;
-      Control[i].a=1;
-
+			double a=1,b=0 ;
       if (args->Count() >=4)
       {
-				Control[i].a    =    strToDouble((*args)[3].c_str(),10) ;
-        if (Control[i].a==0) Control[i].a=1;
+				a = strToDouble((*args)[3].c_str(),10) ;
+        if (a==0) a=1;
       }
       if (args->Count() >=5)
-        Control[i].b    =    strToDouble((*args)[4].c_str(),10) ;;
+        b    =    strToDouble((*args)[4].c_str(),10) ;;
 
-      Map_Control[Name]=ofs;
+			Add (ofs,Name.c_str(),a,b); 
       }
       else
 	  		Console->errorPrintf(0,"invalid control : %s\n",line.c_str());  
