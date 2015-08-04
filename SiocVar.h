@@ -92,7 +92,10 @@ int InputVar[MAXINPUT];
 #define POSITIV 'P'
 #define NEGATIV 'N'
 
-
+bool AsFsxVariableDefinition(int var)
+{
+	return Var[var].FsxVariableName.size()!=0 ;
+}
 TVariable *  GetVariable(int var)
 {
   return & Var[var] ;
@@ -204,7 +207,7 @@ void ReadSioc(const char * fileName)
 		if (    (strstr(line.c_str(),"IOCARD")!=0)
 			   || (strstr(line.c_str(),"FSUIPC")!=0))
 		{
-      T_StringList * args = Split ( (char*)line.c_str() , (char*)" ," , (char*)"\"" , true );
+      T_StringList * args = Split ( (char*)line.c_str() , (char*)" ,=" , (char*)"\"" , true );
 			args->Add("");
 
       int i=0;
@@ -390,6 +393,10 @@ void ReadSioc(const char * fileName)
           Var[var].FsxVariableName =val2;
           Fsuipc.Add (val2.c_str(),var);
           Var[var].Offset = Fsuipc.GetOffsetNum(val2);
+          int offset = Var[var].Offset ;
+          Var[var].Min = Fsuipc.GetMin(offset);
+          Var[var].Max = Fsuipc.GetMax(offset);
+          Var[var].Inc = Fsuipc.GetInc(offset);
 
           i+=2;
         }

@@ -229,10 +229,10 @@ void FsxgRegister()
 	{
 		int var = varsOut[i]   ;
     std::string FsxVariableName = GetVariable(var)->FsxVariableName ;
-    if (FsxVariableName.size())
+    if (AsFsxVariableDefinition(var) ) 
     {
-    FsxAddToDataDefinition(FsxVariableName.c_str() , GetVariable(var)->Unit.c_str(),GetVariable(var)->Offset );
-    Console->debugPrintf(TRACE_FSX_SEND,"FSX : register to variable %-30s Unit:%-10s Id:%d Var:%d\n",
+			FsxAddToDataDefinition(FsxVariableName.c_str() , GetVariable(var)->Unit.c_str(),GetVariable(var)->Offset );
+			Console->debugPrintf(TRACE_FSX_SEND,"FSX : register to Fsx Variable %-30s Unit:%-10s Id:%d Var:%d\n",
       GetVariable(var)->FsxVariableName.c_str(),
       GetVariable(var)->Unit.c_str(),
       GetVariable(var)->Offset,
@@ -244,10 +244,7 @@ void FsxgRegister()
 
   // Make the call for data every second, but only when it changes and
   // only that data that has changed
-  HRESULT hr = SimConnect_RequestDataOnSimObject(hSimConnect, REQUEST_1 , DEFINITION_1,
-  SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_PERIOD_SECOND,
-  SIMCONNECT_DATA_REQUEST_FLAG_CHANGED | SIMCONNECT_DATA_REQUEST_FLAG_TAGGED	);
-
+  HRESULT hr = SimConnect_RequestDataOnSimObject(hSimConnect, REQUEST_1 , DEFINITION_1,0, SIMCONNECT_PERIOD_SIM_FRAME,SIMCONNECT_DATA_REQUEST_FLAG_CHANGED | SIMCONNECT_DATA_REQUEST_FLAG_TAGGED	);
 }
 
 

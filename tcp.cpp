@@ -309,7 +309,7 @@ void RefreshOutput (int Variable , double value )
     double max = GetVarMax(Variable);
     double inc = GetVarInc(Variable);
 		
-		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d Value:%d \n", Digit ,Number, (int)value );
+		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d Value:%d Max:%f Min:%f Inc:%f \n", Digit ,Number, (int)value,max,min,inc );
 		bool displaySigne = false;
 		if (min<0)
 			displaySigne=true;
@@ -424,7 +424,8 @@ void PmdgRegister()
 	for (unsigned int i=0;i<varsOut.size();i++)
 	{
 		int var = varsOut[i]   ;
-		Fsuipc.RegisterToVariableChanged (GetVariable(var)->Offset,GetVariable(var)->Length,var);
+		if (!AsFsxVariableDefinition(var) )
+			Fsuipc.RegisterToVariableChanged (GetVariable(var)->Offset,GetVariable(var)->Length,var);
 	}
 }
 

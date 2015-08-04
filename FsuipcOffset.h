@@ -14,6 +14,8 @@
 //#define FIRST_OFFSET 0x6420
 #define FIRST_OFFSET 1000
 
+#define MAX_REAL_VALUE 1000000000
+
 // definition of a map between event name and number 
 typedef map< std::string ,int > T_Map_Int_String ;
 
@@ -98,8 +100,8 @@ void Add ( int ofs  ,const char * Name ,  int var , int fsize=4 , int ftype = F_
   FsuipcOffset[ofs].Type     =  ftype;
   FsuipcOffset[ofs].Variable =  var;
 
-  FsuipcOffset[ofs].Max=0;
-  FsuipcOffset[ofs].Min=0;
+  FsuipcOffset[ofs].Max=MAX_REAL_VALUE;
+  FsuipcOffset[ofs].Min=-MAX_REAL_VALUE;
   FsuipcOffset[ofs].Inc=1;
   Map_Offset[Name] = ofs;
 
@@ -352,7 +354,7 @@ void RegisterToVariableChanged ( int offset , int Len , int variable )
 		}
 		WatchedOffset.push_back(offset);
 		FsuipcOffset[offset].Variable = variable ;
-    Console->debugPrintf(TRACE_FSX_SEND,"FSX : register to offset %4x : %s \n",offset,GetOffsetName(offset).c_str() );
+    Console->debugPrintf(TRACE_FSX_SEND,"FSX : register to PMDG offset %4x : %s Variable:%d\n",offset,GetOffsetName(offset).c_str(),variable );
 
 	}
 }
