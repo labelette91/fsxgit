@@ -380,27 +380,33 @@ public:
 typedef struct				
 {
   std::string Name;
-	int Offset ;
+	int EventId ;
 	double a ;    //parameter value = ax + b
 	double b ;
 
 
 } TControl ;
 
-#define MAXOFFSET 65535 
+#define MAXCONTROL  THIRD_PARTY_EVENT_ID_MIN + 15000 
 
-TControl Control[MAXOFFSET];
+//TControl Control[MAXCONTROL];
+
+map< int ,TControl > Control ;
+
 
 T_Map_Int_String Map_Control ;
 
-
+bool IsTHIRD_PARTY_EVENT_ID (int id)
+{
+	return (id>=THIRD_PARTY_EVENT_ID_MIN);
+}
 const char * GetName(int var)
 {
   return Control[var].Name.c_str() ;
 }
 bool Defined(int var)
 {
-  return (Control[var].Offset !=0) ;
+  return (Control[var].EventId !=0) ;
 }
 void ReadFromFile(const char * fileName)
 {
@@ -426,13 +432,13 @@ void ReadFromFile(const char * fileName)
 				continue;
 
 			int ofs = strToUInt((*args)[1].c_str(),10) ;
-      int i = ofs- THIRD_PARTY_EVENT_ID_MIN;
+      int i = ofs /* - THIRD_PARTY_EVENT_ID_MIN */ ;
           
-      if ( i<MAXOFFSET )
+      if ( i<MAXCONTROL )
       {
       std::string Name =  (*args)[0] ;
 
-      Control[i].Offset =ofs;
+      Control[i].EventId =ofs;
       Control[i].Name =  Name  ;
       Control[i].a=1;
 
@@ -447,7 +453,7 @@ void ReadFromFile(const char * fileName)
       Map_Control[Name]=ofs;
       }
       else
-	  		Console->errorPrintf(0,"invalid offset : %s\n",line.c_str());  
+	  		Console->errorPrintf(0,"invalid control : %s\n",line.c_str());  
 
       delete args ;
 	}
@@ -456,18 +462,24 @@ void Print()
 {
 	int last = 0 ;
 	Console->debugPrintf (  TRACE_EVENT , "Dump  Control Event List\n");  
-	for (int var=0;var<MAXOFFSET;var++)
+
+	for (std::map< int ,TControl >::iterator it=Control.begin(); it!=Control.end(); ++it)
+//    std::cout << it->first << " => " << it->second << '\n';
+
+//	for (int var=0;var<MAXCONTROL;var++)
 	{
-		if ( (Control[var].Offset !=0)&& (Control[var].Offset !=last) )
+//		TControl * ptC = &Control[var];
+		TControl * ptC = &it->second ;
+		if ( (ptC->EventId !=0)&& (ptC->EventId !=last) )
 		{
 			Console->debugPrintf (  TRACE_EVENT , 
-				"Var:%5d  offset:%04X (%5d) name:%-14s \n",  
-				var,
-				Control[var].Offset,
-				Control[var].Offset,
-				Control[var].Name.c_str() 
+				"Event:%5d  Id:%04X (%5d) Name:%-14s \n",  
+				it->first,
+				ptC->EventId,
+				ptC->EventId,
+				ptC->Name.c_str() 
 				);
-			last = Control[var].Offset  ;
+			last = ptC->EventId  ;
 		}
 	}
 }
@@ -479,14 +491,14 @@ int GetEventNum(std::string eventName)
 std::string  GetEventName(int eventNum )
 {
   if (eventNum>0)
-    return Control[eventNum-THIRD_PARTY_EVENT_ID_MIN].Name ;
+    return Control[eventNum/*-THIRD_PARTY_EVENT_ID_MIN*/].Name ;
   else 
     return "";
 }
 
 TControl*  Get(int eventNum )
 {
-    return &Control[eventNum-THIRD_PARTY_EVENT_ID_MIN] ;
+    return &Control[eventNum/*-THIRD_PARTY_EVENT_ID_MIN*/] ;
 }
 
 };
