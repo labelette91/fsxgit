@@ -124,16 +124,16 @@ bool		SendToFsx ( int Var , byte SwValue )
   else if (typ==IOCARD_ENCODER)
   {
     int offset = GetVariable(Var)->Offset ;
-    double min = Fsuipc.GetMin(offset);
-    double max = Fsuipc.GetMax(offset);
-    double inc = Fsuipc.GetInc(offset);
+    double min = GetVarMin(Var);
+    double max = GetVarMax(Var);
+    double inc = GetVarInc(Var);
 
     if (inc==0) inc=1;
 
-    double value = Fsuipc.GetValue(offset);
     if ((evt!=0) &&(offset!=0))
     {
-       char SwV = (char)SwValue;
+      double value = Fsuipc.GetValue(offset);
+      char SwV = (char)SwValue;
 			value = value + SwV * inc ;
       if (value>max) value = min  ;
       if (value<min) value = max  ;
@@ -223,7 +223,7 @@ DWORD WINAPI ThreadAs2(LPVOID lpArg)
 		Console->printf("opening com %d\n",Num);
 		Com.setspeed ( 115200, 'N' , 8  ,1  ) ;
 		Com.setTimeouts ( 0 ,1000 ) ;
-
+    
 		while(1==1)
 		{
 			//waitr char
@@ -305,9 +305,9 @@ void RefreshOutput (int Variable , double value )
     int Number= GetVarNumbers(Variable);
     int offset = GetVariable(Variable)->Offset ;
     
-    double min = Fsuipc.GetMin(offset);
-    double max = Fsuipc.GetMax(offset);
-    double inc = Fsuipc.GetInc(offset);
+    double min = GetVarMin(Variable);
+    double max = GetVarMax(Variable);
+    double inc = GetVarInc(Variable);
 		
 		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d Value:%d \n", Digit ,Number, (int)value );
 		bool displaySigne = false;
@@ -440,8 +440,7 @@ void RefreshDisplay()
 		int offset = GetVariable(var)->Offset;
     double Value = Fsuipc.GetValue(offset);
 		if (offset)
-			if (RefreshOutput)
-				(*RefreshOutput)(var,Value);
+				RefreshOutput(var,Value);
 	}
 }
 

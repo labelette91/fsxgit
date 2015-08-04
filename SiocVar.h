@@ -75,7 +75,10 @@ typedef struct
   std::string Codage ;
   int Var1 ;
   int Var2 ;
-
+  std::string  FsxVariableName ;
+  std::string  Unit;
+  std::string  Event_Inc ;
+  std::string  Event_Dec ;
 
 } TVariable ;
 
@@ -121,6 +124,19 @@ int GetVarDigit(int var)
 int GetVarNumbers(int var)
 {
   return Var[var].Numbers ;
+}
+
+double GetVarMin(int var)
+{
+  return Var[var].Min ;
+}
+double GetVarMax(int var)
+{
+  return Var[var].Max ;
+}
+double GetVarInc(int var)
+{
+  return Var[var].Inc ;
 }
 
 char * GetIOTypeStr(int pio)
@@ -188,7 +204,7 @@ void ReadSioc(const char * fileName)
 		if (    (strstr(line.c_str(),"IOCARD")!=0)
 			   || (strstr(line.c_str(),"FSUIPC")!=0))
 		{
-      T_StringList * args = Split ( (char*)line.c_str() , (char*)" ," , (char*)"" , true );
+      T_StringList * args = Split ( (char*)line.c_str() , (char*)" ," , (char*)"\"" , true );
 			args->Add("");
 
       int i=0;
@@ -354,12 +370,32 @@ void ReadSioc(const char * fileName)
           Var[var].IOType = FSUIPC;
           i+=1;
         }
+        //pmdg offset
         else if (val1=="Offset")
         {
           if ( isalpha ( val2[0] ) )
             Var[var].Offset = Fsuipc.GetOffsetNum(val2);
           else
             Var[var].Offset = strToUInt(val2.c_str(),16) ;
+          i+=2;
+          int offset = Var[var].Offset ;
+          //init default min/max / could be redefined by Min/Max/Inc
+          Var[var].Min = Fsuipc.GetMin(offset);
+          Var[var].Max = Fsuipc.GetMax(offset);
+          Var[var].Inc = Fsuipc.GetInc(offset);
+
+        }
+        else if (val1=="Fsx")
+        {
+          Var[var].FsxVariableName =val2;
+          Fsuipc.Add (val2.c_str(),var);
+          Var[var].Offset = Fsuipc.GetOffsetNum(val2);
+
+          i+=2;
+        }
+        else if (val1=="Unit")
+        {
+          Var[var].Unit =val2;
           i+=2;
         }
         else if (val1=="Length")
@@ -383,6 +419,16 @@ void ReadSioc(const char * fileName)
           Var[var].Event = Event.GetEventNum(val2);
           else
           Var[var].Event = (int)strToInt(val2.c_str(),10 ) ;
+          i+=2;
+        }
+        else if (val1=="Event_Inc")
+        {
+          Var[var].Event_Inc = (val2);
+          i+=2;
+        }
+        else if (val1=="Event_Dec")
+        {
+          Var[var].Event_Dec = (val2);
           i+=2;
         }
         else if (val1=="Inc")

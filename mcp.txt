@@ -1,8 +1,8 @@
-Var 0032, name HDGdisplay, Link IOCARD_DISPLAY, Digit 5, Numbers 3 Offset MCP_Heading 
-Var 0082, name HDGrot1,     Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Event EVT_MCP_HDG_SET
-Var 0083, name HDGrot2,     Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Event EVT_MCP_HDG_SET
-
-name Swap,     Link IOCARD_SWAPER, Input 4, Type N Var1  HDGrot1 Var2  HDGrot2
+*Var 0032, name HDGdisplay, Link IOCARD_DISPLAY, Digit 5, Numbers 3 Offset MCP_Heading 
+*Var 0082, name HDGrot1,     Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Event EVT_MCP_HDG_SET
+*Var 0083, name HDGrot2,     Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Event EVT_MCP_HDG_SET
+*
+*name Swap,     Link IOCARD_SWAPER, Input 4, Type N Var1  HDGrot1 Var2  HDGrot2
 
 
 *name VSdisplay, Link IOCARD_DISPLAY, Digit 3, Numbers 5          Offset MCP_VertSpeed 
@@ -23,3 +23,6 @@ name Swap,     Link IOCARD_SWAPER, Input 4, Type N Var1  HDGrot1 Var2  HDGrot2
 *Link IOCARD_SW_3P,   Input 4,            Type N Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R 
 *Link IOCARD_SELECTOR, Input 4,  Numbers 2 Type N Event EVT_EFIS_CPT_VOR_ADF_SELECTOR_R 
 *Link IOCARD_OUT, Output 6,  Offset MCP_annunFD_1
+
+name NavActive,  Link IOCARD_DISPLAY, Digit 5, Numbers 3 Fsx "NAV ACTIVE FREQUENCY:1"
+name NavStandby, Link IOCARD_DISPLAY, Digit 0, Numbers 3 Fsx "NAV STANDBY FREQUENCY:1" Unit "Mhz"

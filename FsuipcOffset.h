@@ -12,7 +12,7 @@
 #include "PMDG_NGX_SDK.h"
 
 //#define FIRST_OFFSET 0x6420
-#define FIRST_OFFSET 0
+#define FIRST_OFFSET 1000
 
 // definition of a map between event name and number 
 typedef map< std::string ,int > T_Map_Int_String ;
@@ -78,6 +78,8 @@ TFsuipcOffset FsuipcOffset[MAXOFFSET];
 
 T_Map_Int_String Map_Offset ;
 
+int NbOffset ;
+
 private:
 
 struct PMDG_NGX_Data Ngx ;
@@ -88,6 +90,25 @@ void (*RefreshOutput) (int Variable , double Value ) ;
 
 public:
 
+void Add ( int ofs  ,const char * Name ,  int var , int fsize=4 , int ftype = F_FLT32 )
+{
+  FsuipcOffset[ofs].Offset   = ofs;
+  FsuipcOffset[ofs].Len      = fsize;
+  FsuipcOffset[ofs].Name     =  Name  ;
+  FsuipcOffset[ofs].Type     =  ftype;
+  FsuipcOffset[ofs].Variable =  var;
+
+  FsuipcOffset[ofs].Max=0;
+  FsuipcOffset[ofs].Min=0;
+  FsuipcOffset[ofs].Inc=1;
+  Map_Offset[Name] = ofs;
+
+}
+void Add ( const char * Name , int var , int fsize=4 , int ftype = F_FLT32 )
+{
+   Add (  NbOffset  , Name , var,  fsize,  ftype ) ;
+   NbOffset++;
+}
 const char * GetName(int var)
 {
   return FsuipcOffset[var].Name.c_str() ;
@@ -180,7 +201,7 @@ void ReadFromFile(const char * fileName)
       T_StringList * args = Split ( (char*)line.c_str() , (char*)";" , (char*)"" , false );
 			if (args->Count() < 4)
 				continue;
-			int ofs = strToUInt((*args)[0].c_str(),10) /*- FIRST_OFFSET */;
+			int ofs = strToUInt((*args)[0].c_str(),10) + FIRST_OFFSET ;
 			int len = strToUInt((*args)[1].c_str(),10) ;
 			int ftype = -1 ; 
       std::string T = (*args)[2]  ;
@@ -247,15 +268,15 @@ void Print()
 		{
 			Console->debugPrintf (  TRACE_OFFSET , 
 //			printf (   
-				"Var:%5d  len:%d offset:%04X (%5d) name:%-14s Max:%9.2f Min:%9.2f Inc:%f\n",  
+				"Var:%5d  len:%d offset:%04X (%5d) Max:%9.2f Min:%9.2f Inc:%f name:%s\n",  
 				var,
 				FsuipcOffset[var].Len,
 				FsuipcOffset[var].Offset,
 				FsuipcOffset[var].Offset,
-				FsuipcOffset[var].Name.c_str() ,
 				FsuipcOffset[var].Max ,
 				FsuipcOffset[var].Min ,
-				FsuipcOffset[var].Inc 
+				FsuipcOffset[var].Inc ,
+				FsuipcOffset[var].Name.c_str() 
 
 				);
 			last = FsuipcOffset[var].Offset  ;

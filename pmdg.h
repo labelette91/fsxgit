@@ -28,6 +28,25 @@ enum EVENT_ID {
 	EVENT_SIM_START,	// used to track the loaded aircraft
 };
 
+#define DEFINITION_1 0
+#define REQUEST_1    0
+
+// A basic structure for a single item of returned data
+struct StructOneDatum {
+	int		id;
+	float	value;
+};
+
+// maxReturnedItems is 2 in this case, as the sample only requests
+// vertical speed and pitot heat switch data
+#define maxReturnedItems	2000
+
+// A structure that can be used to receive Tagged data
+struct StructDatum {
+	StructOneDatum  datum[maxReturnedItems];
+};
+
+
 // this variable keeps the state of one of the NGX switches
 // NOTE - add these lines to <FSX>\PMDG\PMDG 737 NGX\737NGX_Options.ini: 
 //
@@ -118,6 +137,43 @@ void CALLBACK MyDispatchProc(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 			break;
 		}
 
+  case SIMCONNECT_RECV_ID_SIMOBJECT_DATA:
+    {
+      SIMCONNECT_RECV_SIMOBJECT_DATA *pObjData = (SIMCONNECT_RECV_SIMOBJECT_DATA*)pData;
+
+      switch(pObjData->dwRequestID)
+      {
+        case REQUEST_1:
+        {
+          int	count	= 0;;
+          StructDatum *pS = (StructDatum*)&pObjData->dwData;
+
+          // There can be a minimum of 1 and a maximum of maxReturnedItems
+          // in the StructDatum structure. The actual number returned will
+          // be held in the dwDefineCount parameter.
+
+          while (count < (int) pObjData->dwDefineCount)
+          {
+          //get offset
+            int offset = pS->datum[count].id ;
+            double Value = pS->datum[count].value ;
+            Console->debugPrintf(TRACE_FSX_RECV,"FSX  :RECV Offs:%5d Name:%-20s, Value:%f\n",offset,Fsuipc.GetName(offset),Value );
+	          Fsuipc.SetValue(offset , Value) ;
+						int variable = Fsuipc.FsuipcOffset[offset].Variable ;
+  		      if (variable)
+						      RefreshOutput(variable,Value);
+  
+            ++count;
+          }
+          break;
+        }
+
+        default:
+          break;
+      }
+      break;
+    }
+
 	default:
 		//printf("Received:%d\n",pData->dwID);
 		break;
@@ -152,6 +208,48 @@ int GetIdOffset(int id )
 {
 	return id - THIRD_PARTY_EVENT_ID_MIN ;
 }
+
+void FsxAddToDataDefinition (const char*  DatumName, const char*  UnitsName,  int DatumID = -1 )
+{
+  HRESULT hr = SimConnect_AddToDataDefinition(hSimConnect, DEFINITION_1 , DatumName, UnitsName ,
+											SIMCONNECT_DATATYPE_FLOAT32, 0, DatumID );
+  if (hr!=S_OK)
+		Console->errorPrintf(0,"FSX : Error FsxAddToDataDefinition %s Unit:%s\n", DatumName,UnitsName );
+
+}
+
+
+//register to Fsx  variable offset
+void FsxgRegister()
+{
+	T_VARLIST varsOut ;
+	GetSiocVar(IOCARD_OUT ,  varsOut ) ;
+	GetSiocVar(IOCARD_DISPLAY ,  varsOut ) ;
+	for (unsigned int i=0;i<varsOut.size();i++)
+	{
+		int var = varsOut[i]   ;
+    std::string FsxVariableName = GetVariable(var)->FsxVariableName ;
+    if (FsxVariableName.size())
+    {
+    FsxAddToDataDefinition(FsxVariableName.c_str() , GetVariable(var)->Unit.c_str(),GetVariable(var)->Offset );
+    Console->debugPrintf(TRACE_FSX_SEND,"FSX : register to variable %-30s Unit:%-10s Id:%d Var:%d\n",
+      GetVariable(var)->FsxVariableName.c_str(),
+      GetVariable(var)->Unit.c_str(),
+      GetVariable(var)->Offset,
+      i
+      );
+    }
+
+	}
+
+  // Make the call for data every second, but only when it changes and
+  // only that data that has changed
+  HRESULT hr = SimConnect_RequestDataOnSimObject(hSimConnect, REQUEST_1 , DEFINITION_1,
+  SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_PERIOD_SECOND,
+  SIMCONNECT_DATA_REQUEST_FLAG_CHANGED | SIMCONNECT_DATA_REQUEST_FLAG_TAGGED	);
+
+}
+
 
 DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 {
@@ -215,6 +313,8 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 
 		// 4) Assign keyboard shortcuts
 
+    FsxgRegister() ;
+
 		//send presence message
 		SendOutputCmd (  PRESENCE_CMD , 0 , 0 ) ;
 
@@ -247,3 +347,5 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 		Console->errorPrintf(0,"Unable to connect!\n");
   return 0;
 }
+
+
