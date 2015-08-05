@@ -506,9 +506,15 @@ void Print()
 	}
 }
 
+#define EVENTNOTFOUND -1
 int GetEventNum(std::string eventName)
 {
-  return Map_Control[eventName] ;
+  T_Map_Int_String::iterator it;
+  it = Map_Control.find(eventName);
+  if (it != Map_Control.end())
+    return Map_Control[eventName] ;
+  else 
+    return EVENTNOTFOUND ;
 }
 std::string  GetEventName(int eventNum )
 {

@@ -1156,3 +1156,16 @@ std::string to_string(int val)
   sprintf(v,"%d",val);
   return ( std::string( v ));
 }
+
+
+
+void toUpperString( std::string & Str )
+{
+  for (int i=0;i<Str.size();i++)
+    Str[i]= toupper(Str[i]);
+}
+void toLowerString( std::string & Str )
+{
+  for (int i=0;i<Str.size();i++)
+    Str[i]= tolower(Str[i]);
+}

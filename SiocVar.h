@@ -56,6 +56,8 @@ char * IoTypeStr[] ={
 
 };
 
+#define NBEVENT 2
+
 typedef struct				
 {
   EnumIoType  IOType ;
@@ -68,7 +70,7 @@ typedef struct
   std::string name;
 	int Offset ;
 	int Length ;
-	int Event  ;
+	int Event[NBEVENT]  ;
   double Max;
   double Min;
   double Inc;
@@ -77,11 +79,9 @@ typedef struct
   int Var2 ;
   std::string  FsxVariableName ;
   std::string  Unit;
-  std::string  Event_Inc ;
-  std::string  Event_Dec ;
-	int EventInc  ;
-	int EventDec  ;
-
+  //(std::string  EventName)[NBEVENT] ;
+  std::string EventName0 ;
+  std::string EventName1 ;
 } TVariable ;
 
 #define MAXVAR 1000 
@@ -107,6 +107,35 @@ EnumIoType GetVarIoType(int var)
 {
   return Var[var].IOType ;
 }
+int GetVarEventId(int var,int evtNb=0)
+{
+  if (evtNb>=NBEVENT) evtNb=0;
+  return Var[var].Event[evtNb] ;
+}
+void SetVarEventId(int var,int EventId,int evtNb=0)
+{
+  if (evtNb<NBEVENT) 
+    Var[var].Event[evtNb] = EventId;
+  
+}
+const char *  GetVarEventName(int var,int evtNb=0)
+{
+  if (evtNb>=NBEVENT) evtNb=0;
+  if (evtNb==1) 
+    return Var[var].EventName1.c_str() ;
+  else
+    return Var[var].EventName0.c_str() ;
+
+}
+void SetVarEventName(int var,std::string EventName,int evtNb=0)
+{
+  if (evtNb==1) 
+    Var[var].EventName1 = EventName;
+  else
+    Var[var].EventName0 = EventName;
+
+}
+
 char GetVarType(int var)
 {
 	if (Var[var].Type.size()==0)
@@ -188,7 +217,12 @@ int GetInputVar ( int pInput )
   return InputVar[pInput];
  
 }
+void InitEventId(int var)
+{
+  Var[var].Event[0]  = EVENTNOTFOUND ;
+  Var[var].Event[1]  = EVENTNOTFOUND ;
 
+}
 void ReadSioc(const char * fileName)
 {
 	std::string line;
@@ -211,16 +245,19 @@ void ReadSioc(const char * fileName)
 		{
       T_StringList * args = Split ( (char*)line.c_str() , (char*)" ,=" , (char*)"\"" , true );
 			args->Add("");
+      InitEventId(var) ;
 
       int i=0;
       while (i<args->Count()-1)
       {
         std::string val1 = (*args)[i];
         std::string val2 = (*args)[i+1];
-
+//        toLowerString(val1);
+//        toLowerString(val2);
         if (val1=="Var")
         {
           var = atoi(val2.c_str());
+          InitEventId(var) ;
           i+=2;
           if ( Var[var].IOType!=UNDEF)
             			Console->errorPrintf (  0 , "Error : variiable already defined : %d\n", var  );
@@ -424,20 +461,17 @@ void ReadSioc(const char * fileName)
         }
         else if (val1=="Event")
         {
-          if ( isalpha ( val2[0] ) )
-          Var[var].Event = Event.GetEventNum(val2);
-          else
-          Var[var].Event = (int)strToInt(val2.c_str(),10 ) ;
+          SetVarEventName(var,val2,0);
           i+=2;
         }
         else if (val1=="Event_Inc")
         {
-          Var[var].Event_Inc = (val2);
+          SetVarEventName(var,val2,0);
           i+=2;
         }
         else if (val1=="Event_Dec")
         {
-          Var[var].Event_Dec = (val2);
+          SetVarEventName(var,val2,1);
           i+=2;
         }
         else if (val1=="Inc")
@@ -447,7 +481,10 @@ void ReadSioc(const char * fileName)
         }
         
 				else 
+        {
 					i++;
+           Console->printf ("Warning : %s not decoded \n",val1.c_str() );
+        }
 
       }
 			delete args ;
@@ -464,7 +501,7 @@ void PrintVars()
   {
     if (Var[var].IOType != UNDEF)
     Console->debugPrintf (  TRACE_SIOC , 
-"Var:%4d IO:%s In:%3d Out:%3d Dig:%3d Nb:%1d Type:%1s name:%-12s len:%d offs:%04X(%5d) %s evt:%04X(%5d) %s\n",  
+"Var:%4d IO:%s In:%3d Out:%3d Dig:%3d Nb:%1d Type:%1s name:%-12s len:%d offs:%04X(%5d) %s evt0:%5d %s evt1:%5d %s\n",  
 var,
 GetIOTypeStr(Var[var].IOType)     ,
 Var[var].Input      ,
@@ -478,9 +515,11 @@ Var[var].Length,
 Var[var].Offset,
 Var[var].Offset,
 Fsuipc.GetOffsetName(Var[var].Offset).c_str(),
-Var[var].Event,
-Var[var].Event,
-Event.GetEventName(Var[var].Event).c_str()
+Var[var].Event[0],
+Var[var].EventName0.c_str(),
+Var[var].Event[1],
+Var[var].EventName1.c_str()
+
 
 );
   }

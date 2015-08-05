@@ -183,7 +183,7 @@ void CALLBACK MyDispatchProc(SIMCONNECT_RECV* pData, DWORD cbData, void *pContex
 void SendControl(int evt , int pparameter )
 {
 	// Test the first control method: use the control data area.
-	if (evt!=0)
+	if (evt>=0)
   if (AircraftRunning)
 	{
 		// Send a command only if there is no active command request and previous command has been processed by the NGX
@@ -256,22 +256,33 @@ void FsxgRegister()
 	//map all FSX event 
   for (int var=0;var<MAXVAR;var++)
   {
-    if (GetVariable(var)->Event_Dec.size())
-		{
-			const char * EventName = GetVariable(var)->Event_Dec.c_str() ;
-			int EvtNum  = Event.Add(EventName,1.0,0.0);
-      HRESULT hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EvtNum, EventName);
-			GetVariable(var)->EventDec = EvtNum;
-		}
-    if (GetVariable(var)->Event_Inc.size())
-		{
-			const char * EventName = GetVariable(var)->Event_Inc.c_str() ;
-			int EvtNum  = Event.Add(EventName,1.0,0.0);
-      HRESULT hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EvtNum, EventName);
-			GetVariable(var)->EventInc = EvtNum;
-		}
-  }
+    for (int evtNb=0;evtNb<NBEVENT;evtNb++)
+    {
+      std::string evtVame = GetVarEventName( var, evtNb) ;
+ 	    const char * EventName = evtVame.c_str() ;
+      if (evtVame.size())
+		  {
+        //recheche si event PMDG 
+        int EvtId  = EVENTNOTFOUND ;
+        if ( isalpha ( EventName[0] ) )
+            EvtId =  Event.GetEventNum(EventName) ; 
+          else
+            EvtId = (int)strToInt(EventName,10 ) ;
 
+        //not a pmdg control event
+        if ( EvtId== EVENTNOTFOUND )
+        {
+			    EvtId  = Event.Add(EventName,1.0,0.0);
+          HRESULT hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EvtId, EventName);
+			    Console->debugPrintf(TRACE_FSX_SEND,"FSX : MapClientEventToSimEvent  Var:%5d %s \n",var,EventName );
+
+          if (hr!=S_OK)
+		        Console->errorPrintf(0,"FSX : Error Event not defined  %s in FSX\n", EventName );
+			    SetVarEventId(var, EvtId,evtNb);
+        }
+		  }
+    }
+  }
 }
 
 

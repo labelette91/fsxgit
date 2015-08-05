@@ -79,7 +79,7 @@ byte Digits[MAX_DIGIT];
 bool		SendToFsx ( int Var , byte SwValue )
 {
   EnumIoType typ = GetVarIoType(Var);
-  int evt = GetVariable(Var)->Event ;
+  int evt = GetVarEventId(Var, 0 ); ;
 //	Console->debugPrintf ( TRACE_FSX_SEND,"FSX  :Send Event:%3d (%s)  Value:%d Var:%d ",evt,Event.GetEventName(evt).c_str(),SwValue, Var );
 
 	if ( (typ==IOCARD_SW) )  
@@ -103,7 +103,7 @@ bool		SendToFsx ( int Var , byte SwValue )
   {
     int input  = GetVariable(Var)->Input ;
     int number = GetVariable(Var)->Numbers ;
-    if((number==0)||(evt==0)||(input==0))
+    if((number==0)||(evt==EVENTNOTFOUND)||(input==0))
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : %s\n", Var , GetVarName(Var)  );
     int code=0;
     for (int i=0;i<number;i++)
@@ -130,7 +130,8 @@ bool		SendToFsx ( int Var , byte SwValue )
 
     if (inc==0) inc=1;
 
-    if ((evt!=0) &&(offset!=0))
+    //case increment calculer
+    if ((evt!=EVENTNOTFOUND) &&(offset!=0))
     {
       double value = Fsuipc.GetValue(offset);
       char SwV = (char)SwValue;
@@ -142,6 +143,19 @@ bool		SendToFsx ( int Var , byte SwValue )
 			value = Event.Get(evt)->a * value + Event.Get(evt)->b;
       SendControl( evt , (int)value );
     }
+    else if ((evt!=EVENTNOTFOUND) &&(offset==0))
+    {
+      char SwV = (char)SwValue;
+      int IncId = GetVarEventId(Var, 0 ); 
+      int DecId = GetVarEventId(Var, 1 ); 
+      if((DecId==EVENTNOTFOUND))
+	      Console->errorPrintf ( 0 ,"FSX  : decrement event not defined for variable %d : %s\n", Var , GetVarName(Var)  );
+
+      if (SwV>0)
+        SendControl( IncId , 0 );
+      else
+        SendControl( DecId , 0 );
+    }
     else
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset not defined for variable %d %s \n", Var, GetVarName(Var) );
   }
@@ -149,7 +163,7 @@ bool		SendToFsx ( int Var , byte SwValue )
   {
     int input  = GetVariable(Var)->Input ;
     int number = GetVariable(Var)->Numbers ;
-    if((number==0)||(evt==0)||(input==0))
+    if((number==0)||(evt==EVENTNOTFOUND)||(input==0))
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : S\n", Var , GetVarName(Var)  );
     int SwitchActifValue = (GetVarType(Var)!=NEGATIV) ;
     //selector value 
@@ -467,6 +481,7 @@ int main(int argc, char **argv)
 {
   Console = new TConsole ();
   Console->EnableDebugOutput = 0xFFFFFFFF;
+  Console->EnableLogTimeStamp = false;
   if (argc==1) 
   Console->printf("Syntaxe:tcp ComPort SiocFileName ServerIp ServerPort\n");
 

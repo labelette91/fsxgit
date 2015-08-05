@@ -179,5 +179,9 @@ void Clear() {list.clear();};
 
 
 std::string to_string(int val);
+
+void toUpperString( std::string & Str );
+void toLowerString( std::string & Str );
+
 #endif
 

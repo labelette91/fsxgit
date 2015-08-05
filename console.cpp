@@ -175,7 +175,11 @@ DWORD hd = GetCurrentThreadId()  ;
         else
            memset(&t,0,sizeof(t) );
 
-        len = _snprintf(Buffer,GetBufferSize(hd),"  %02d:%02d:%02d ",t->tm_hour, t->tm_min, t->tm_sec );
+        if (EnableLogTimeStamp)
+          len = _snprintf(Buffer,GetBufferSize(hd),"  %02d:%02d:%02d ",t->tm_hour, t->tm_min, t->tm_sec );
+        else
+          len = _snprintf(Buffer,GetBufferSize(hd),"  " );
+
         SetBufferLen ( hd,len ) ;
     }
     if (len<MAXCHARBUFFER){
