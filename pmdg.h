@@ -201,12 +201,12 @@ void SendControl(int evt , int pparameter )
 		{
 			Control.Event = evt;		
 			Control.Parameter = pparameter;
-			SimConnect_SetClientData (hSimConnect, PMDG_NGX_CONTROL_ID,	PMDG_NGX_CONTROL_DEFINITION, 
+			 HRESULT hr =SimConnect_SetClientData (hSimConnect, PMDG_NGX_CONTROL_ID,	PMDG_NGX_CONTROL_DEFINITION, 
 				0, 0, sizeof(PMDG_NGX_Control), &Control);
 		}
 		else
 		{
-       SimConnect_TransmitClientEvent(hSimConnect, 0, evt, pparameter, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
+        HRESULT hr = SimConnect_TransmitClientEvent(hSimConnect, 0, evt, pparameter, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
 
 		}
 	}
@@ -265,9 +265,8 @@ void FsxgRegister()
         int EvtId  =  GetVarEventId( var, evtNb) ;;
         if ( !IsTHIRD_PARTY_EVENT_ID (EvtId))
         {
-          EvtId  = Event.Add(EventName,1.0,0.0);
           HRESULT hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EvtId, EventName);
-          Console->debugPrintf(TRACE_FSX_SEND,"FSX : MapClientEventToSimEvent  Var:%5d %s \n",var,EventName );
+          Console->debugPrintf(TRACE_FSX_SEND,"FSX : MapClientEventToSimEvent  Var:%5d Id:%d %s \n",var,EvtId,EventName );
 
           if (hr!=S_OK)
             Console->errorPrintf(0,"FSX : Error Event not defined  %s in FSX\n", EventName );

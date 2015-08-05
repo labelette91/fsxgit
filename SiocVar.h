@@ -673,17 +673,20 @@ void SetSwitchValue(byte * Buffer , byte SwNumber , byte SwValue  )
 
 }
 
-//cmd   :  commande bit 7..4
+//cmd   :  commande bit 7..5
+//DP    :  draw point bit 4
 //value :  value    bit 3..1
 //OutputNumber 0..127
 
 #define PRESENCE_CMD        (0x00|0x80)
 //Led output
-#define IOCARD_OUT_CMD      (0x10|0x80)
+#define IOCARD_OUT_CMD      ((1<<5)|0x80)
 //display output
-#define IOCARD_DISPLAY_CMD  (0x20|0x80)
+#define IOCARD_DISPLAY_CMD  ((2<<5)|0x80)
 //encoder define cmd
-#define IOCARD_ENCODER_CMD  (0x30|0x80)
+#define IOCARD_ENCODER_CMD  ((3<<5)|0x80)
+
+#define Segment_DP   0x10 
 
 
 void SetOutputCmd ( byte * Buffer , byte cmd,byte OutputNumber , byte Value )
@@ -691,22 +694,6 @@ void SetOutputCmd ( byte * Buffer , byte cmd,byte OutputNumber , byte Value )
   Buffer[0] = cmd | Value ;
   Buffer[1] = OutputNumber & 0x7f ;
 }
-//return command IOCARD_OUT_CMD or IOCARD_DISPLAY_CMD
-byte GetOutputCmd ( byte * Buffer)
-{
-  return (Buffer[0] & 0xF0 );
-}
-//return command value 0..15 
-byte GetOutputValue ( byte * Buffer)
-{
-  return ( Buffer[0] & 0xF ) ;
-}
-//return output display number 0..127
-byte GetOutputNumber ( byte * Buffer)
-{
-  return ( Buffer[1] );
-}
-
 
 void SendOutputCmd ( byte cmd,byte OutputNumber , byte Value )
 {
@@ -723,21 +710,6 @@ void SendOutputCmd ( byte cmd,byte OutputNumber , byte Value )
 			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_ENCODER Cmd:%02x Output:%3d(0x%2X) Value:%x Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
 
 }
-
-
-byte GetOutputCmd ( char * Buffer  )
-{
-  return (Buffer[0] & 0xF0 );
-}
-byte GetOutputValue( char * Buffer  )
-{
-  return (Buffer[0] & 0xF );
-}
-byte GetOutputNumber( char * Buffer  )
-{
-  return (Buffer[1] & 0x7F );
-}
-
 
 bool		SiocSend ( int SiocVar , byte SwValue )
 {

@@ -131,7 +131,7 @@ bool		SendToFsx ( int Var , byte SwValue )
     if (inc==0) inc=1;
 
     //case increment calculer
-    if ((evt!=NOT_DEFINED) &&(offset!=0))
+    if ((evt!=NOT_DEFINED) &&(offset!=NOT_DEFINED))
     {
       double value = Fsuipc.GetValue(offset);
       char SwV = (char)SwValue;
@@ -143,7 +143,7 @@ bool		SendToFsx ( int Var , byte SwValue )
 			value = Event.Get(evt)->a * value + Event.Get(evt)->b;
       SendControl( evt , (int)value );
     }
-    else if ((evt!=NOT_DEFINED) &&(offset==0))
+    else if ((evt!=NOT_DEFINED) &&(offset==NOT_DEFINED))
     {
       char SwV = (char)SwValue;
       int IncId = GetVarEventId(Var, 0 ); 
@@ -288,8 +288,6 @@ DWORD WINAPI ThreadAs2(LPVOID lpArg)
   return 0;
 }
 
-int Segment_DP  = 0x80 ;
-
 void SendDigitCmd (byte digitNb , byte digitValue , bool DrawPopint=false )
 {
   if (DrawPopint)
@@ -369,7 +367,7 @@ void RefreshOutput (int Variable , double value )
       {
         value *= 10 ;
       }
-
+			value += 0.5 ;
       Value = (int)value;
 			for (int i=0;i<Number;i++)
 			{
