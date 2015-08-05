@@ -348,7 +348,7 @@ void SetRefreshOutputFct ( void (*RefreshOutputFct) (int variable,double Value) 
 }
 void RegisterToVariableChanged ( int offset , int Len , int variable )
 {
-  if (offset)
+  if (offset>=0)
 	{
 		for (unsigned int j=0;j<WatchedOffset.size();j++)
 		{
