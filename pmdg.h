@@ -261,26 +261,18 @@ void FsxgRegister()
       std::string evtVame = GetVarEventName( var, evtNb) ;
  	    const char * EventName = evtVame.c_str() ;
       if (evtVame.size())
-		  {
-        //recheche si event PMDG 
-        int EvtId  = EVENTNOTFOUND ;
-        if ( isalpha ( EventName[0] ) )
-            EvtId =  Event.GetEventNum(EventName) ; 
-          else
-            EvtId = (int)strToInt(EventName,10 ) ;
-
-        //not a pmdg control event
-        if ( EvtId== EVENTNOTFOUND )
+      {
+        int EvtId  =  GetVarEventId( var, evtNb) ;;
+        if ( !IsTHIRD_PARTY_EVENT_ID (EvtId))
         {
-			    EvtId  = Event.Add(EventName,1.0,0.0);
+          EvtId  = Event.Add(EventName,1.0,0.0);
           HRESULT hr = SimConnect_MapClientEventToSimEvent(hSimConnect, EvtId, EventName);
-			    Console->debugPrintf(TRACE_FSX_SEND,"FSX : MapClientEventToSimEvent  Var:%5d %s \n",var,EventName );
+          Console->debugPrintf(TRACE_FSX_SEND,"FSX : MapClientEventToSimEvent  Var:%5d %s \n",var,EventName );
 
           if (hr!=S_OK)
-		        Console->errorPrintf(0,"FSX : Error Event not defined  %s in FSX\n", EventName );
-			    SetVarEventId(var, EvtId,evtNb);
+            Console->errorPrintf(0,"FSX : Error Event not defined  %s in FSX\n", EventName );
         }
-		  }
+      }
     }
   }
 }

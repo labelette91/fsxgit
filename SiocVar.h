@@ -219,10 +219,37 @@ int GetInputVar ( int pInput )
 }
 void InitEventId(int var)
 {
-  Var[var].Event[0]  = EVENTNOTFOUND ;
-  Var[var].Event[1]  = EVENTNOTFOUND ;
+  Var[var].Event[0]  = NOT_DEFINED ;
+  Var[var].Event[1]  = NOT_DEFINED ;
+  Var[var].Offset    = NOT_DEFINED ;
 
 }
+
+//alocate an event depending PMDG or FSX event
+void AllocEvent ( int var , std::string evtVame , int evtNb=0)
+{
+ 	    const char * EventName = evtVame.c_str() ;
+      if (evtVame.size())
+		  {
+        //recheche si event PMDG 
+        int EvtId  = NOT_DEFINED ;
+        if ( isalpha ( EventName[0] ) )
+            EvtId =  Event.GetEventNum(EventName) ; 
+          else
+            EvtId = (int)strToInt(EventName,10 ) ;
+
+        //not a pmdg control event
+        if ( EvtId<= 0 )
+        {
+			    EvtId  = Event.Add(EventName,1.0,0.0);
+        }
+		    SetVarEventId(var, EvtId,evtNb);
+
+		  }
+}
+
+
+
 void ReadSioc(const char * fileName)
 {
 	std::string line;
@@ -461,16 +488,19 @@ void ReadSioc(const char * fileName)
         else if (val1=="event")
         {
           SetVarEventName(var,val2,0);
+          AllocEvent ( var , val2  , 0 ) ;
           i+=2;
         }
         else if (val1=="event_inc")
         {
           SetVarEventName(var,val2,0);
+          AllocEvent ( var , val2  , 0 ) ;
           i+=2;
         }
         else if (val1=="event_dec")
         {
           SetVarEventName(var,val2,1);
+          AllocEvent ( var , val2  , 1 ) ;
           i+=2;
         }
         else if (val1=="inc")
@@ -500,7 +530,7 @@ void PrintVars()
   {
     if (Var[var].IOType != UNDEF)
     Console->debugPrintf (  TRACE_SIOC , 
-"Var:%4d IO:%s In:%3d Out:%3d Dig:%3d Nb:%1d Type:%1s name:%-12s len:%d offs:%04X(%5d) %s evt0:%5d %s evt1:%5d %s\n",  
+"Var:%4d IO:%s In:%3d Out:%3d Dig:%3d Nb:%1d Type:%1s name:%-12s len:%d offs:%5d %-25s evt0:%5d %-25s evt1:%5d %-25s\n",  
 var,
 GetIOTypeStr(Var[var].IOType)     ,
 Var[var].Input      ,
@@ -511,7 +541,6 @@ Var[var].Numbers    ,
 Var[var].Type.c_str()       ,
 Var[var].name.c_str() ,
 Var[var].Length,
-Var[var].Offset,
 Var[var].Offset,
 Fsuipc.GetOffsetName(Var[var].Offset).c_str(),
 Var[var].Event[0],

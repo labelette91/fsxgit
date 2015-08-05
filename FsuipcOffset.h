@@ -16,6 +16,8 @@
 
 #define MAX_REAL_VALUE 1000000000
 
+#define NOT_DEFINED -1
+
 // definition of a map between event name and number 
 typedef map< std::string ,int > T_Map_Int_String ;
 
@@ -117,7 +119,7 @@ const char * GetName(int var)
 }
 bool Defined(int var)
 {
-  return (FsuipcOffset[var].Offset !=0) ;
+  return (FsuipcOffset[var].Offset != NOT_DEFINED) ;
 }
 int GetOffset(int var)
 {
@@ -365,7 +367,10 @@ int GetOffsetNum(std::string offsetName)
 }
 std::string  GetOffsetName(int offsetNum )
 {
-  return FsuipcOffset[offsetNum].Name ;
+  if (offsetNum<=NOT_DEFINED)
+    return "" ;
+  else
+    return FsuipcOffset[offsetNum].Name ;
 }
 
 
@@ -459,7 +464,7 @@ void ReadFromFile(const char * fileName)
 			int ofs = strToUInt((*args)[1].c_str(),10) ;
       int i = ofs /* - THIRD_PARTY_EVENT_ID_MIN */ ;
           
-      if ( i<MAXCONTROL )
+//      if ( i<MAXCONTROL )
       {
       std::string Name =  (*args)[0] ;
 
@@ -474,8 +479,8 @@ void ReadFromFile(const char * fileName)
 
 			Add (ofs,Name.c_str(),a,b); 
       }
-      else
-	  		Console->errorPrintf(0,"invalid control : %s\n",line.c_str());  
+//      else
+//	  		Console->errorPrintf(0,"invalid control : %s\n",line.c_str());  
 
       delete args ;
 	}
@@ -506,7 +511,6 @@ void Print()
 	}
 }
 
-#define EVENTNOTFOUND -1
 int GetEventNum(std::string eventName)
 {
   T_Map_Int_String::iterator it;
@@ -514,7 +518,7 @@ int GetEventNum(std::string eventName)
   if (it != Map_Control.end())
     return Map_Control[eventName] ;
   else 
-    return EVENTNOTFOUND ;
+    return NOT_DEFINED ;
 }
 std::string  GetEventName(int eventNum )
 {

@@ -103,7 +103,7 @@ bool		SendToFsx ( int Var , byte SwValue )
   {
     int input  = GetVariable(Var)->Input ;
     int number = GetVariable(Var)->Numbers ;
-    if((number==0)||(evt==EVENTNOTFOUND)||(input==0))
+    if((number==0)||(evt==NOT_DEFINED)||(input==0))
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : %s\n", Var , GetVarName(Var)  );
     int code=0;
     for (int i=0;i<number;i++)
@@ -131,7 +131,7 @@ bool		SendToFsx ( int Var , byte SwValue )
     if (inc==0) inc=1;
 
     //case increment calculer
-    if ((evt!=EVENTNOTFOUND) &&(offset!=0))
+    if ((evt!=NOT_DEFINED) &&(offset!=0))
     {
       double value = Fsuipc.GetValue(offset);
       char SwV = (char)SwValue;
@@ -143,12 +143,12 @@ bool		SendToFsx ( int Var , byte SwValue )
 			value = Event.Get(evt)->a * value + Event.Get(evt)->b;
       SendControl( evt , (int)value );
     }
-    else if ((evt!=EVENTNOTFOUND) &&(offset==0))
+    else if ((evt!=NOT_DEFINED) &&(offset==0))
     {
       char SwV = (char)SwValue;
       int IncId = GetVarEventId(Var, 0 ); 
       int DecId = GetVarEventId(Var, 1 ); 
-      if((DecId==EVENTNOTFOUND))
+      if((DecId==NOT_DEFINED))
 	      Console->errorPrintf ( 0 ,"FSX  : decrement event not defined for variable %d : %s\n", Var , GetVarName(Var)  );
 
       if (SwV>0)
@@ -163,7 +163,7 @@ bool		SendToFsx ( int Var , byte SwValue )
   {
     int input  = GetVariable(Var)->Input ;
     int number = GetVariable(Var)->Numbers ;
-    if((number==0)||(evt==EVENTNOTFOUND)||(input==0))
+    if((number==0)||(evt==NOT_DEFINED)||(input==0))
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : S\n", Var , GetVarName(Var)  );
     int SwitchActifValue = (GetVarType(Var)!=NEGATIV) ;
     //selector value 
@@ -508,6 +508,12 @@ int main(int argc, char **argv)
 
 	ReadSioc(SiocFilename.c_str());
   PrintVars();
+
+  /******************test */
+  FsxgRegister();
+  SendToFsx ( 1 , 1 );
+  SendToFsx ( 1 , -1 );
+
 
   T_THREAD thAs2 (ThreadAs2,(LPVOID)numas2 );
 	//wait for rs232 init
