@@ -288,11 +288,16 @@ DWORD WINAPI ThreadAs2(LPVOID lpArg)
   return 0;
 }
 
-void SendDigitCmd (byte digitNb , byte digitValue )
+int Segment_DP  = 0x80 ;
+
+void SendDigitCmd (byte digitNb , byte digitValue , bool DrawPopint=false )
 {
+  if (DrawPopint)
+    digitValue|= Segment_DP;
 	if (Digits[digitNb]!=digitValue)
 	{
 		SendOutputCmd ( IOCARD_DISPLAY_CMD , digitNb ,  digitValue ) ;
+
 		Digits[digitNb]=digitValue ;
 	}
 }
@@ -323,7 +328,11 @@ void RefreshOutput (int Variable , double value )
     double max = GetVarMax(Variable);
     double inc = GetVarInc(Variable);
 		
-		Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d Value:%d Max:%f Min:%f Inc:%f \n", Digit ,Number, (int)value,max,min,inc );
+    double a = GetVarA(Variable);
+    double b = GetVarB(Variable);
+    int frac = GetVarFrac(Variable);
+
+    Console->debugPrintf (  TRACE_SIOC_RECV , "REFR :Dig:%d Nb:%d Value:%d Max:%f Min:%f Inc:%f a:%f b:%f\n", Digit ,Number, (int)value,max,min,inc,a,b );
 		bool displaySigne = false;
 		if (min<0)
 			displaySigne=true;
@@ -353,12 +362,25 @@ void RefreshOutput (int Variable , double value )
 				digitNb = Digit+Number;
 				SendDigitCmd (  digitNb ,  digitValue ) ;
 			}
+      value = a*value+b ;
+      
+			//add the fractionnal digit
+      for (int i=0;i<frac;i++)
+      {
+        value *= 10 ;
+      }
+
+      Value = (int)value;
 			for (int i=0;i<Number;i++)
 			{
 				digitValue = Value % 10 ;
 				Value /=10;
 				digitNb =  Digit+i ;
-				SendDigitCmd (  digitNb ,  digitValue ) ;
+        bool DrawPoint=false;
+        if ((frac>0)&&(i==frac))
+          DrawPoint=true;
+
+				SendDigitCmd (  digitNb ,  digitValue , DrawPoint) ;
 			}
 		}
 		
@@ -508,12 +530,6 @@ int main(int argc, char **argv)
 
 	ReadSioc(SiocFilename.c_str());
   PrintVars();
-
-  /******************test */
-  FsxgRegister();
-  SendToFsx ( 1 , 1 );
-  SendToFsx ( 1 , -1 );
-
 
   T_THREAD thAs2 (ThreadAs2,(LPVOID)numas2 );
 	//wait for rs232 init

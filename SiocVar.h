@@ -65,6 +65,7 @@ typedef struct
   int  Output;
   int Digit ;
   int Numbers ;
+  int Frac    ;
   int Aceleration ;
   std::string Type ;
   std::string name;
@@ -74,6 +75,8 @@ typedef struct
   double Max;
   double Min;
   double Inc;
+  double a  ;
+  double b  ;
   std::string Codage ;
   int Var1 ;
   int Var2 ;
@@ -172,6 +175,19 @@ double GetVarInc(int var)
 {
   return Var[var].Inc ;
 }
+double GetVarA(int var)
+{
+  return Var[var].a ;
+}
+double GetVarB(int var)
+{
+  return Var[var].b ;
+}
+int GetVarFrac(int var)
+{
+  return Var[var].Frac ;
+}
+
 
 char * GetIOTypeStr(int pio)
 {
@@ -222,6 +238,8 @@ void InitEventId(int var)
   Var[var].Event[0]  = NOT_DEFINED ;
   Var[var].Event[1]  = NOT_DEFINED ;
   Var[var].Offset    = NOT_DEFINED ;
+  Var[var].a         = 1  ;
+  Var[var].b         = 0  ;
 
 }
 
@@ -508,6 +526,22 @@ void ReadSioc(const char * fileName)
           Var[var].Inc = strToDouble(val2.c_str(),10 ) ;
           i+=2;
         }
+        else if (val1=="a")
+        {
+          Var[var].a = strToDouble(val2.c_str(),10 ) ;
+          if (Var[var].a==0) Var[var].a=1;
+          i+=2;
+        }
+        else if (val1=="b")
+        {
+          Var[var].b = strToDouble(val2.c_str(),10 ) ;
+          i+=2;
+        }
+        else if (val1=="frac")
+        {
+          Var[var].Frac = strToInt(val2.c_str(),10 ) ;
+          i+=2;
+        }
         
 				else 
         {
@@ -680,13 +714,13 @@ void SendOutputCmd ( byte cmd,byte OutputNumber , byte Value )
     SetOutputCmd ( Buffer , cmd , OutputNumber ,  Value ) ;
     int NbWr = Com.WriteAsync(Buffer, 2) ;
 		if (cmd==IOCARD_OUT_CMD)
-			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_OUT     Cmd:%02x Output:%3d(0x%2X) Value:%d Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
+			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_OUT     Cmd:%02x Output:%3d(0x%2X) Value:%x Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
 		else if (cmd==IOCARD_DISPLAY_CMD)
-			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_DISPLAY Cmd:%02x Output:%3d(0x%2X) Value:%d Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
+			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_DISPLAY Cmd:%02x Output:%3d(0x%2X) Value:%x Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
 		else if (cmd==PRESENCE_CMD)
-			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send PRESENCE_CMD   Cmd:%02x Output:%3d(0x%2X) Value:%d Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
+			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send PRESENCE_CMD   Cmd:%02x Output:%3d(0x%2X) Value:%x Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
 		else
-			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_ENCODER Cmd:%02x Output:%3d(0x%2X) Value:%d Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
+			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_ENCODER Cmd:%02x Output:%3d(0x%2X) Value:%x Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
 
 }
 

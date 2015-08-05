@@ -1,6 +1,6 @@
 name HDGrot2,     Link IOCARD_ENCODER, Input 2, Event "NAV1_RADIO_WHOLE_INC" Event_Dec "NAV1_RADIO_WHOLE_DEC"
 
- name HDGdisplay, Link IOCARD_DISPLAY, Digit 5, Numbers 3 Offset MCP_Heading 
+ name HDGdisplay, Link IOCARD_DISPLAY, Digit 5, Numbers 3 Frac 1 Offset MCP_Heading 
  name HDGrot1,     Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Event EVT_MCP_HDG_SET
 *Var 0083, name HDGrot2,     Link IOCARD_ENCODER, Input 2, Aceleration 1, Type 2 Offset MCP_Heading Event EVT_MCP_HDG_SET
 *
