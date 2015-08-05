@@ -239,13 +239,13 @@ void FsxgRegister()
     std::string FsxVariableName = GetVariable(var)->FsxVariableName ;
     if (AsFsxVariableDefinition(var) ) 
     {
-			FsxAddToDataDefinition(FsxVariableName.c_str() , GetVariable(var)->Unit.c_str(),GetVariable(var)->Offset );
 			Console->debugPrintf(TRACE_FSX_SEND,"FSX : register to Fsx Variable %-30s Unit:%-10s Id:%d Var:%d\n",
       GetVariable(var)->FsxVariableName.c_str(),
       GetVariable(var)->Unit.c_str(),
       GetVariable(var)->Offset,
       i
       );
+			FsxAddToDataDefinition(FsxVariableName.c_str() , GetVariable(var)->Unit.c_str(),GetVariable(var)->Offset );
     }
 	}
 

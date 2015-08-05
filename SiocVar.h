@@ -252,8 +252,7 @@ void ReadSioc(const char * fileName)
       {
         std::string val1 = (*args)[i];
         std::string val2 = (*args)[i+1];
-//        toLowerString(val1);
-//        toLowerString(val2);
+        toLowerString(val1);
         if (val1=="Var")
         {
           var = atoi(val2.c_str());
@@ -268,29 +267,29 @@ void ReadSioc(const char * fileName)
           Var[var].name = val2 ;
           i+=2;
         }
-        else if (val1=="Link")
+        else if (val1=="link")
         {
           i+=1;
         }
 			  //Var 0400, name I_CO, Link IOCARD_SW, Input 13, Type P
-        else if (val1=="IOCARD_SW")
+        else if (val1=="iocard_sw")
         {
           Var[var].IOType = IOCARD_SW;
           i+=1;
         }
-        else if (val1=="IOCARD_PUSH_BTN")
+        else if (val1=="iocard_push_btn")
         {
           Var[var].IOType = IOCARD_PUSH_BTN;
           i+=1;
         }
-        else if (val1=="IOCARD_SW_3P")
+        else if (val1=="iocard_sw_3p")
         {
           Var[var].IOType = IOCARD_SW_3P;
           Var[var].Codage = "1023";
           Var[var].Numbers= 2 ;
           i+=1;
         }
-        else if (val1=="Coding")
+        else if (val1=="coding")
         {
           if (val2.size()<4)
              Console->errorPrintf (0 , "error : coding length shall be 4 charaters [0..9] Var:%d Coding:%s\n",var,val2.c_str());
@@ -308,7 +307,7 @@ void ReadSioc(const char * fileName)
           Var[var].Codage = val2;
           i+=2;
         }
-        else if (val1=="Input")
+        else if (val1=="input")
         {
           Var[var].Input = atoi(val2.c_str()) ;
           SetInputVar( var,  Var[var].Input ) ;
@@ -317,35 +316,35 @@ void ReadSioc(const char * fileName)
 
           i+=2;
         }
-        else if (val1=="Type")
+        else if (val1=="type")
         {
           Var[var].Type = val2.c_str() ;
           i+=2;
         }
         //Var 0200, name O_DECIMAL, Link IOCARD_OUT, Output 20
-        else if (val1=="IOCARD_OUT")
+        else if (val1=="iocard_out")
         {
           Var[var].IOType = IOCARD_OUT;
 
           i+=1;
         }
-        else if (val1=="Output")
+        else if (val1=="output")
         {
           Var[var].Output = atoi(val2.c_str()) ;
           i+=2;
         }
 			  //Var 0110, name D_COURSE2, Link IOCARD_DISPLAY, Digit 19, Numbers 3
-        else if (val1=="IOCARD_DISPLAY")
+        else if (val1=="iocard_display")
         {
           Var[var].IOType = IOCARD_DISPLAY;
           i+=1;
         }
-        else if (val1=="Digit")
+        else if (val1=="digit")
         {
           Var[var].Digit = atoi(val2.c_str()) ;
           i+=2;
         }
-        else if (val1=="Numbers")
+        else if (val1=="numbers")
         {
           Var[var].Numbers = atoi(val2.c_str()) ;
           //rotary selector : 
@@ -356,26 +355,26 @@ void ReadSioc(const char * fileName)
           i+=2;
         }
         //Var 0310, name E_VS, Link IOCARD_ENCODER, Input 11, Aceleration 4, Type 2
-        else if (val1=="IOCARD_ENCODER")
+        else if (val1=="iocard_encoder")
         {
           Var[var].IOType = IOCARD_ENCODER;
           Var[var].Numbers = 2 ;
           i+=1;
         }
-        else if (val1=="IOCARD_SELECTOR")
+        else if (val1=="iocard_selector")
         {
           Var[var].IOType = IOCARD_SELECTOR;
           Var[var].Numbers = 1 ;
           i+=1;
         }
         
-        else if (val1=="IOCARD_SWAPER")
+        else if (val1=="iocard_swaper")
         {
           Var[var].IOType = IOCARD_SWAPER;
           Var[var].Numbers = 1 ;
           i+=1;
         }
-        else if (val1=="Var1")
+        else if (val1=="var1")
         {
           if ( isalpha ( val2[0] ) )
           {
@@ -387,7 +386,7 @@ void ReadSioc(const char * fileName)
             Var[var].Var1 = (int)strToInt(val2.c_str(),10 ) ;
           i+=2;
         }
-        else if (val1=="Var2")
+        else if (val1=="var2")
         {
           if ( isalpha ( val2[0] ) )
           {
@@ -401,19 +400,19 @@ void ReadSioc(const char * fileName)
         }
 
 
-        else if (val1=="Aceleration")
+        else if (val1=="aceleration")
         {
           Var[var].Aceleration = atoi(val2.c_str()) ;
           i+=2;
         }
 				//Var 0002, Link FSUIPC_INOUT, Offset $07C0, Length 4     // AP_LVL
-        else if (val1=="FSUIPC_INOUT")
+        else if (val1=="fsuipc_inout")
         {
           Var[var].IOType = FSUIPC;
           i+=1;
         }
         //pmdg offset
-        else if (val1=="Offset")
+        else if (val1=="offset")
         {
           if ( isalpha ( val2[0] ) )
             Var[var].Offset = Fsuipc.GetOffsetNum(val2);
@@ -427,7 +426,7 @@ void ReadSioc(const char * fileName)
           Var[var].Inc = Fsuipc.GetInc(offset);
 
         }
-        else if (val1=="Fsx")
+        else if (val1=="fsx")
         {
           Var[var].FsxVariableName =val2;
           Fsuipc.Add (val2.c_str(),var);
@@ -439,42 +438,42 @@ void ReadSioc(const char * fileName)
 
           i+=2;
         }
-        else if (val1=="Unit")
+        else if (val1=="unit")
         {
           Var[var].Unit =val2;
           i+=2;
         }
-        else if (val1=="Length")
+        else if (val1=="length")
         {
           Var[var].Length = strToUInt(val2.c_str(),16) ;
           i+=2;
         }
-        else if (val1=="Max")
+        else if (val1=="max")
         {
           Var[var].Max = strToDouble(val2.c_str(),10 ) ;
           i+=2;
         }
-        else if (val1=="Min")
+        else if (val1=="min")
         {
           Var[var].Min = strToDouble(val2.c_str(),10 ) ;
           i+=2;
         }
-        else if (val1=="Event")
+        else if (val1=="event")
         {
           SetVarEventName(var,val2,0);
           i+=2;
         }
-        else if (val1=="Event_Inc")
+        else if (val1=="event_inc")
         {
           SetVarEventName(var,val2,0);
           i+=2;
         }
-        else if (val1=="Event_Dec")
+        else if (val1=="event_dec")
         {
           SetVarEventName(var,val2,1);
           i+=2;
         }
-        else if (val1=="Inc")
+        else if (val1=="inc")
         {
           Var[var].Inc = strToDouble(val2.c_str(),10 ) ;
           i+=2;
