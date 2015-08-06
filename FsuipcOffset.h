@@ -94,6 +94,12 @@ void (*RefreshOutput) (int Variable , double Value ) ;
 
 public:
 
+  TFsuipc()
+  {
+    for (int i=0;i<MAXOFFSET;i++)
+      FsuipcOffset[i].Offset = NOT_DEFINED ;
+  }
+
 void Add ( int ofs  ,const char * Name ,  int var , int fsize=4 , int ftype = F_FLT32 )
 {
   FsuipcOffset[ofs].Offset   = ofs;
