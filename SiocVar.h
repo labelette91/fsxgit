@@ -490,12 +490,22 @@ void ReadSioc(const char * fileName)
         //pmdg offset
         else if (val1=="offset")
         {
+          int offset ;
           if ( isalpha ( val2[0] ) )
-            Var[var].Offset = Fsuipc.GetOffsetNum(val2);
+            //recherche si variable PMDG
+            offset = Fsuipc.GetOffsetNum(val2);
           else
-            Var[var].Offset = strToUInt(val2.c_str(),16) ;
+            offset = strToUInt(val2.c_str(),16) ;
           i+=2;
-          int offset = Var[var].Offset ;
+          //if not found , variable FSX
+          if (offset==NOT_DEFINED)
+          {
+            Var[var].FsxVariableName =val2;
+            Fsuipc.Add (val2.c_str(),var);
+            offset = Fsuipc.GetOffsetNum(val2);
+          }
+
+          Var[var].Offset = offset ;
           //init default min/max / could be redefined by Min/Max/Inc
           Var[var].Min = Fsuipc.GetMin(offset);
           Var[var].Max = Fsuipc.GetMax(offset);

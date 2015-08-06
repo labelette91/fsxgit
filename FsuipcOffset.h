@@ -110,8 +110,12 @@ void Add ( int ofs  ,const char * Name ,  int var , int fsize=4 , int ftype = F_
 }
 void Add ( const char * Name , int var , int fsize=4 , int ftype = F_FLT32 )
 {
-   Add (  NbOffset  , Name , var,  fsize,  ftype ) ;
-   NbOffset++;
+  //test if variable does exist
+   if (GetOffsetNum(Name) == NOT_DEFINED)
+   {
+     Add (  NbOffset  , Name , var,  fsize,  ftype ) ;
+     NbOffset++;
+   }
 }
 const char * GetName(int var)
 {
@@ -380,6 +384,11 @@ std::string  GetOffsetName(int offsetNum )
 
 
 };
+
+bool Is_PMDG_Variable (int id)
+{
+	return (id>=FIRST_OFFSET);
+}
 
 
 //#define THIRD_PARTY_EVENT_ID_MIN 0x11000
