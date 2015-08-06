@@ -101,8 +101,8 @@ bool		SendToFsx ( int Var , byte SwValue )
   }
 	else if (typ==IOCARD_SW_3P) 
   {
-    int input  = GetVariable(Var)->Input ;
-    int number = GetVariable(Var)->Numbers ;
+    int input  = GetVarInput(Var) ;
+    int number = GetVarNumbers(Var) ;
     if((number==0)||(evt==NOT_DEFINED)||(input==0))
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : %s\n", Var , GetVarName(Var)  );
     int code=0;
@@ -116,14 +116,14 @@ bool		SendToFsx ( int Var , byte SwValue )
       code += sw ;
     }
     //tranlaste value ;
-    if (GetVariable(Var)->Codage.size()>=4)
-      code = GetVariable(Var)->Codage.c_str()[code]-'0';
+    if (GetVarCodage(Var).size()>=4)
+      code = GetVarCodage(Var).c_str()[code]-'0';
 //    Console->debugPrintf ( TRACE_FSX_SEND,"Coding:%d ",code );
     SendControl( evt , code );
   }
   else if (typ==IOCARD_ENCODER)
   {
-    int offset = GetVariable(Var)->Offset ;
+    int offset = GetVarOffset(Var) ;
     double min = GetVarMin(Var);
     double max = GetVarMax(Var);
     double inc = GetVarInc(Var);
@@ -161,8 +161,8 @@ bool		SendToFsx ( int Var , byte SwValue )
   }
   else if (typ==IOCARD_SELECTOR)
   {
-    int input  = GetVariable(Var)->Input ;
-    int number = GetVariable(Var)->Numbers ;
+    int input  = GetVarInput(Var) ;
+    int number = GetVarNumbers(Var) ;
     if((number==0)||(evt==NOT_DEFINED)||(input==0))
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : S\n", Var , GetVarName(Var)  );
     int SwitchActifValue = (GetVarType(Var)!=NEGATIV) ;
@@ -180,11 +180,11 @@ bool		SendToFsx ( int Var , byte SwValue )
 
     else if (typ==IOCARD_SWAPER)
   {
-    int Var1  = GetVariable(Var)->Var1 ;
-    int Var2  = GetVariable(Var)->Var2 ;
+    int Var1  = GetVarVar1(Var) ;
+    int Var2  = GetVarVar2(Var) ;
 
-    int Input = GetVariable(Var1)->Input ;
-    int number= GetVariable(Var1)->Numbers ;
+    int Input = GetVarInput(Var1) ;
+    int number= GetVarNumbers(Var1) ;
 
     int SwitchActifValue = (GetVarType(Var)!=NEGATIV) ;
 
@@ -320,7 +320,7 @@ void RefreshOutput (int Variable , double value )
   {
     int Digit = GetVarDigit(Variable);
     int Number= GetVarNumbers(Variable);
-    int offset = GetVariable(Variable)->Offset ;
+    int offset = GetVarOffset(Variable) ;
     
     double min = GetVarMin(Variable);
     double max = GetVarMax(Variable);
@@ -459,7 +459,7 @@ void PmdgRegister()
 	{
 		int var = varsOut[i]   ;
 		if (!AsFsxVariableDefinition(var) )
-			Fsuipc.RegisterToVariableChanged (GetVariable(var)->Offset,GetVariable(var)->Length,var);
+			Fsuipc.RegisterToVariableChanged (GetVarOffset(var),var);
 	}
 }
 
@@ -472,7 +472,7 @@ void RefreshDisplay()
 	for (unsigned int i=0;i<varsOut.size();i++)
 	{
 		int var = varsOut[i]   ;
-		int offset = GetVariable(var)->Offset;
+		int offset = GetVarOffset(var);
     double Value = Fsuipc.GetValue(offset);
 		if (offset)
 				RefreshOutput(var,Value);
@@ -491,7 +491,7 @@ void SendSwitchValuesToFsx()
 	{
     //get var number
 		int var     = varsOut[i]   ;
-    int input   = GetVariable(var)->Input ;
+    int input   = GetVarInput(var) ;
     int swValue = Switch.get ( input ) ;
     SendToFsx(var,swValue);
 	}

@@ -236,16 +236,16 @@ void FsxgRegister()
 	for (unsigned int i=0;i<varsOut.size();i++)
 	{
 		int var = varsOut[i]   ;
-    std::string FsxVariableName = GetVariable(var)->FsxVariableName ;
+    std::string FsxVariableName = GetVarFsxVariableName(var);
     if (AsFsxVariableDefinition(var) ) 
     {
 			Console->debugPrintf(TRACE_FSX_SEND,"FSX : register to Fsx Variable %-30s Unit:%-10s Id:%d Var:%d\n",
-      GetVariable(var)->FsxVariableName.c_str(),
-      GetVariable(var)->Unit.c_str(),
-      GetVariable(var)->Offset,
+      FsxVariableName.c_str(),
+      GetVarUnit(var),
+      GetVarOffset(var),
       i
       );
-			FsxAddToDataDefinition(FsxVariableName.c_str() , GetVariable(var)->Unit.c_str(),GetVariable(var)->Offset );
+			FsxAddToDataDefinition(FsxVariableName.c_str() , GetVarUnit(var),GetVarOffset(var) );
     }
 	}
 
@@ -292,8 +292,8 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 		Fsuipc.SetRefreshOutputFct (RefreshOutput) ;
 
 //		Fsuipc.RegisterToVariableChanged (268+FIRST_OFFSET,2,1); //MCP_Heading
-		Fsuipc.RegisterToVariableChanged (275+FIRST_OFFSET,1,12); //MCP_FDSw[2]
-		Fsuipc.RegisterToVariableChanged (280+FIRST_OFFSET,1,13); //MCP_annunFD[2]
+		Fsuipc.RegisterToVariableChanged (275+FIRST_OFFSET,12); //MCP_FDSw[2]
+		Fsuipc.RegisterToVariableChanged (280+FIRST_OFFSET,13); //MCP_annunFD[2]
 
 		//use event handle
     if (SUCCEEDED(SimConnect_Open(&hSimConnect, "PMDG NGX Test", NULL, 0, hEventHandle, 0)))

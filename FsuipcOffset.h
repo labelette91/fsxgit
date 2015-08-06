@@ -346,7 +346,7 @@ void SetRefreshOutputFct ( void (*RefreshOutputFct) (int variable,double Value) 
 {
 	RefreshOutput = RefreshOutputFct;
 }
-void RegisterToVariableChanged ( int offset , int Len , int variable )
+void RegisterToVariableChanged ( int offset , int variable )
 {
   if (offset>=0)
 	{
@@ -363,7 +363,12 @@ void RegisterToVariableChanged ( int offset , int Len , int variable )
 
 int GetOffsetNum(std::string offsetName)
 {
-  return Map_Offset[offsetName] ;
+  T_Map_Int_String::iterator it;
+  it = Map_Offset.find(offsetName);
+  if (it != Map_Offset.end())
+    return it->second ;
+  else 
+    return NOT_DEFINED ;
 }
 std::string  GetOffsetName(int offsetNum )
 {

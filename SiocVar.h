@@ -101,10 +101,6 @@ bool AsFsxVariableDefinition(int var)
 {
 	return Var[var].FsxVariableName.size()!=0 ;
 }
-TVariable *  GetVariable(int var)
-{
-  return & Var[var] ;
-}
 
 EnumIoType GetVarIoType(int var)
 {
@@ -187,6 +183,33 @@ int GetVarFrac(int var)
 {
   return Var[var].Frac ;
 }
+int GetVarOffset(int var)
+{
+  return Var[var].Offset ;
+}
+
+const char * GetVarUnit(int var)
+{
+return Var[var].Unit.c_str() ;
+}
+const char * GetVarFsxVariableName(int var)
+{
+return Var[var].FsxVariableName.c_str() ;
+}
+
+std::string  GetVarCodage(int var)
+{
+return Var[var].Codage ;
+}
+int GetVarVar1(int var)
+{
+return Var[var].Var1 ;
+}
+int GetVarVar2(int var)
+{
+return Var[var].Var2 ;
+}
+
 
 
 char * GetIOTypeStr(int pio)
