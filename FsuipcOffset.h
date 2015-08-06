@@ -391,9 +391,9 @@ std::string  GetOffsetName(int offsetNum )
 
 };
 
-bool Is_PMDG_Variable (int id)
+bool Is_FSX_Variable (int id)
 {
-	return (id>=FIRST_OFFSET);
+	return (id<FIRST_OFFSET);
 }
 
 

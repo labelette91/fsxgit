@@ -236,16 +236,18 @@ void FsxgRegister()
 	for (unsigned int i=0;i<varsOut.size();i++)
 	{
 		int var = varsOut[i]   ;
-    std::string FsxVariableName = GetVarFsxVariableName(var);
-    if (AsFsxVariableDefinition(var) ) 
+		int Id = GetVarOffset(var) ;
+		//if it is a FSX Variable
+    if (Is_FSX_Variable(Id) ) 
     {
+			std::string FsxVariableName = GetVarFsxVariableName(var);
 			Console->debugPrintf(TRACE_FSX_SEND,"FSX : register to Fsx Variable %-30s Unit:%-10s Id:%d Var:%d\n",
       FsxVariableName.c_str(),
       GetVarUnit(var),
-      GetVarOffset(var),
+      Id,
       i
       );
-			FsxAddToDataDefinition(FsxVariableName.c_str() , GetVarUnit(var),GetVarOffset(var) );
+			FsxAddToDataDefinition(FsxVariableName.c_str() , GetVarUnit(var),Id );
     }
 	}
 
