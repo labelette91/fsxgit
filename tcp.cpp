@@ -463,7 +463,8 @@ void PmdgRegister()
 	for (unsigned int i=0;i<varsOut.size();i++)
 	{
 		int var = varsOut[i]   ;
-		if (!AsFsxVariableDefinition(var) )
+		int Id = GetVarOffset(var) ;
+		if (!Is_FSX_Variable(Id) )
 			Fsuipc.RegisterToVariableChanged (GetVarOffset(var),var);
 	}
 }

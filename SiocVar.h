@@ -97,11 +97,6 @@ int InputVar[MAXINPUT];
 #define POSITIV 'P'
 #define NEGATIV 'N'
 
-bool AsFsxVariableDefinition(int var)
-{
-	return Var[var].FsxVariableName.size()!=0 ;
-}
-
 EnumIoType GetVarIoType(int var)
 {
   return Var[var].IOType ;
@@ -134,14 +129,12 @@ void SetVarEventName(int var,std::string EventName,int evtNb=0)
     Var[var].EventName0 = EventName;
 
 }
-
 char GetVarType(int var)
 {
 	if (Var[var].Type.size()==0)
 		Var[var].Type= POSITIV ;
   return Var[var].Type.c_str()[0] ;
 }
-
 int GetVarOutput(int var)
 {
   return Var[var].Output ;
@@ -158,7 +151,6 @@ int GetVarNumbers(int var)
 {
   return Var[var].Numbers ;
 }
-
 double GetVarMin(int var)
 {
   return Var[var].Min ;
@@ -187,7 +179,6 @@ int GetVarOffset(int var)
 {
   return Var[var].Offset ;
 }
-
 const char * GetVarUnit(int var)
 {
 return Var[var].Unit.c_str() ;
@@ -196,7 +187,6 @@ const char * GetVarFsxVariableName(int var)
 {
 return Var[var].FsxVariableName.c_str() ;
 }
-
 std::string  GetVarCodage(int var)
 {
 return Var[var].Codage ;
@@ -209,7 +199,6 @@ int GetVarVar2(int var)
 {
 return Var[var].Var2 ;
 }
-
 //inverse value depending on the input type Negativ or Positiv 
 int GetSwValue(int var , int SwValue)
 {
@@ -219,13 +208,11 @@ int GetSwValue(int var , int SwValue)
   else
 				return SwValue ;
 }
-
 char * GetIOTypeStr(int pio)
 {
   if (pio>=END_TYPE) pio=0;
   return &IoTypeStr[pio][7];
 }
-
 EnumIoType findIOType (std::string sType)
 {
   for (int i=0;i<END_TYPE;i++)
@@ -240,7 +227,6 @@ const char * GetVarName(int var)
 {
   return Var[var].name.c_str() ;
 }
-
 int  GetVarFromName(const char *  varName)
 {
   for (int i=0;i<MAXVAR;i++)
@@ -250,7 +236,6 @@ int  GetVarFromName(const char *  varName)
   }
   return -1  ;
 }
-
 void SetInputVar(int Var,int pInput)
 {
   if (pInput<MAXINPUT)
@@ -273,7 +258,6 @@ void InitEventId(int var)
   Var[var].b         = 0  ;
 
 }
-
 //alocate an event depending PMDG or FSX event
 void AllocEvent ( int var , std::string evtVame , int evtNb=0)
 {
@@ -296,9 +280,6 @@ void AllocEvent ( int var , std::string evtVame , int evtNb=0)
 
 		  }
 }
-
-
-
 void ReadSioc(const char * fileName)
 {
 	std::string line;
@@ -326,6 +307,11 @@ void ReadSioc(const char * fileName)
       int i=0;
       while (i<args->Count()-1)
       {
+			  //Var 0400, name I_CO, Link IOCARD_SW, Input 13, Type P
+        //Var 0200, name O_DECIMAL, Link IOCARD_OUT, Output 20
+			  //Var 0110, name D_COURSE2, Link IOCARD_DISPLAY, Digit 19, Numbers 3
+        //Var 0310, name E_VS, Link IOCARD_ENCODER, Input 11, Aceleration 4, Type 2
+				//Var 0002, Link FSUIPC_INOUT, Offset $07C0, Length 4     // AP_LVL
         std::string val1 = (*args)[i];
         std::string val2 = (*args)[i+1];
         toLowerString(val1);
@@ -345,27 +331,50 @@ void ReadSioc(const char * fileName)
         }
         else if (val1=="link")
         {
-          i+=1;
+          i+=2;
+					toLowerString(val2);
+					if (val2=="iocard_sw")
+					{
+						Var[var].IOType = IOCARD_SW;
+						Var[var].Numbers = 1 ;
+					}
+					else if (val1=="iocard_push_btn")
+					{
+						Var[var].IOType = IOCARD_PUSH_BTN;
+						Var[var].Numbers = 1 ;
+					}
+					else if (val2=="iocard_sw_3p")
+					{
+						Var[var].IOType = IOCARD_SW_3P;
+						Var[var].Codage = "1023";
+						Var[var].Numbers= 2 ;
+					}
+					else if (val2=="iocard_out")
+					{
+						Var[var].IOType = IOCARD_OUT;
+					}
+					else if (val2=="iocard_display")
+					{
+						Var[var].IOType = IOCARD_DISPLAY;
+					}
+					else if (val2=="iocard_swaper")
+					{
+						Var[var].IOType = IOCARD_SWAPER;
+						Var[var].Numbers = 1 ;
+					}
+					else if (val2=="iocard_encoder")
+					{
+						Var[var].IOType = IOCARD_ENCODER;
+						Var[var].Numbers = 2 ;
+					}
+					else if (val2=="iocard_selector")
+					{
+						Var[var].IOType = IOCARD_SELECTOR;
+						Var[var].Numbers = 1 ;
+					}
         }
-			  //Var 0400, name I_CO, Link IOCARD_SW, Input 13, Type P
-        else if (val1=="iocard_sw")
-        {
-          Var[var].IOType = IOCARD_SW;
-          i+=1;
-        }
-        else if (val1=="iocard_push_btn")
-        {
-          Var[var].IOType = IOCARD_PUSH_BTN;
-          i+=1;
-        }
-        else if (val1=="iocard_sw_3p")
-        {
-          Var[var].IOType = IOCARD_SW_3P;
-          Var[var].Codage = "1023";
-          Var[var].Numbers= 2 ;
-          i+=1;
-        }
-        else if (val1=="coding")
+        
+				else if (val1=="coding")
         {
           if (val2.size()<4)
              Console->errorPrintf (0 , "error : coding length shall be 4 charaters [0..9] Var:%d Coding:%s\n",var,val2.c_str());
@@ -392,32 +401,19 @@ void ReadSioc(const char * fileName)
 
           i+=2;
         }
-        else if (val1=="type")
-        {
-          Var[var].Type = val2.c_str() ;
-          i+=2;
-        }
-        //Var 0200, name O_DECIMAL, Link IOCARD_OUT, Output 20
-        else if (val1=="iocard_out")
-        {
-          Var[var].IOType = IOCARD_OUT;
-
-          i+=1;
-        }
         else if (val1=="output")
         {
           Var[var].Output = atoi(val2.c_str()) ;
           i+=2;
         }
-			  //Var 0110, name D_COURSE2, Link IOCARD_DISPLAY, Digit 19, Numbers 3
-        else if (val1=="iocard_display")
-        {
-          Var[var].IOType = IOCARD_DISPLAY;
-          i+=1;
-        }
         else if (val1=="digit")
         {
           Var[var].Digit = atoi(val2.c_str()) ;
+          i+=2;
+        }
+        else if (val1=="type")
+        {
+          Var[var].Type = val2.c_str() ;
           i+=2;
         }
         else if (val1=="numbers")
@@ -429,26 +425,6 @@ void ReadSioc(const char * fileName)
               SetInputVar( var,  Var[var].Input+i ) ;
 
           i+=2;
-        }
-        //Var 0310, name E_VS, Link IOCARD_ENCODER, Input 11, Aceleration 4, Type 2
-        else if (val1=="iocard_encoder")
-        {
-          Var[var].IOType = IOCARD_ENCODER;
-          Var[var].Numbers = 2 ;
-          i+=1;
-        }
-        else if (val1=="iocard_selector")
-        {
-          Var[var].IOType = IOCARD_SELECTOR;
-          Var[var].Numbers = 1 ;
-          i+=1;
-        }
-        
-        else if (val1=="iocard_swaper")
-        {
-          Var[var].IOType = IOCARD_SWAPER;
-          Var[var].Numbers = 1 ;
-          i+=1;
         }
         else if (val1=="var1")
         {
@@ -474,20 +450,6 @@ void ReadSioc(const char * fileName)
             Var[var].Var2 = (int)strToInt(val2.c_str(),10 ) ;
           i+=2;
         }
-
-
-        else if (val1=="aceleration")
-        {
-          Var[var].Aceleration = atoi(val2.c_str()) ;
-          i+=2;
-        }
-				//Var 0002, Link FSUIPC_INOUT, Offset $07C0, Length 4     // AP_LVL
-        else if (val1=="fsuipc_inout")
-        {
-          Var[var].IOType = FSUIPC;
-          i+=1;
-        }
-        //pmdg offset
         else if (val1=="offset")
         {
           int offset ;
@@ -583,7 +545,6 @@ void ReadSioc(const char * fileName)
           Var[var].Frac = strToInt(val2.c_str(),10 ) ;
           i+=2;
         }
-        
 				else 
         {
 					i++;
@@ -637,9 +598,7 @@ Var[var].EventName1.c_str()
   }
 
 }
-
 typedef  std::vector <int> T_VARLIST ;
-
 void GetSiocVar(int IOType ,  T_StringList * vars )
 {
 	char str[1024];
@@ -652,7 +611,6 @@ void GetSiocVar(int IOType ,  T_StringList * vars )
 		}
   }
 }
-
 void GetSiocVar(int IOType ,  T_VARLIST & vars )
 {
   for (int var=0;var<MAXVAR;var++)
@@ -663,7 +621,6 @@ void GetSiocVar(int IOType ,  T_VARLIST & vars )
 		}
   }
 }
-
 void SiocRegister()
 {
 	T_StringList * vars = new T_StringList();
@@ -701,7 +658,6 @@ int GetSwitchNumber(byte * Buffer)
 }
 #endif
 
-
 //SwNumber : 0..127
 //SwValue 0..1
 void SetSwitchValue(byte * Buffer , byte SwNumber , byte SwValue  )
@@ -713,7 +669,6 @@ void SetSwitchValue(byte * Buffer , byte SwNumber , byte SwValue  )
   Buffer[0] |= SwNumber ;
 
 }
-
 //cmd   :  commande bit 7..5
 //DP    :  draw point bit 4
 //value :  value    bit 3..1
@@ -729,13 +684,11 @@ void SetSwitchValue(byte * Buffer , byte SwNumber , byte SwValue  )
 
 #define Segment_DP   0x10 
 
-
 void SetOutputCmd ( byte * Buffer , byte cmd,byte OutputNumber , byte Value )
 {
   Buffer[0] = cmd | Value ;
   Buffer[1] = OutputNumber & 0x7f ;
 }
-
 void SendOutputCmd ( byte cmd,byte OutputNumber , byte Value )
 {
     byte Buffer[16];
@@ -751,7 +704,6 @@ void SendOutputCmd ( byte cmd,byte OutputNumber , byte Value )
 			Console->debugPrintf (  TRACE_RS232_SEND , "RS232:Send IOCARD_ENCODER Cmd:%02x Output:%3d(0x%2X) Value:%x Buf:%02x%02x\n",cmd,OutputNumber,OutputNumber,Value, Buffer[0] , Buffer[1]  );
 
 }
-
 bool		SiocSend ( int SiocVar , byte SwValue )
 {
 	char  ArnValue[1024];
@@ -759,7 +711,6 @@ bool		SiocSend ( int SiocVar , byte SwValue )
 	int Nb = Tcp->SendString( ArnValue);
 	return true;
 }
-
 //register encoder to Arduino card
 void EncoderArduinoRegister()
 {
