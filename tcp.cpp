@@ -84,16 +84,14 @@ bool		SendToFsx ( int Var , byte SwValue )
 
 	if ( (typ==IOCARD_SW) )  
   {
-    //get event
-    if(GetVarType(Var)==NEGATIV)
-				SwValue = !SwValue;
+    //compute switch depending its polarity
+		SwValue = GetSwValue ( Var,SwValue );  
     SendControl( evt , SwValue );
   }
 	else if (typ==IOCARD_PUSH_BTN) 
   {
-    //get event
-    if(GetVarType(Var)==NEGATIV)
-				SwValue = !SwValue;
+    //compute switch depending its polarity
+		SwValue = GetSwValue ( Var,SwValue );  
 		if (SwValue)
 			SendControl( evt , MOUSE_FLAG_LEFTSINGLE );
 		else
@@ -111,8 +109,9 @@ bool		SendToFsx ( int Var , byte SwValue )
       code *= 2 ;
       int sw = Switch.get ( input + i ) ;
       sw &=1 ;
-      if(GetVarType(Var)==NEGATIV)
-				sw = !sw;
+      //compute switch depending its polarity
+		  sw = GetSwValue ( Var,sw );  
+
       code += sw ;
     }
     //tranlaste value ;
@@ -165,11 +164,16 @@ bool		SendToFsx ( int Var , byte SwValue )
     int number = GetVarNumbers(Var) ;
     if((number==0)||(evt==NOT_DEFINED)||(input==0))
 	    Console->errorPrintf ( 0 ,"FSX  :event or offset or input not defined for variable %d : S\n", Var , GetVarName(Var)  );
-    int SwitchActifValue = (GetVarType(Var)!=NEGATIV) ;
-    //selector value 
+
+    //selector value : rechecher la position qui est active ground or +V
     for (int value=0; value<number;value++)
     {
-        if ( Switch.get ( input + value) == SwitchActifValue )
+		    int SwValue = Switch.get ( input + value) ;
+        //compute switch depending its polarity
+        SwValue = GetSwValue ( Var,SwValue );  
+
+        //si switch actif
+        if ( SwValue )
         {
 //          Console->debugPrintf ( TRACE_FSX_SEND," EventValue:%d ",value );
           SendControl( evt , (int)value );
@@ -186,10 +190,11 @@ bool		SendToFsx ( int Var , byte SwValue )
     int Input = GetVarInput(Var1) ;
     int number= GetVarNumbers(Var1) ;
 
-    int SwitchActifValue = (GetVarType(Var)!=NEGATIV) ;
+    //compute switch depending its polarity
+		SwValue = GetSwValue ( Var,SwValue );  
 
-    //ingnore pasive balue 
-    if (SwitchActifValue != SwValue)
+    //ingnore pasive value 
+    if ( 0 != SwValue)
       return true;
 
     if((Var1<=0)||(Var2<=0))

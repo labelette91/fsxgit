@@ -210,7 +210,15 @@ int GetVarVar2(int var)
 return Var[var].Var2 ;
 }
 
-
+//inverse value depending on the input type Negativ or Positiv 
+int GetSwValue(int var , int SwValue)
+{
+  //if negativ polarity , inverse value
+  if(GetVarType(var)==NEGATIV)
+				return  !SwValue;
+  else
+				return SwValue ;
+}
 
 char * GetIOTypeStr(int pio)
 {
