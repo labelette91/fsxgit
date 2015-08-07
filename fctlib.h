@@ -182,6 +182,8 @@ std::string to_string(int val);
 
 void toUpperString( std::string & Str );
 void toLowerString( std::string & Str );
+std::string ToLowerString( std::string  Str );
+std::string ToUpperString( std::string  Str );
 
 #endif
 

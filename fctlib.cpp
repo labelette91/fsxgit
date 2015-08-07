@@ -1169,3 +1169,11 @@ void toLowerString( std::string & Str )
   for (int i=0;i<Str.size();i++)
     Str[i]= tolower(Str[i]);
 }
+
+std::string ToLowerString( std::string Str )
+{
+  std::string outStr = Str;
+  for (int i=0;i<outStr.size();i++)
+    outStr[i]= tolower(outStr[i]);
+  return outStr;
+}

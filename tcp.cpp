@@ -532,7 +532,10 @@ int main(int argc, char **argv)
   if (Console->isDebugEnable(TRACE_EVENT))
   		Event.Print();
 
-	ReadSioc(SiocFilename.c_str());
+  if (strstr(SiocFilename.c_str(),".csv")==0)
+    ReadSioc(SiocFilename.c_str());
+  else
+	  ReadSiocCsv(SiocFilename.c_str());
   PrintVars();
 
   T_THREAD thAs2 (ThreadAs2,(LPVOID)numas2 );

@@ -1,0 +1,8 @@
+Name;Link;Input/Output/Digit;Type;Numbers;Frac;Offset;Unit;Event/Event_Inc;Event_dec;Coding;Min;Max;Inc;A;B;Var1;Var2
+HDGrot1;IOCARD_ENCODER;2;;;;;;NAV1_RADIO_WHOLE_INC;NAV1_RADIO_WHOLE_DEC;;;;;;;;
+HDGrot2;IOCARD_ENCODER;2;;;;;;NAV1_RADIO_FRACT_INC;NAV1_RADIO_FRACT_DEC;;;;;;;;
+HDGdisplay;IOCARD_DISPLAY;5;;3;0;MCP_Heading;;;;;;;;;;;
+HDGrot1;IOCARD_ENCODER;2;;;;MCP_Heading;;EVT_MCP_HDG_SET;;;;;;;;;
+NavStandby2;IOCARD_DISPLAY;0;;5;2;NAV STANDBY FREQUENCY:1;Mhz;;;;0;;;;;;
+Swap;IOCARD_SWAPER;4;N;;;;;;;;;;;;;HDGrot1;HDGrot2
+Select;IOCARD_SELECTOR;4;N;2;;;;EVT_EFIS_CPT_VOR_ADF_SELECTOR_R;;;;;;;;;

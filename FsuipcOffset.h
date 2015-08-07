@@ -111,7 +111,7 @@ void Add ( int ofs  ,const char * Name ,  int var , int fsize=4 , int ftype = F_
   FsuipcOffset[ofs].Max=MAX_REAL_VALUE;
   FsuipcOffset[ofs].Min=-MAX_REAL_VALUE;
   FsuipcOffset[ofs].Inc=1;
-  Map_Offset[Name] = ofs;
+  Map_Offset[ToLowerString(Name)] = ofs;
 
 }
 void Add ( const char * Name , int var , int fsize=4 , int ftype = F_FLT32 )
@@ -265,12 +265,13 @@ void ReadFromFile(const char * fileName)
           FsuipcOffset[ofs+i].Inc=inc;
 
   			}
-        Map_Offset[Name] = ofs;
+        Map_Offset[ToLowerString(Name)] = ofs;
 
         ofs+=fsize;
       }
 			delete args ;
 	}
+  myfile.close();
 }
 void Print()
 {
@@ -374,7 +375,7 @@ void RegisterToVariableChanged ( int offset , int variable )
 int GetOffsetNum(std::string offsetName)
 {
   T_Map_Int_String::iterator it;
-  it = Map_Offset.find(offsetName);
+  it = Map_Offset.find(ToLowerString(offsetName));
   if (it != Map_Offset.end())
     return it->second ;
   else 
@@ -443,7 +444,7 @@ void Add ( int EventId , const char * EventName , double a , double b )
       Control[EventId].a=a;
       Control[EventId].b=b;
 
-      Map_Control[EventName]=EventId;
+      Map_Control[ToLowerString(EventName)]=EventId;
 
 }
 
@@ -504,6 +505,8 @@ void ReadFromFile(const char * fileName)
 
       delete args ;
 	}
+  myfile.close();
+
 }
 void Print()
 {
@@ -534,7 +537,7 @@ void Print()
 int GetEventNum(std::string eventName)
 {
   T_Map_Int_String::iterator it;
-  it = Map_Control.find(eventName);
+  it = Map_Control.find(ToLowerString(eventName));
   if (it != Map_Control.end())
     return Map_Control[eventName] ;
   else 
