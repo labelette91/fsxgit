@@ -394,7 +394,7 @@ std::string  GetOffsetName(int offsetNum )
 
 bool Is_FSX_Variable (int id)
 {
-	return (id<FIRST_OFFSET);
+	return ((id<FIRST_OFFSET)&&(id>=0) );
 }
 
 
@@ -539,7 +539,7 @@ int GetEventNum(std::string eventName)
   T_Map_Int_String::iterator it;
   it = Map_Control.find(ToLowerString(eventName));
   if (it != Map_Control.end())
-    return Map_Control[eventName] ;
+		return it->second ;
   else 
     return NOT_DEFINED ;
 }

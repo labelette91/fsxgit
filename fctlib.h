@@ -174,6 +174,7 @@ SaveToFile((char*)FileName.c_str());
 void __fastcall Sort();
 bool __fastcall find(std::string & value) ;
 void Clear() {list.clear();};
+void erase(int position) {list.erase(list.begin()+position);}
 
 };
 

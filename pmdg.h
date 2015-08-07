@@ -289,8 +289,8 @@ DWORD WINAPI ThreadPMDG(LPVOID lpArg)
 		Fsuipc.SetRefreshOutputFct (RefreshOutput) ;
 
 //		Fsuipc.RegisterToVariableChanged (268+FIRST_OFFSET,2,1); //MCP_Heading
-		Fsuipc.RegisterToVariableChanged (275+FIRST_OFFSET,12); //MCP_FDSw[2]
-		Fsuipc.RegisterToVariableChanged (280+FIRST_OFFSET,13); //MCP_annunFD[2]
+//		Fsuipc.RegisterToVariableChanged (275+FIRST_OFFSET,12); //MCP_FDSw[2]
+//		Fsuipc.RegisterToVariableChanged (280+FIRST_OFFSET,13); //MCP_annunFD[2]
 
 		//use event handle
     if (SUCCEEDED(SimConnect_Open(&hSimConnect, "PMDG NGX Test", NULL, 0, hEventHandle, 0)))

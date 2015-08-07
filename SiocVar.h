@@ -94,8 +94,8 @@ TVariable Var[MAXVAR];
 //contain the varariable number of the corresponding input
 int InputVar[MAXINPUT];
 
-#define POSITIV 'P'
-#define NEGATIV 'N'
+#define POSITIV 'p'
+#define NEGATIV 'n'
 
 EnumIoType GetVarIoType(int var)
 {
@@ -750,6 +750,7 @@ void ReadSiocCsv(const char * fileName)
 		if ( line.c_str()[0]=='*')
 			continue;
       T_StringList * args = Split ( (char*)line.c_str() , (char*)";," , (char*)"\"" , false );
+			args->erase(0);//delete comentaire
 			args->Add("");
       memset(&lVar,0,sizeof(lVar) ) ;
       lVar.Event[0]  = NOT_DEFINED ;
@@ -775,7 +776,7 @@ void ReadSiocCsv(const char * fileName)
 					lVar.IOType = IOCARD_SW;
 					lVar.Numbers = 1 ;
 				}
-				else if (val1=="iocard_push_btn")
+				else if (val2=="iocard_push_btn")
 				{
 					lVar.IOType = IOCARD_PUSH_BTN;
 					lVar.Numbers = 1 ;
