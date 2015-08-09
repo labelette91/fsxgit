@@ -5,9 +5,9 @@ Commentaire;Name;Link;Input/Output/Digit;Type;Numbers;Frac;Offset;Unit;Event/Eve
 *;HDGrot1;IOCARD_ENCODER;2;;;;MCP_Heading;;EVT_MCP_HDG_SET;;;;;;;;;
 *;NavStandby2;IOCARD_DISPLAY;0;;5;2;NAV STANDBY FREQUENCY:1;Mhz;;;;0;;;;;;
 *;Swap;IOCARD_SWAPER;4;N;;;;;;;;;;;;;HDGrot1;HDGrot2
-*;Select;IOCARD_SELECTOR;4;N;2;;;;EVT_EFIS_CPT_VOR_ADF_SELECTOR_R;;;;;;;;;
+;Select;IOCARD_SELECTOR;4;N;2;;;;EVT_MPM_AUTOBRAKE_SELECTOR;;;;;;;;;
 *;MCP_annunFD_1;IOCARD_OUT;6;;;;MCP_annunFD_1;;;;;;;;;;;
 *;MCP_LVL_CHG_SWITCH;IOCARD_PUSH_BTN;4;N;;;;;EVT_MCP_LVL_CHG_SWITCH;;;;;;;;;
 *;EVT_EFIS_CPT_TERR;IOCARD_PUSH_BTN;4;N;;;;;EVT_EFIS_CPT_TERR;;;;;;;;;
 *;IOCARD_SW_3P;IOCARD_SW_3P;4;n;;;;;EVT_EFIS_CPT_VOR_ADF_SELECTOR_R;;;;;;;;;
-;MCP_FDSw;IOCARD_SW;4;n;;;;;EVT_MCP_FD_SWITCH_L;;;;;;;;;
+*;MCP_FDSw;IOCARD_SW;4;n;;;;;EVT_MCP_FD_SWITCH_L;;;;;;;;;
