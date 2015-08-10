@@ -71,10 +71,6 @@ int numas2 = 2 ;
 std::string SiocFilename = "fsx1.txt";
 bool InitRs232=false;
 
-#define SWITCH_NB_CAR 2 
-
-#define MAX_DIGIT 255
-byte Digits[MAX_DIGIT];
 
 bool		SendToFsx ( int Var , byte SwValue )
 {
@@ -293,19 +289,6 @@ DWORD WINAPI ThreadAs2(LPVOID lpArg)
   return 0;
 }
 
-void SendDigitCmd (byte digitNb , byte digitValue , bool DrawPopint=false )
-{
-  if (DrawPopint)
-    digitValue|= Segment_DP;
-	if (Digits[digitNb]!=digitValue)
-	{
-		SendOutputCmd ( IOCARD_DISPLAY_CMD , digitNb ,  digitValue ) ;
-
-		Digits[digitNb]=digitValue ;
-	}
-}
-
-
 void RefreshOutput (int Variable , double value )
 {
 	int Value = (int)value;
@@ -522,7 +505,7 @@ int main(int argc, char **argv)
   if (argc>=6) 
     ServerPort = atoi(argv[5]);
 
-	memset(Digits,-1,sizeof(Digits));
+	ArduinoInit();
 	Console->printf("ComPort:%d  SiocFileName:%s ServerIp:%s  ServerPort:%d Trace:%X\n",numas2,SiocFilename.c_str(),ServerIp.c_str(),ServerPort, Console->EnableDebugOutput );
 
 	Fsuipc.ReadFromFile("FsuipcOffset3.csv");

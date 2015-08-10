@@ -87,6 +87,7 @@
     <ClCompile Include="tcp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="arduino.h" />
     <ClInclude Include="as2.h" />
     <ClInclude Include="ClientTcp.h" />
     <ClInclude Include="console.h" />
